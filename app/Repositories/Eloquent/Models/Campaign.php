@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Campaign extends \Illuminate\Database\Eloquent\Model
+class Campaign extends Model
 {
   protected $fillable = ['name', 'limited_days','project','code'];
 
