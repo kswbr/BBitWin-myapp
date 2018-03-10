@@ -17,7 +17,6 @@ class CampaignRepositoryTest extends TestCase
     {
         parent::setUp();
         $this->model = \App::make(Campaign::class);
-
     }
 
     /**
@@ -35,13 +34,13 @@ class CampaignRepositoryTest extends TestCase
      * @return void
      *
      */
-    public function testGetByCodeAndPorject()
+    public function testGetByPorjectAndCode()
     {
         $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
 
         $this->model->project("TESTPROJECT");
         $repository = new CampaignRepository($this->model);
-        $result = $repository->getByCodeAndProject("TESTCODE","TESTPROJECT");
+        $result = $repository->getByProjectAndCode("TESTPROJECT","TESTCODE");
         $this->assertEquals($campaign->id,$result->id);
     }
 
@@ -55,7 +54,7 @@ class CampaignRepositoryTest extends TestCase
         $campaign = factory(Campaign::class)->create(["name" => "test","code" => "ESTCOD", "project" => "TESTPROJECT"]);
 
         $repository = new CampaignRepository($this->model);
-        $repository->getByCodeAndProject("TESTCODE","TESTPROJECT");
+        $repository->getByProjectAndCode("TESTPROJECT","TESTCODE");
     }
 
 }

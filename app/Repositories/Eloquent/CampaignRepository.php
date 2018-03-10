@@ -3,13 +3,14 @@
 namespace App\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Repositories\CampaignRepositoryInterface;
 use App\Repositories\BaseRepositoryInterface;
 use App\Repositories\Eloquent\Models\Campaign;
 
-class CampaignRepository implements BaseRepositoryInterface
+class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryInterface
 {
     /**
-     * The Model name.
+     * Parent Campaign Repository
      *
      * @var \Illuminate\Database\Eloquent\Model;
      */
@@ -25,78 +26,36 @@ class CampaignRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
-    /**
-     * Paginate the given query.
-     *
-     * @param The number of models to return for pagination $n integer
-     *
-     * @return mixed
-     */
     public function getPaginate($n)
     {
         return $this->model->paginate($n);
     }
 
-    /**
-     * Create a new model and return the instance.
-     *
-     * @param array $inputs
-     *
-     * @return Model instance
-     */
     public function store(array $inputs)
     {
         return $this->model->create($inputs);
     }
 
-    /**
-     * FindOrFail Model and return the instance.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
+    public function updateOrCreateOnProjectAndCode(array $inputs, string $project, string $code)
+    {
+        return $this->model->updateOrCreate(["project" => $project,"code" => $code],$inputs);
+    }
+
     public function getById($id)
     {
         return $this->model->findOrFail($id);
     }
 
-    /**
-     * FindOrFail Model and return the instance By Code,Project.
-     *
-     * @param string $code
-     * @param string $project
-     *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
-    public function getByCodeAndProject($code,$project)
+    public function getByProjectAndCode($project,$code)
     {
         return $this->model->project($project)->code($code)->firstOrFail();
     }
 
-
-    /**
-     * Update the model in the database.
-     *
-     * @param $id
-     * @param array $inputs
-     */
     public function update($id, array $inputs)
     {
         $this->getById($id)->update($inputs);
     }
 
-    /**
-     * Delete the model from the database.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     */
     public function destroy($id)
     {
         $this->getById($id)->delete();
