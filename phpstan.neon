@@ -1,0 +1,5 @@
+includes:
+  - vendor/weebly/phpstan-laravel/extension.neon
+parameters:
+  excludes_analyse:
+    - routes/console.php
