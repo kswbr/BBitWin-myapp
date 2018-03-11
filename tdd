@@ -22,8 +22,17 @@ case ${1} in
         executor "vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
     ;;
 
-    all)
-        executor " vendor/bin/phpunit && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
+    eslint)
+        executor "eslint resources/assets/js/** --color --quiet --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/'
+    ;;
+
+    js)
+        executor "eslint resources/assets/js/** --color --quiet --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/'
+    ;;
+
+
+    php)
+        executor "vendor/bin/phpunit && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
     ;;
 
     help|--help|-h)
@@ -31,6 +40,6 @@ case ${1} in
     ;;
 
     *)
-        executor " vendor/bin/phpunit && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
+        executor "vendor/bin/phpunit && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
     ;;
 esac
