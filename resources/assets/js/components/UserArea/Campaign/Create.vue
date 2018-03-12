@@ -18,10 +18,13 @@
             <el-input placeholder="サンプルキャンペーン" v-model="form.name"/>
           </el-form-item>
           <el-form-item label="当選時の有効期限日数">
-            <el-input placeholder="1" v-model="form.limited_days"/>
+            <el-input placeholder="1" v-model="form.limited_days">
+                <template slot="append">日</template>
+            </el-input>
           </el-form-item>
           <el-form-item >
-            <el-button type="primary" @click="submitForm('form')">Create</el-button>
+            <el-button type="default" @click="() => (this.$router.push('.'))">Back</el-button>
+            <el-button type="primary" @click="submitForm()">Create</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -32,6 +35,8 @@
 
 <script>
 
+import Axios from 'axios'
+
 export default {
   name: 'CampaignCreate',
   data () {
@@ -41,6 +46,13 @@ export default {
         name: '',
         limited_days: 1
       }
+    }
+  },
+  methods: {
+    submitForm () {
+        axios.post('/api/campaigns', this.form).then((res) => {
+            console.log(res)
+        }).catch((e) => (console.error(e)));
     }
   }
 }

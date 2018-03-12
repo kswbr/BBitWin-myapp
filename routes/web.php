@@ -17,4 +17,5 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/admin/{any}', 'HomeController@index')->where('any','.*');
+Route::get('/admin', 'AdminController@index');
+Route::get('/admin/{any}', 'AdminController@index')->where('any','.*');

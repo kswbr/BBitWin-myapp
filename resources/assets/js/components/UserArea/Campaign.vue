@@ -10,7 +10,7 @@
       </el-row>
 
       <el-row>
-        <el-col :offset="20" :span="2" >
+        <el-col :offset="20" :span="2">
           <el-button type="success" >
             <router-link tag="span" to="campaign/create">
               新規作成
@@ -44,5 +44,3 @@ export default {
 }
 </script>
 
-<style>
-</style>

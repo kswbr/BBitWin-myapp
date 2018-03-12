@@ -37,10 +37,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 
-  .el-header {
-    margin-bottom: 15px;
+  .el-header > h1{
+    margin-bottom: 20px;
     margin-left: 5px;
   }
 
