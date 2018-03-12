@@ -1,8 +1,11 @@
 <template>
-    <div class="container">
-        <Login v-if="!logged_in" :loginApp="login"></Login>
-        <UserArea v-if="logged_in"></UserArea>
-    </div>
+  <div class="container">
+    <Login
+      v-if="!loggedIn"
+      :login-app="login" />
+
+    <UserArea v-if="loggedIn"/>
+  </div>
 </template>
 
 <script>
@@ -12,27 +15,27 @@ import UserArea from './UserArea.vue'
 import Axios from 'axios'
 
 export default {
-    components: {
-        Login,
-        UserArea
-    },
-    data () {
-        return {
-            logged_in: true
-        }
-    },
-    mounted() {
-        console.log('Component mounted!!.')
-        Axios.get('/api/user').then((res) =>  {
-            console.log(res)
-        })
-    },
-    methods: {
-        login () {
-            this.logged_in = true
-            console.log('logged_in', this.logged_in)
-        }
+  components: {
+    Login,
+    UserArea
+  },
+  data () {
+    return {
+      loggedIn: true
     }
+  },
+  mounted () {
+    console.log('Component mounted!!.')
+    Axios.get('/api/user').then((res) => {
+      console.log(res)
+    })
+  },
+  methods: {
+    login () {
+      this.loggedIn = true
+      console.log('loggedIn', this.loggedIn)
+    }
+  }
 }
 </script>
 
@@ -60,6 +63,5 @@ body {
     margin-bottom: 0;
   }
 }
-
 
 </style>
