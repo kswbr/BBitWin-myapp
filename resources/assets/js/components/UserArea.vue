@@ -9,7 +9,13 @@
           <SideBar />
         </el-aside>
         <el-container>
-          <Campaign />
+          <transition
+            mode="out-in"
+            enter-active-class="fadeIn"
+            leave-active-class="fadeOut"
+            appear>
+            <router-view class="animated"/>
+          </transition>
         </el-container>
       </el-container>
     </el-container>
@@ -18,14 +24,15 @@
 
 <script>
 
-import Campaign from './UserArea/Campaign.vue'
 import SideBar from './UserArea/SideBar.vue'
 
 export default {
   name: 'UserArea',
   components: {
-    Campaign,
     SideBar
+  },
+  mounted () {
+    console.log('UserArea')
   }
 }
 </script>

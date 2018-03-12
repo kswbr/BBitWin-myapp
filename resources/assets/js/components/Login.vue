@@ -26,9 +26,6 @@
 
 export default {
   name: 'Login',
-  props: {
-    loginApp: Function
-  },
   data () {
     return {
       form: {
@@ -43,7 +40,7 @@ export default {
   methods: {
     submitForm (name) {
       if (this.form.username && this.form.password) {
-        this.loginApp()
+        this.$router.push('/admin/userarea')
       }
     }
   }

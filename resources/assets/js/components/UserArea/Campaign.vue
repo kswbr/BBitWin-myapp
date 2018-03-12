@@ -11,12 +11,16 @@
 
       <el-row>
         <el-col :offset="20" :span="2" >
-          <el-button type="success">新規作成</el-button>
+          <el-button type="success" >
+            <router-link tag="span" to="campaign/create">
+              新規作成
+            </router-link>
+          </el-button>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :offset="1" :span="21">
+        <el-col :offset="2" :span="20">
           <el-table :data="tableData" >
             <el-table-column prop="date" label="Date" width="140"/>
             <el-table-column prop="name" label="Name" width="120"/>
