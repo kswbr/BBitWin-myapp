@@ -1,6 +1,7 @@
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/ja'
+import VueRouter from 'vue-router'
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -12,6 +13,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 Vue.use(ElementUI, { locale })
+Vue.use(VueRouter);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
