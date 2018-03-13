@@ -6,11 +6,11 @@
           <el-header >
             <h2>キャンペーン編集</h2>
           </el-header >
-       </el-col>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :offset="1" :span="21">
-           <Editor :input='form' :save="save" :remove="remove" />
+          <Editor :input="form" :save="save" :remove="remove" />
         </el-col>
       </el-row>
     </el-main>
@@ -41,21 +41,21 @@ export default {
   },
   methods: {
     fetch () {
-        Axios.get('/api/campaigns/' + this.$route.params.id ).then((res) => {
-            this.form = Object.assign({}, res.data)
-        }).catch((e) => (console.error(e)));
+      Axios.get('/api/campaigns/' + this.$route.params.id).then((res) => {
+        this.form = Object.assign({}, res.data)
+      }).catch((e) => (console.error(e)))
     },
     save (form) {
-        Axios.patch('/api/campaigns/' + this.$route.params.id, form).then((res) => {
-            this.$router.push('.')
-            console.log(res)
-        }).catch((e) => (console.error(e)));
+      Axios.patch('/api/campaigns/' + this.$route.params.id, form).then((res) => {
+        this.$router.push('.')
+        console.log(res)
+      }).catch((e) => (console.error(e)))
     },
     remove () {
-        Axios.delete('/api/campaigns/' + this.$route.params.id).then((res) => {
-            this.$router.push('.')
-            console.log(res)
-        }).catch((e) => (console.error(e)));
+      Axios.delete('/api/campaigns/' + this.$route.params.id).then((res) => {
+        this.$router.push('.')
+        console.log(res)
+      }).catch((e) => (console.error(e)))
     }
   }
 }

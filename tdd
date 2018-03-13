@@ -27,7 +27,7 @@ case ${1} in
     ;;
 
     js)
-        executor "eslint resources/assets/js/*/** --color --quiet --fix --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/' 
+        executor "eslint resources/assets/js/**/**/**/* --color --quiet --fix --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/' 
     ;;
 
 

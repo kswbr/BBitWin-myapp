@@ -10,7 +10,7 @@
       </el-row>
       <el-row>
         <el-col :offset="1" :span="21">
-           <Editor :input='form' :save="save" />
+          <Editor :input="form" :save="save" />
         </el-col>
       </el-row>
     </el-main>
@@ -42,9 +42,9 @@ export default {
   methods: {
     save (form) {
       Axios.post('/api/campaigns', form).then((res) => {
-          this.$router.push('.')
-          console.log(res)
-      }).catch((e) => (console.error(e)));
+        this.$router.push('.')
+        console.log(res)
+      }).catch((e) => (console.error(e)))
     }
   }
 }

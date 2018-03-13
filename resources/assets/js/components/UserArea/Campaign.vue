@@ -24,12 +24,12 @@
             <el-table-column prop="name" label="キャンペーン名称" width="300"/>
             <el-table-column prop="limited_days" label="当選時の有効日数"/>
             <el-table-column
-                fixed="right"
-                label="操作"
-                width="130">
-                <template slot-scope="scope">
-                    <el-button type="text" @click="editRow(scope.row)" >編集</el-button>
-                </template>
+              fixed="right"
+              label="操作"
+              width="130">
+              <template slot-scope="scope">
+                <el-button type="text" @click="editRow(scope.row)" >編集</el-button>
+              </template>
             </el-table-column>
           </el-table>
         </el-col>
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import Axios from 'axios'
 
 export default {
   name: 'Campaign',
@@ -52,12 +53,12 @@ export default {
   },
   methods: {
     getList () {
-        axios.get('/api/campaigns', {page: 0}).then((res) => {
-            this.tableData = res.data.data
-        }).catch((e) => (console.error(e)));
+      Axios.get('/api/campaigns', { page: 0 }).then((res) => {
+        this.tableData = res.data.data
+      }).catch((e) => (console.error(e)))
     },
     editRow (item) {
-        this.$router.push('campaigns/' + item.id)
+      this.$router.push('campaigns/' + item.id)
     }
   }
 }
