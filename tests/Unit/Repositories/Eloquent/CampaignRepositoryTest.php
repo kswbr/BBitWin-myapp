@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Repositories\Eloquent;
+namespace Tests\Unit\Repositories\Eloquent;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
