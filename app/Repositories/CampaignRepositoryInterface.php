@@ -32,5 +32,16 @@ interface CampaignRepositoryInterface
      */
     public function updateOrCreateOnProjectAndCode(array $inputs, string $project,string $code);
 
+    /**
+     * Get Query For Where Project.
+     *
+     * @param string $project
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     */
+    public function getProjectQuery($project);
+
+
 
 }

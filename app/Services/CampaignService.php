@@ -24,6 +24,38 @@ class CampaignService
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
+    public function getPageInProject($page,$project)
+    {
+        $query = $this->repository->getProjectQuery($project);
+        return $this->repository->getPaginate($page,$query);
+    }
+
+     /**
+     * FindOrFail Model and return the instance.
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function getById($id) {
+        return $this->repository->getById($id);
+    }
+
+
+    public function update($id, array $inputs)
+    {
+        $this->repository->update($id,$inputs);
+    }
+
+
+    /**
+     * Save the model from the database.
+     *
+     * @param string $name
+     * @param string $code
+     * @param int $limited_days
+     * @param string $project
+     *
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
+     */
     public function saveInProject(string $name, string $code, int $limited_days, string $project)
     {
         return $this->repository->updateOrCreateOnProjectAndCode([

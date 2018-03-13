@@ -26,9 +26,13 @@ class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryI
         $this->model = $model;
     }
 
-    public function getPaginate($n)
+    public function getPaginate($n, $search_query = null)
     {
-        return $this->model->paginate($n);
+        if ($search_query) {
+            return $search_query->paginate($n);
+        } else {
+            return $this->model->paginate($n);
+        }
     }
 
     public function store(array $inputs)
@@ -46,11 +50,23 @@ class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryI
         return $this->model->findOrFail($id);
     }
 
+    public function getProjectQuery($project)
+    {
+        return $this->model->project($project);
+    }
+
+
     public function getByProjectAndCode($project,$code)
     {
         return $this->model->project($project)->code($code)->firstOrFail();
     }
 
+    /**
+     * Update the model in the database.
+     *
+     * @param $id
+     * @param array $inputs
+     */
     public function update($id, array $inputs)
     {
         $this->getById($id)->update($inputs);

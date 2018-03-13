@@ -11,10 +11,11 @@ interface BaseRepositoryInterface
      * Paginate the given query.
      *
      * @param The number of models to return for pagination $n integer
+     * @param search query yet not execute
      *
      * @return mixed
      */
-    public function getPaginate($n);
+    public function getPaginate($n, $search_query);
 
      /**
      * Create a new model and return the instance.

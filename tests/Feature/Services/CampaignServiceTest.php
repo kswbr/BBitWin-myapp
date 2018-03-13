@@ -51,4 +51,18 @@ class CampaignServiceTest extends TestCase
 
     }
 
+    /**
+     * roy data in project
+     *
+     * @return void
+     */
+    public function testGetPageInProjectSaveAndDestroy()
+    {
+        $data = $this->service->saveInProject( "TESTCAMPAIGN", "TESTCODE_1", 1, "TESTPROJECT" );
+        $data = $this->service->saveInProject( "TESTCAMPAIGN", "TESTCODE_2", 1, "TESTPROJECT" );
+        $data = $this->service->saveInProject( "TESTCAMPAIGN", "TESTCODE_3", 1, "_TESTPROJECT_" );
+        $find = $this->service->getPageInProject(0, "TESTPROJECT");
+        $this->assertEquals($find->total(), 2);
+    }
+
 }

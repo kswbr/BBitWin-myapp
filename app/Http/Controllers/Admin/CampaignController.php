@@ -28,7 +28,9 @@ class CampaignController extends Controller
      */
     public function index(Request $request)
     {
-        return response([]);
+        $project = $this->projectService->getCode();
+
+        return response($this->campaignService->getPageInProject(0,$project));
     }
 
     /**
@@ -69,7 +71,8 @@ class CampaignController extends Controller
      */
     public function show(Request $request, $id)
     {
-        //
+        $data = $this->campaignService->getById($id);
+        return response($data->toArray(), 200);
     }
 
     /**
@@ -78,7 +81,7 @@ class CampaignController extends Controller
      * @param  \App\Campaign  $campaign
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(Request $request, $id)
     {
         //
     }
@@ -92,7 +95,8 @@ class CampaignController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->campaignService->update($id,$request->all());
+        return response(['update' => "OK"], 201);
     }
 
     /**
@@ -103,6 +107,7 @@ class CampaignController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        //
+        $this->campaignService->destroy($id);
+        return response(['destroy' => "OK"], 201);
     }
 }

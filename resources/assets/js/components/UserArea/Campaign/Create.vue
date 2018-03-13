@@ -9,25 +9,9 @@
         </el-col>
       </el-row>
       <el-row>
-      <el-col :offset="1" :span="21">
-        <el-form :model="form" status-icon label-width="160px" >
-          <el-form-item label="キャンペーンコード">
-            <el-input  placeholder="example_campaign_code" v-model="form.code"/>
-          </el-form-item>
-          <el-form-item  label="キャンペーン名">
-            <el-input placeholder="サンプルキャンペーン" v-model="form.name"/>
-          </el-form-item>
-          <el-form-item label="当選時の有効期限日数">
-            <el-input placeholder="1" v-model="form.limited_days">
-                <template slot="append">日</template>
-            </el-input>
-          </el-form-item>
-          <el-form-item >
-            <el-button type="default" @click="() => (this.$router.push('.'))">Back</el-button>
-            <el-button type="primary" @click="submitForm()">Create</el-button>
-          </el-form-item>
-        </el-form>
-      </el-col>
+        <el-col :offset="1" :span="21">
+           <Editor :input='form' :save="save" />
+        </el-col>
       </el-row>
     </el-main>
   </el-container>
@@ -36,9 +20,13 @@
 <script>
 
 import Axios from 'axios'
+import Editor from './Editor.vue'
 
 export default {
   name: 'CampaignCreate',
+  components: {
+    Editor
+  },
   data () {
     return {
       form: {
@@ -48,11 +36,15 @@ export default {
       }
     }
   },
+  mouted () {
+    this.form = {}
+  },
   methods: {
-    submitForm () {
-        axios.post('/api/campaigns', this.form).then((res) => {
-            console.log(res)
-        }).catch((e) => (console.error(e)));
+    save (form) {
+      Axios.post('/api/campaigns', form).then((res) => {
+          this.$router.push('.')
+          console.log(res)
+      }).catch((e) => (console.error(e)));
     }
   }
 }
