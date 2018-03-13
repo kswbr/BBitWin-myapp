@@ -34,16 +34,6 @@ class CampaignController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        return response([], 201);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -76,17 +66,6 @@ class CampaignController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Campaign  $campaign
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -96,7 +75,7 @@ class CampaignController extends Controller
     public function update(Request $request, $id)
     {
         $this->campaignService->update($id,$request->all());
-        return response(['update' => "OK"], 201);
+        return response(['update' => true], 201);
     }
 
     /**
@@ -108,6 +87,6 @@ class CampaignController extends Controller
     public function destroy(Request $request, $id)
     {
         $this->campaignService->destroy($id);
-        return response(['destroy' => "OK"], 201);
+        return response(['destroy' => true], 201);
     }
 }
