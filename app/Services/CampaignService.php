@@ -56,14 +56,14 @@ class CampaignService
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
-    public function saveInProject(string $name, string $code, int $limited_days, string $project)
+    public function create(string $name, string $code, int $limited_days, string $project)
     {
-        return $this->repository->updateOrCreateOnProjectAndCode([
+        return $this->repository->store([
             "name" => $name,
             "code" => $code,
             "limited_days" => $limited_days,
             "project" => $project
-        ],$project,$code);
+        ]);
     }
 
     /**

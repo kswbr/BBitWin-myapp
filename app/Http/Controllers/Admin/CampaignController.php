@@ -53,7 +53,7 @@ class CampaignController extends Controller
     {
         $project = $this->projectService->getCode();
 
-        $campaign = $this->campaignService->saveInProject(
+        $campaign = $this->campaignService->create(
             $request->input("name"),
             $request->input("code"),
             $request->input("limited_days"),

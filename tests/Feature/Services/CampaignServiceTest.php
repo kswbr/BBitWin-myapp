@@ -37,11 +37,11 @@ class CampaignServiceTest extends TestCase
      */
     public function testSaveAndDestroy()
     {
-        $data = $this->service->saveInProject( "TESTCAMPAIGN", "TESTCODE", 1, "TESTPROJECT" );
+        $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE", 1, "TESTPROJECT" );
         $sample = Model::find($data->id);
         $this->assertEquals($data->id,$sample->id);
 
-        $data = $this->service->saveInProject( "TESTCAMPAIGN_2", "TESTCODE", 1, "TESTPROJECT" );
+        $data = $this->service->create( "TESTCAMPAIGN_2", "TESTCODE_2", 1, "TESTPROJECT" );
         $sample = Model::find($data->id);
         $this->assertEquals($data->name,"TESTCAMPAIGN_2");
 
@@ -58,9 +58,9 @@ class CampaignServiceTest extends TestCase
      */
     public function testGetPageInProjectSaveAndDestroy()
     {
-        $data = $this->service->saveInProject( "TESTCAMPAIGN", "TESTCODE_1", 1, "TESTPROJECT" );
-        $data = $this->service->saveInProject( "TESTCAMPAIGN", "TESTCODE_2", 1, "TESTPROJECT" );
-        $data = $this->service->saveInProject( "TESTCAMPAIGN", "TESTCODE_3", 1, "_TESTPROJECT_" );
+        $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE_1", 1, "TESTPROJECT" );
+        $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE_2", 1, "TESTPROJECT" );
+        $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE_3", 1, "_TESTPROJECT_" );
         $find = $this->service->getPageInProject(0, "TESTPROJECT");
         $this->assertEquals($find->total(), 2);
     }

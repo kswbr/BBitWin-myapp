@@ -37,7 +37,14 @@ class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryI
 
     public function store(array $inputs)
     {
-        return $this->model->create($inputs);
+        $model = $this->model->newInstance();
+        $model->project = $inputs["project"];
+        $model->code = $inputs["code"];
+        $model->name = $inputs["name"];
+        $model->limited_days = $inputs["limited_days"];
+
+        $model->save();
+        return $model;
     }
 
     public function updateOrCreateOnProjectAndCode(array $inputs, string $project, string $code)
