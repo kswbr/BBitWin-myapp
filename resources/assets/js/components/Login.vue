@@ -24,6 +24,8 @@
 
 <script>
 
+import Axios from 'axios'
+
 export default {
   name: 'Login',
   data () {
@@ -39,9 +41,13 @@ export default {
   },
   methods: {
     submitForm (name) {
-      if (this.form.username && this.form.password) {
-        this.$router.push('/admin/userarea')
-      }
+      Axios.post('/admin', this.form).then((res) => {
+        localStorage.setItem('Authorization.access_token', res.data.access_token)
+        localStorage.setItem('Authorization.refresh_token', res.data.refresh_token)
+
+        location.reload()
+
+      }).catch((e) => (console.error(e)))
     }
   }
 }
