@@ -2,16 +2,16 @@
   <el-container id="campaign" >
     <el-main>
       <el-row>
-          <el-header >
-        <el-col :offset="1" :span="21">
+        <el-header >
+          <el-col :offset="1" :span="21">
             <h2 class="h2">Campaigns <small >キャンペーン一覧 </small></h2>
-        </el-col>
-        <el-col :offset="20" :span="2">
-          <el-button type="success" @click="() => (this.$router.push('campaigns/create'))">
-            新規作成
-          </el-button>
-        </el-col>
-          </el-header >
+          </el-col>
+          <el-col :offset="20" :span="2">
+            <el-button type="success" @click="() => (this.$router.push('campaigns/create'))">
+              新規作成
+            </el-button>
+          </el-col>
+        </el-header >
       </el-row>
 
       <el-row>
