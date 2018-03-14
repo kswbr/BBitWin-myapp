@@ -64,6 +64,47 @@ class CampaignControllerTest extends TestCase
 
     }
 
+    public function testCreate()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $campaign = factory(Campaign::class)->make(["project" => $project]);
+
+        $user = factory(User::class)->create();
+
+        $input = $campaign->toArray();
+        $input["name"] =  "CREATED_NAME" ;
+        $input["code"] =  "CREATED_CODE" ;
+        $input["limited_days"] =  2 ;
+
+        $response = $this->actingAs($user,"api")
+                         ->json("POST",'/api/campaigns/',$input)
+                         ->assertStatus(201);
+
+        $find = $this->service->getById($response->getOriginalContent()["created_id"]);
+        $this->assertEquals($find->code,$input["code"]);
+
+    }
+
+    /**
+     *
+     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * */
+    public function testDestroy()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/campaigns/' . $campaign->id)
+                         ->assertStatus(201);
+
+        $this->service->getById($campaign->id);
+
+    }
+
     public function testUpdate()
     {
         $project = env("PROJECT_NAME", config('app.name'));
@@ -89,5 +130,6 @@ class CampaignControllerTest extends TestCase
         $this->assertNotEquals($find->code,$input["code"]);
 
     }
+
 
 }
