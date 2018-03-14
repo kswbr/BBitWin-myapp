@@ -35,10 +35,15 @@ class CampaignService
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function getById($id) {
+    public function getById($id)
+    {
         return $this->repository->getById($id);
     }
 
+    public function getModelName()
+    {
+        return $this->repository->getModelName();
+    }
 
     public function update($id, array $inputs)
     {

@@ -26,6 +26,14 @@ interface BaseRepositoryInterface
      */
     public function store(array $inputs);
 
+    /**
+     * Get Binding Model Name
+     *
+     * @return string Model Name
+     */
+    public function getModelName();
+
+
      /**
      * FindOrFail Model and return the instance.
      *

@@ -16,6 +16,7 @@ class CampaignController extends Controller
         CampaignService $campaignService,
         ProjectService $projectService
     ) {
+        $this->middleware('checkIfCampaignBelongsToProject',["except" => ["index","store"]]);
         $this->projectService = $projectService;
         $this->campaignService = $campaignService;
     }
