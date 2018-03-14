@@ -1,35 +1,26 @@
 <template>
   <div id="userArea">
+    <HeaderBar />
     <el-container>
-      <el-header>
-        <h1>BbmInstantWin</h1>
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
-          <SideBar />
-        </el-aside>
-        <el-container>
-          <transition
-            mode="out-in"
-            enter-active-class="fadeIn"
-            leave-active-class="fadeOut"
-            appear>
-            <router-view class="animated"/>
-          </transition>
-        </el-container>
-      </el-container>
+      <transition
+        mode="out-in"
+        enter-active-class="fadeIn"
+        leave-active-class="fadeOut"
+        appear>
+        <router-view class="animated"/>
+      </transition>
     </el-container>
   </div>
 </template>
 
 <script>
 
-import SideBar from './UserArea/SideBar.vue'
+import HeaderBar from './UserArea/HeaderBar.vue'
 
 export default {
   name: 'UserArea',
   components: {
-    SideBar
+    HeaderBar
   },
   mounted () {
     console.log('UserArea')
@@ -48,4 +39,14 @@ export default {
     margin-bottom: 40px;
   }
 
+    h2 {
+        font-size:26px;
+    }
+
+    h2 > small {
+        font-size:14px;
+        font-weight:normal;
+        padding-left:10px;
+        padding-top:10px;
+    }
 </style>

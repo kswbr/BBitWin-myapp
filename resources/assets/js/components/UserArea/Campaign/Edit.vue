@@ -4,7 +4,7 @@
       <el-row>
         <el-col :offset="1" :span="21">
           <el-header >
-            <h2>キャンペーン編集</h2>
+            <h2 class="h2">Edit Campaign <small >キャンペーン編集 </small></h2>
           </el-header >
         </el-col>
       </el-row>
