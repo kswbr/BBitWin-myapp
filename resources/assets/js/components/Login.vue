@@ -46,7 +46,6 @@ export default {
         localStorage.setItem('Authorization.refresh_token', res.data.refresh_token)
 
         location.reload()
-
       }).catch((e) => (console.error(e)))
     }
   }
