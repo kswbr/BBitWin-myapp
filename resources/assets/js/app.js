@@ -11,6 +11,8 @@ import getStore from './store'
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+const store = getStore()
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -26,7 +28,6 @@ Vue.use(VueRouter);
 
 Vue.component('app', require('./components/App.vue'));
 
-const store = getStore()
 
 const app = new Vue({
     el: '#app',
