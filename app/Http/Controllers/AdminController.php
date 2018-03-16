@@ -34,7 +34,7 @@ class AdminController extends Controller
     public function login(Request $request)
     {
         $http = new \GuzzleHttp\Client;
-        $response = $http->post('http://localhost/oauth/token', [
+        $response = $http->post(env('OAUTH2_URL') . '/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => env("PASSPORT_CLIENT_ID"),

@@ -23,16 +23,20 @@ case ${1} in
     ;;
 
     eslint)
-        executor "eslint resources/assets/js/**/**/**/**/**/** --color --quiet --fix --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/' 
+        executor "eslint resources/assets/js/**/**/**/**/**/** --color --quiet --fix --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/'
     ;;
 
     js)
-        executor "eslint resources/assets/js/**/**/**/**/**/** --color --quiet --fix --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/' 
+        executor "eslint resources/assets/js/**/**/**/**/**/** --color --quiet --fix --ignore-pattern .eslintignore" --watch='resources/assets/js/**' --ignore='node_modules/' --ignore='vendor/'
     ;;
 
 
     php)
         executor "vendor/bin/phpunit && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
+    ;;
+
+    e2e)
+        executor "php artisan dusk" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
     ;;
 
     help|--help|-h)
