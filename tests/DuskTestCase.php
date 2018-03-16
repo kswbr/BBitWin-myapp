@@ -19,7 +19,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        static::startChromeDriver();
+        // static::startChromeDriver();
     }
 
     /**
@@ -29,11 +29,11 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function driver()
     {
-        $options = (new ChromeOptions)->addArguments([
-            '--disable-gpu',
-            '--headless',
-            '--lang=ja_JP'
-        ]);
+        // $options = (new ChromeOptions)->addArguments([
+        //     '--disable-gpu',
+        //     '--headless',
+        //     '--lang=ja_JP'
+        // ]);
 
         return RemoteWebDriver::create(
             'http://localhost:4444', DesiredCapabilities::phantomjs()

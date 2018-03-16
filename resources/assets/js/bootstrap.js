@@ -37,11 +37,21 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-
-const authorization = localStorage.getItem("Authorization.access_token")
-if (authorization) {
-    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + authorization
+export const fetchToken = function () {
+    const authorization = localStorage.getItem("Authorization.access_token")
+    if (authorization) {
+        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + authorization
+        return true
+    }
+    return false
 }
+
+export const removeToken = function () {
+    localStorage.clear()
+    window.axios.defaults.headers.common['Authorization'] = null
+    return true
+}
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

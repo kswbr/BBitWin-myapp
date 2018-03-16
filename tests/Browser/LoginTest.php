@@ -23,13 +23,15 @@ class LoginTest extends DuskTestCase
             'email' => $email,
         ]);
 
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser) use ($email){
             $browser->visit('/admin')
-                    ->assertSee('Login')
-                    ->type('email',$email)
+                    ->pause(2000)
+                    ->screenshot("access_login")
+                    ->type('username',$email)
                     ->type('password',"secret")
                     ->press('Login')
-                    ->waitUntilMissing('#login');
+                    ->waitUntilMissing('#login',30)
+                    ->assertSee('Campaign');
         });
     }
 }

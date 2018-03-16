@@ -8,10 +8,10 @@
         :offset="5">
         <el-form :model="form" status-icon label-width="120px" >
           <el-form-item >
-            <el-input placeholder="ユーザー名又はメールアドレス" v-model="form.username"/>
+            <el-input name="username" placeholder="ユーザー名又はメールアドレス" v-model="form.username"/>
           </el-form-item>
           <el-form-item >
-            <el-input type="password" v-model="form.password" auto-complete="off"/>
+            <el-input name="password" type="password" v-model="form.password" auto-complete="off"/>
           </el-form-item>
           <el-form-item >
             <el-button type="primary" @click="submitForm('form')">Login</el-button>
@@ -25,6 +25,7 @@
 <script>
 
 import Axios from 'axios'
+import * as types from '../store/mutation-types'
 
 export default {
   name: 'Login',
@@ -41,12 +42,16 @@ export default {
   },
   methods: {
     submitForm (name) {
-      Axios.post('/admin', this.form).then((res) => {
-        localStorage.setItem('Authorization.access_token', res.data.access_token)
-        localStorage.setItem('Authorization.refresh_token', res.data.refresh_token)
 
-        location.reload()
-      }).catch((e) => (console.error(e)))
+      new Promise((resolve, reject) => {
+        return this.$store.dispatch('requestStart',{ label: 'LOGIN', checkDuplication: true }).then(res => {
+          return Axios.post('/admin', this.form)
+        }).then((res) => {
+          this.$store.commit(types.LOGGED_IN)
+          this.$store.commit(types.API_REQUEST_END, 'LOGIN_SUCCEED')
+          return resolve()
+        }).catch(e => this.$state.commit(types.API_REQUEST_FAILED, 'LOGIN_FAILED', e))
+      })
     }
   }
 }

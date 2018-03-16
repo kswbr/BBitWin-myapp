@@ -28,10 +28,34 @@ const mutations = {
     state.inRequest = false
     state.currentRequest = name
     state.requestHistory.push(name)
+  },
+  [types.API_REQUEST_FAILED] (state, name, error) {
+    state.inRequest = false
+    state.currentRequest = name
+    state.requestHistory.push(name)
+    state.error = error
+    console.error(error)
+  },
+
+  [types.LOGGED_IN] (state) {
+    state.loggedIn = true
+  },
+  [types.LOGGED_OUT] (state) {
+    state.loggedIn = false
   }
 }
 
 const actions = {
+  requestStart ({dispatch, commit, state, rootGetters}, payload) {
+    return new Promise((resolve, reject) => {
+      if (payload.checkDuplication && state.inRequest) {
+        return reject(new Error('inRequest...'))
+      }
+      commit(types.API_REQUEST_START, payload.label)
+
+      return resolve()
+    })
+  }
 }
 
 const getters = {
@@ -42,6 +66,7 @@ const store = new Vuex.Store({
   actions,
   getters,
   state,
+  types,
   mutations,
   strict: debug,
   plugins: devenv ? [createLogger()] : []

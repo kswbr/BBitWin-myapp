@@ -1,4 +1,8 @@
 
 export const API_REQUEST_START = 'API_REQUEST_START'
 export const API_REQUEST_END = 'API_REQUEST_END'
+export const API_REQUEST_FAILED = 'API_REQUEST_FAILED'
+
+export const LOGGED_IN = 'LOGGED_IN'
+export const LOGGED_OUT = 'LOGGED_OUT'
 

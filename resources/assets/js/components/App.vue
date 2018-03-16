@@ -6,14 +6,8 @@
 
 <script>
 
-import Axios from 'axios'
-
 export default {
   mounted () {
-    console.log('Component mounted!!.')
-    Axios.get('/api/user').then((res) => {
-      console.log(res)
-    })
   }
 }
 </script>

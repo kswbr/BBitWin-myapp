@@ -4,6 +4,7 @@ import locale from 'element-ui/lib/locale/lang/ja'
 import VueRouter from 'vue-router'
 import router from './router'
 import getStore from './store'
+import * as types from './store/mutation-types.js'
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -13,7 +14,7 @@ import getStore from './store'
 
 const store = getStore()
 
-require('./bootstrap');
+const bootstrap = require('./bootstrap');
 
 window.Vue = require('vue');
 
@@ -34,3 +35,19 @@ const app = new Vue({
     store,
     router
 });
+
+store.subscribe((mutation, state) => {
+    if (mutation.type === types.LOGGED_IN) {
+        bootstrap.fetchToken()
+        router.push("/admin/userarea")
+    }
+
+    if (mutation.type === types.LOGGED_OUT) {
+        bootstrap.removeToken()
+        router.push("/admin/")
+    }
+
+})
+
+console.log(bootstrap)
+bootstrap.fetchToken()
