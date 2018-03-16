@@ -42,12 +42,11 @@ export default {
   },
   methods: {
     submitForm (name) {
-
       new Promise((resolve, reject) => {
-        return this.$store.dispatch('requestStart',{ label: 'LOGIN', checkDuplication: true }).then(res => {
+        return this.$store.dispatch('requestStart', { label: 'LOGIN', checkDuplication: true }).then(res => {
           return Axios.post('/admin', this.form)
         }).then((res) => {
-          this.$store.commit(types.LOGGED_IN)
+          this.$store.commit(types.LOGGED_IN, res.data)
           this.$store.commit(types.API_REQUEST_END, 'LOGIN_SUCCEED')
           return resolve()
         }).catch(e => this.$state.commit(types.API_REQUEST_FAILED, 'LOGIN_FAILED', e))

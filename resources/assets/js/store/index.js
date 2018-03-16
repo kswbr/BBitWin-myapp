@@ -37,7 +37,9 @@ const mutations = {
     console.error(error)
   },
 
-  [types.LOGGED_IN] (state) {
+  [types.LOGGED_IN] (state, auth) {
+    localStorage.setItem('Authorization.access_token', auth.access_token)
+    localStorage.setItem('Authorization.refresh_token', auth.refresh_token)
     state.loggedIn = true
   },
   [types.LOGGED_OUT] (state) {
@@ -46,7 +48,7 @@ const mutations = {
 }
 
 const actions = {
-  requestStart ({dispatch, commit, state, rootGetters}, payload) {
+  requestStart ({ dispatch, commit, state, rootGetters }, payload) {
     return new Promise((resolve, reject) => {
       if (payload.checkDuplication && state.inRequest) {
         return reject(new Error('inRequest...'))
