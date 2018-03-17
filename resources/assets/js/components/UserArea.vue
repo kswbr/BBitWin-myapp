@@ -16,6 +16,7 @@
 <script>
 
 import HeaderBar from './UserArea/HeaderBar.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'UserArea',
@@ -23,7 +24,14 @@ export default {
     HeaderBar
   },
   mounted () {
-    console.log('UserArea')
+    console.log('UserArea',this.loggedIn)
+    if (!this.loggedIn) {
+        this.$router.push("/admin/")
+        return
+    }
+  },
+  computed: {
+    ...mapState(["loggedIn"])
   }
 }
 </script>

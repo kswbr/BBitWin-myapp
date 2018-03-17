@@ -12,38 +12,41 @@ Vue.use(Vuex)
 const state = {
   loggedIn: false,
   inRequest: false,
-  currentRequest: '',
-  requestHistory: [],
+  route: {},
+  requestConfig: {},
+  requestResponse: {},
   debug,
   devenv
 }
 
 const mutations = {
-  [types.API_REQUEST_START] (state, name = '') {
+  [types.API_REQUEST_START] (state, payload) {
     state.inRequest = true
-    state.currentRequest = name
-    state.requestHistory.push(name)
+    state.requestConfig = Object.assign({}, payload.config )
   },
-  [types.API_REQUEST_END] (state, name = '') {
+  [types.API_REQUEST_END] (state, payload) {
     state.inRequest = false
-    state.currentRequest = name
-    state.requestHistory.push(name)
+    state.requestResponse = Object.assign({}, payload.response )
   },
-  [types.API_REQUEST_FAILED] (state, name, error) {
+  [types.API_REQUEST_FAILED] (state, payload) {
     state.inRequest = false
-    state.currentRequest = name
-    state.requestHistory.push(name)
-    state.error = error
-    console.error(error)
+    state.error = payload.error
+    console.error(payload.error)
   },
 
-  [types.LOGGED_IN] (state, auth) {
+  [types.LOGGED_IN] (state,auth) {
     localStorage.setItem('Authorization.access_token', auth.access_token)
     localStorage.setItem('Authorization.refresh_token', auth.refresh_token)
     state.loggedIn = true
   },
+  [types.ALREADY_LOGGED_IN] (state) {
+    state.loggedIn = true
+  },
   [types.LOGGED_OUT] (state) {
     state.loggedIn = false
+  },
+  [types.CHANGE_ROUTE] (state, payload) {
+    state.route = Object.assign({}, payload)
   }
 }
 
@@ -53,7 +56,7 @@ const actions = {
       if (payload.checkDuplication && state.inRequest) {
         return reject(new Error('inRequest...'))
       }
-      commit(types.API_REQUEST_START, payload.label)
+      commit(types.API_REQUEST_START, payload)
 
       return resolve()
     })

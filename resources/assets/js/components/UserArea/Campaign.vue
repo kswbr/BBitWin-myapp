@@ -37,6 +37,7 @@
 
 <script>
 import Axios from 'axios'
+import * as types from '../../store/mutation-types'
 
 export default {
   name: 'Campaign',
@@ -50,9 +51,9 @@ export default {
   },
   methods: {
     getList () {
-      Axios.get('/api/campaigns', { page: 0 }).then((res) => {
-        this.tableData = res.data.data
-      }).catch((e) => (console.error(e)))
+       Axios.get('/api/campaigns', { page: 0 }).then((res) => {
+          this.tableData = res.data.data
+       })
     },
     editRow (item) {
       this.$router.push('campaigns/' + item.id)

@@ -16,6 +16,7 @@ const router = new Router({
     {
       path: '/admin/userarea',
       component: UserArea,
+      meta: { isUserArea: true },
       children: [
         { path: '', redirect: '/admin/userarea/campaigns' },
         { path: 'campaigns', component: Campaign },

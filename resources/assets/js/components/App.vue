@@ -1,14 +1,18 @@
 <template>
-  <div class="container">
+  <div class="container"  v-loading.fullscreen.lock="inRequest">
     <router-view />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   mounted () {
-  }
+  },
+  computed: {
+    ...mapState(["inRequest"])
+  },
 }
 </script>
 
