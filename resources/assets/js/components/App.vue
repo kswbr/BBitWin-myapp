@@ -1,5 +1,5 @@
 <template>
-  <div class="container"  v-loading.fullscreen.lock="inRequest">
+  <div class="container" v-loading.fullscreen.lock="inRequest">
     <router-view />
   </div>
 </template>
@@ -8,11 +8,11 @@
 import { mapState } from 'vuex'
 
 export default {
-  mounted () {
-  },
   computed: {
-    ...mapState(["inRequest"])
+    ...mapState(['inRequest'])
   },
+  mounted () {
+  }
 }
 </script>
 

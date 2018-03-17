@@ -22,19 +22,19 @@ const state = {
 const mutations = {
   [types.API_REQUEST_START] (state, payload) {
     state.inRequest = true
-    state.requestConfig = Object.assign({}, payload.config )
+    state.requestConfig = Object.assign({}, payload.config)
   },
   [types.API_REQUEST_END] (state, payload) {
     state.inRequest = false
-    state.requestResponse = Object.assign({}, payload.response )
+    state.requestResponse = Object.assign({}, payload.response)
   },
   [types.API_REQUEST_FAILED] (state, payload) {
     state.inRequest = false
     state.error = payload.error
-    console.error(payload.error)
+    console.error(state.error)
   },
 
-  [types.LOGGED_IN] (state,auth) {
+  [types.LOGGED_IN] (state, auth) {
     localStorage.setItem('Authorization.access_token', auth.access_token)
     localStorage.setItem('Authorization.refresh_token', auth.refresh_token)
     state.loggedIn = true

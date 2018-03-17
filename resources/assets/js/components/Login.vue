@@ -52,42 +52,28 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(['loggedIn'])
+  },
   mounted: function () {
     if (this.loggedIn) {
-       //TODO チェック用のAPIあとで作る
-       Axios.get('/api/campaigns', { page: 0 }).then((res) => {
-         this.$router.push("/admin/userarea")
-       })
+      // TODO チェック用のAPIあとで作る
+      Axios.get('/api/campaigns', { page: 0 }).then((res) => {
+        this.$router.push('/admin/userarea')
+      })
     }
     return
   },
   methods: {
     submitForm (name) {
-
-        Axios.post('/admin', this.form).then((res) => {
-          this.invalid = false
-          this.$store.commit(types.LOGGED_IN, res.data)
-        })
-
-/*
-      new Promise((resolve, reject) => {
-        return this.$store.dispatch('requestStart', { label: 'LOGIN', checkDuplication: true }).then(res => {
-          return Axios.post('/admin', this.form)
-        }).then((res) => {
-          this.invalid = false
-          this.$store.commit(types.LOGGED_IN, res.data)
-          this.$store.commit(types.API_REQUEST_END, { label: 'LOGIN_SUCCEED' })
-          return resolve()
-        }).catch(error => {
-          this.$store.commit(types.API_REQUEST_FAILED, { label: 'LOGIN_FAILED', error })
-          this.invalid = true
-        })
+      Axios.post('/admin', this.form).then((res) => {
+        this.invalid = false
+        this.$store.commit(types.LOGGED_IN, res.data)
+      }).catch(error => {
+        this.$store.commit(types.API_REQUEST_FAILED, { label: 'LOGIN_FAILED', error })
+        this.invalid = true
       })
-      */
     }
-  },
-  computed: {
-    ...mapState(["loggedIn"])
   }
 }
 </script>

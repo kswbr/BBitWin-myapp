@@ -23,15 +23,15 @@ export default {
   components: {
     HeaderBar
   },
-  mounted () {
-    console.log('UserArea',this.loggedIn)
-    if (!this.loggedIn) {
-        this.$router.push("/admin/")
-        return
-    }
-  },
   computed: {
-    ...mapState(["loggedIn"])
+    ...mapState(['loggedIn'])
+  },
+  mounted () {
+    console.log('UserArea', this.loggedIn)
+    if (!this.loggedIn) {
+      this.$router.push('/admin/')
+      return
+    }
   }
 }
 </script>
