@@ -23,7 +23,7 @@
         </el-submenu>
       </el-submenu>
       <el-menu-item class="right" index="100" ><a >USER NAME AREA</a></el-menu-item>
-      <el-menu-item class="right" index="99" ><a @click="logout">Logout</a></el-menu-item>
+      <el-menu-item class="right" index="99" ><a id="logoutLink" @click="logout">Logout</a></el-menu-item>
     </el-menu>
 
   </div>
