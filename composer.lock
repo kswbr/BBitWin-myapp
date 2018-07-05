@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "0ad2a666c69c1edaeeb35a44fd1a99f3",
@@ -3749,16 +3749,16 @@
         },
         {
             "name": "weebly/phpstan-laravel",
-            "version": "v1.0.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Weebly/phpstan-laravel.git",
-                "reference": "725a45545551e7f89c5466795d3ec0b25161a270"
+                "reference": "ce2811ffe09103a7b37fc3de8d012e30d435ce1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Weebly/phpstan-laravel/zipball/725a45545551e7f89c5466795d3ec0b25161a270",
-                "reference": "725a45545551e7f89c5466795d3ec0b25161a270",
+                "url": "https://api.github.com/repos/Weebly/phpstan-laravel/zipball/ce2811ffe09103a7b37fc3de8d012e30d435ce1f",
+                "reference": "ce2811ffe09103a7b37fc3de8d012e30d435ce1f",
                 "shasum": ""
             },
             "require": {
@@ -3769,6 +3769,11 @@
                 "phpunit/phpunit": "^6.5.2"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Weebly\\PHPStan\\Laravel\\": "src/"
@@ -3781,11 +3786,11 @@
             "authors": [
                 {
                     "name": "Chris Leppanen",
-                    "email": "chris.leppanen@gmail.com"
+                    "email": "chris.leppanen@weebly.com"
                 }
             ],
             "description": "Laravel plugins for PHPStan",
-            "time": "2018-01-26T22:53:17+00:00"
+            "time": "2018-04-13T23:27:17+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",

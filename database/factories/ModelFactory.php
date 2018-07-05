@@ -65,8 +65,8 @@ $factory->define(App\Repositories\Eloquent\Models\Lottery\Update::class, functio
 
 $factory->define(App\Repositories\Eloquent\Models\Entry::class, function (Faker\Generator $faker) {
     return [
-        "user_type" => config("project.sample.user_type.send"),
-        "state" => config("campaign.entry.state.win"),
+        "user_type" => 1,
+        "state" => 1,
         'user_id' => function () {
             return factory(App\User::class)->create()->id;
         },

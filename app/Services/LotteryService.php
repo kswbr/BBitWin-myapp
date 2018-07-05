@@ -78,4 +78,20 @@ class LotteryService
         return $this->repository->destroy($id);
     }
 
+
+    public function performInCampaign($campaign)
+    {
+        return $this->repository->performInCampaign($campaign->code);
+    }
+
+    public function getRemaining($lottery)
+    {
+        return $this->repository->getRemaining($lottery->code);
+    }
+
+    public function getRemainingOfCompleted($lottery)
+    {
+        return $this->repository->getRemainingOfCompleted($lottery->code);
+    }
+
 }

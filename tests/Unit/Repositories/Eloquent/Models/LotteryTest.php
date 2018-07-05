@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
 
 use App\Repositories\Eloquent\Models\Lottery;
+use App\Repositories\Eloquent\Models\Entry;
 use App\Repositories\Eloquent\Models\Campaign;
 
 class LotteryTest extends TestCase
@@ -60,9 +61,27 @@ class LotteryTest extends TestCase
                 return $other_campaign->code;
             }
         ]);
-        $data = Lottery::campaign($other_campaign)->get();
+        $data = Lottery::campaign($other_campaign->code)->get();
         $this->assertEquals($data->count(),1);
     }
 
+    public function testSearchEntriesByState() {
+        $lottery = factory(Lottery::class)->create(["name" => "test"]);
+        $entries_a = factory(Entry::class,10)->create([
+            "user_type" => 1,
+            "state" => 1,
+            'user_id' => function () {
+                return factory(\App\User::class)->create()->id;
+            },
+            'lottery_code' => function () use ($lottery){
+                return $lottery->code;
+            }
+        ]);
+        $data = $lottery->entries()->state(1)->get();
+        $this->assertEquals($data->count(),10);
+
+        $data = Lottery::entriesCountByState(1)->first();
+        $this->assertEquals($data->entries_count,10);
+    }
 
 }

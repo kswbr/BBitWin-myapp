@@ -38,7 +38,6 @@ class CampaignRepositoryTest extends TestCase
     {
         $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
 
-        $this->model->project("TESTPROJECT");
         $repository = new CampaignRepository($this->model);
         $result = $repository->getByProjectAndCode("TESTPROJECT","TESTCODE");
         $this->assertEquals($campaign->id,$result->id);
