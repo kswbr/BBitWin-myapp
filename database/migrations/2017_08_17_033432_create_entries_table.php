@@ -15,9 +15,9 @@ class CreateEntriesTable extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('player_id')->unsigned()->nullable();
             $table->char('lottery_code',100)->nullable();
-            $table->integer('user_type')->unsigned();
+            $table->integer('player_type')->unsigned();
             $table->integer('state')->unsigned();
             $table->timestamps();
             $table->foreign('lottery_code')->references('code')->on('lotteries')->onDelete("set null");

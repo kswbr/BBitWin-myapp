@@ -75,12 +75,12 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
         return $this->model->lotteryCode($lottery_code)->state($state)->count();
     }
 
-    public function getPrevDataOfUserInCampaign($user_id, $user_type, $campaign_code, $campaign_limited_days)
+    public function getPrevDataOfPlayerInCampaign($player_id, $player_type, $campaign_code, $campaign_limited_days)
     {
         $winner_types = implode(",", [config("contents.entry.state.win"),config("contents.entry.state.win_special")]);
 
-        return $this->model->userId($user_id)
-          ->where("user_type",$user_type)
+        return $this->model->playerId($player_id)
+          ->where("player_type",$player_type)
           ->with(["lottery" => function($query) use ($campaign_code,$campaign_limited_days){
               $dt = new Carbon();
               $query->where("campaign_code",$campaign_code);

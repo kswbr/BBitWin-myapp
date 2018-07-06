@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
 
+use App\Repositories\Eloquent\Models\Player;
 use App\Repositories\Eloquent\Models\Entry;
 use App\Repositories\Eloquent\Models\Campaign;
 

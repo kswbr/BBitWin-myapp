@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
 
+use App\Repositories\Eloquent\Models\Player;
 use App\Repositories\Eloquent\Models\Lottery;
 use App\Repositories\Eloquent\Models\Entry;
 use App\Repositories\Eloquent\Models\Campaign;
@@ -68,10 +69,10 @@ class LotteryTest extends TestCase
     public function testSearchEntriesByState() {
         $lottery = factory(Lottery::class)->create(["name" => "test"]);
         $entries_a = factory(Entry::class,10)->create([
-            "user_type" => 1,
+            "player_type" => 1,
             "state" => 1,
-            'user_id' => function () {
-                return factory(\App\User::class)->create()->id;
+            'player_id' => function () {
+                return factory(Player::class)->create()->id;
             },
             'lottery_code' => function () use ($lottery){
                 return $lottery->code;

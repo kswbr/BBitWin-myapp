@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use App\User;
 use App\Repositories\Eloquent\EntryRepository;
+use App\Repositories\Eloquent\Models\Player;
 use App\Repositories\Eloquent\Models\Lottery;
 use App\Repositories\Eloquent\Models\Campaign;
 use App\Repositories\Eloquent\Models\Entry;
@@ -71,20 +72,20 @@ class EntryRepositoryTest extends TestCase
      * @return void
      *
      */
-    public function testGetPrevDataOfUserInCampaign()
+    public function testGetPrevDataOfPlayerInCampaign()
     {
-        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["type" => 1]);
         $campaign = factory(Campaign::class)->create();
         $lottery = factory(Lottery::class)->create(['campaign_code' => $campaign->code]);
 
-        factory(Entry::class,10)->create(["state" => config("contents.entry.state.lose"),'lottery_code' => $lottery->code, 'user_id' => $user->id]);
-        $entry = factory(Entry::class)->create(["state" => config("contents.entry.state.win"),'lottery_code' => $lottery->code, 'user_id' => $user->id]);
+        factory(Entry::class,10)->create(["state" => config("contents.entry.state.lose"),'lottery_code' => $lottery->code, 'player_id' => $player->id, "player_type" => 1]);
+        $entry = factory(Entry::class)->create(["state" => config("contents.entry.state.win"),'lottery_code' => $lottery->code, 'player_id' => $player->id, "player_type" => 1]);
 
         $mock = \Mockery::mock(EntryRepository::class,[$this->model]);
         $this->app->instance(EntryRepository::class,$mock);
-        $mock->shouldReceive('getPrevDataOfUserInCampaign')->passthru();
+        $mock->shouldReceive('getPrevDataOfPlayerInCampaign')->passthru();
 
-        $prev_entry = $mock->getPrevDataOfUserInCampaign($user->id, 1,$campaign->code,$campaign->limited_days); //TODO Userモデルを使わず、Playerモデルを新たに作るべきか検討
+        $prev_entry = $mock->getPrevDataOfPlayerInCampaign($player->id, $player->type,$campaign->code,$campaign->limited_days);
         $this->assertEquals($entry->id,$prev_entry->id);
     }
 

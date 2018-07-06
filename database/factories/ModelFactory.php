@@ -25,6 +25,16 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Repositories\Eloquent\Models\Player::class, function (Faker\Generator $faker) {
+    return [
+        'provider_id' => uniqid(rand()),
+        'token' => uniqid(rand()),
+        'provider' => 'twitter',
+        'project' => 'TESTPROJECT'
+    ];
+});
+
+
 $factory->define(App\Repositories\Eloquent\Models\Campaign::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
@@ -65,10 +75,10 @@ $factory->define(App\Repositories\Eloquent\Models\Lottery\Update::class, functio
 
 $factory->define(App\Repositories\Eloquent\Models\Entry::class, function (Faker\Generator $faker) {
     return [
-        "user_type" => 1,
+        "player_type" => 1,
         "state" => 1,
-        'user_id' => function () {
-            return factory(App\User::class)->create()->id;
+        'player_id' => function () {
+            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
         },
         'lottery_code' => function () {
             return factory(App\Repositories\Eloquent\Models\Lottery::class)->create()->code;
@@ -91,11 +101,11 @@ $factory->define(App\Vote::class, function (Faker\Generator $faker) {
 $factory->define(App\Vote\Count::class, function (Faker\Generator $faker) {
     return [
         "choice" => "sample_1",
-        'user_id' => function () {
-            return factory(App\User::class)->create()->id;
+        'player_id' => function () {
+            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
         },
         'vote_code' => function () {
-            return factory(App\Vote::class)->create()->code;
+            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->code;
         }
     ];
 });

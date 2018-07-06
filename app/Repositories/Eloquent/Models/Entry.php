@@ -3,11 +3,10 @@
 namespace App\Repositories\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\User;
 
 class Entry extends Model
 {
-    protected $fillable = ['lottery_code','user_id', 'user_type', 'state'];
+    protected $fillable = ['lottery_code','player_id', 'player_type', 'state'];
 
     public function scopeState($query,int $state)
     {
@@ -28,9 +27,9 @@ class Entry extends Model
        return $this->belongsTo(Lottery::class,"lottery_code","code");
     }
 
-    public function user()
+    public function player()
     {
-       return $this->belongsTo(User::class);
+       return $this->belongsTo(Player::class);
     }
 
     public function scopeLotteryCode($query, $lottery_code)
@@ -38,9 +37,9 @@ class Entry extends Model
         return $query->where("lottery_code",$lottery_code);
     }
 
-    public function scopeUserId($query, $user_id)
+    public function scopePlayerId($query, $player_id)
     {
-        return $query->where("user_id",$user_id);
+        return $query->where("player_id",$player_id);
     }
 
     public function scopePassed($query, $limited_time)
