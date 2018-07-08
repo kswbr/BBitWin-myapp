@@ -80,7 +80,7 @@ class LotteryController extends Controller
      * @param  \App\Lottery  $lottery
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $campaign_id, $id)
     {
         $this->lotteryService->update($id,$request->all());
         return response(['update' => true], 201);
@@ -92,7 +92,7 @@ class LotteryController extends Controller
      * @param  \App\Lottery  $lottery
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $campaign_id, $id)
     {
         $this->lotteryService->destroy($id);
         return response(['destroy' => true], 201);

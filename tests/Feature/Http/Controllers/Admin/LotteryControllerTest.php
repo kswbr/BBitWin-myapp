@@ -109,52 +109,52 @@ class LotteryControllerTest extends TestCase
         $this->assertEquals($find->code,$input["code"]);
 
     }
-    //
-    // /**
-    //  *
-    //  * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
-    //  *
-    //  * */
-    // public function testDestroy()
-    // {
-    //     $project = env("PROJECT_NAME", config('app.name'));
-    //     $lottery = factory(Lottery::class)->create(["project" => $project]);
-    //
-    //     $user = factory(User::class)->create();
-    //
-    //     $response = $this->actingAs($user,"api")
-    //                      ->json("DELETE",'/api/lotterys/' . $lottery->id)
-    //                      ->assertStatus(201);
-    //
-    //     $this->service->getById($lottery->id);
-    //
-    // }
-    //
-    // public function testUpdate()
-    // {
-    //     $project = env("PROJECT_NAME", config('app.name'));
-    //     factory(Lottery::class,3)->create(["project" => $project]);
-    //
-    //     $lotterys = $this->service->getPageInProject(0,$project);
-    //     $lottery = $lotterys->first();
-    //
-    //     $user = factory(User::class)->create();
-    //
-    //     $input = $lottery->toArray();
-    //     $input["name"] =  "UPDATED_NAME" ;
-    //     $input["code"] =  "UPDATED_CODE" ;
-    //     $input["project"] =  "UPDATED_PROJECT" ;
-    //     $input["limited_days"] =  2 ;
-    //
-    //     $response = $this->actingAs($user,"api")
-    //                      ->json("PATCH",'/api/lotterys/' . $lottery->id,$input)
-    //                      ->assertStatus(201);
-    //
-    //     $find = $this->service->getById($lottery->id);
-    //     $this->assertEquals($find->code,$lottery->code);
-    //     $this->assertNotEquals($find->code,$input["code"]);
-    //
-    // }
+
+    /**
+     *
+     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * */
+    public function testDestroy()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code]);
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id)
+                         ->assertStatus(201);
+
+        $ret = $this->service->getById($lottery->id);
+
+    }
+
+
+    public function testUpdate()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        factory(Lottery::class,3)->create(["campaign_code" => $campaign->code]);
+        $lotteries = $this->service->getPageInCampaign(0,$campaign);
+        $lottery = $lotteries->first();
+
+        $user = factory(User::class)->create();
+
+        $input = $lottery->toArray();
+        $input["name"] =  "UPDATED_NAME" ;
+        $input["code"] =  "UPDATED_CODE" ;
+
+        $response = $this->actingAs($user,"api")
+                         ->json("PATCH",'/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id,$input)
+                         ->assertStatus(201);
+
+        $find = $this->service->getById($lottery->id);
+        $this->assertNotEquals($find->code,$lottery->code);
+        $this->assertEquals($find->code,$input["code"]);
+
+    }
 
 
 }
