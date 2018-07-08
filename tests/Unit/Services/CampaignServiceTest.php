@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Repositories\Eloquent\Models\Campaign as Model;
 
 use App\Services\CampaignService;
+use App\Repositories\Eloquent\CampaignRepository;
 
 class CampaignServiceTest extends TestCase
 {
@@ -16,6 +17,8 @@ class CampaignServiceTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $this->mockRepository = \Mockery::mock(CampaignRepository::class);
+        $this->app->instance(CampaignRepository::class,$this->mockRepository);
         \App::bind('App\Repositories\CampaignRepositoryInterface', 'App\Repositories\Eloquent\CampaignRepository');
         $this->service = \App::make(CampaignService::class);
     }
@@ -37,16 +40,24 @@ class CampaignServiceTest extends TestCase
      */
     public function testSaveAndDestroy()
     {
+        $this->mockRepository->shouldReceive('store')
+            ->with([
+                "name" => "TESTCAMPAIGN",
+                "code" => "TESTCODE",
+                "limited_days" => 1,
+                "project" => "TESTPROJECT"
+            ])
+            ->andReturn(true);
         $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE", 1, "TESTPROJECT" );
-        $sample = Model::find($data->id);
-        $this->assertEquals($data->id,$sample->id);
+        $this->assertTrue($data);
 
-        $data = $this->service->create( "TESTCAMPAIGN_2", "TESTCODE_2", 1, "TESTPROJECT" );
-        $sample = Model::find($data->id);
-        $this->assertEquals($data->name,"TESTCAMPAIGN_2");
 
-        $ret = $this->service->destroy($data->id);
-        $this->assertNull(Model::find($data->id));
+        $this->mockRepository->shouldReceive('destroy')
+            ->with(999)
+            ->andReturn(true);
+
+        $ret = $this->service->destroy(999);
+        $this->assertTrue($ret);
 
 
     }
@@ -56,13 +67,18 @@ class CampaignServiceTest extends TestCase
      *
      * @return void
      */
-    public function testGetPageInProjectSaveAndDestroy()
+    public function testGetPageInProject()
     {
-        $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE_1", 1, "TESTPROJECT" );
-        $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE_2", 1, "TESTPROJECT" );
-        $data = $this->service->create( "TESTCAMPAIGN", "TESTCODE_3", 1, "_TESTPROJECT_" );
-        $find = $this->service->getPageInProject(0, "TESTPROJECT");
-        $this->assertEquals($find->total(), 2);
+        $this->mockRepository->shouldReceive('getProjectQuery')
+            ->with("TESTPROJECT")
+            ->andReturn("TESTQUERY");
+
+        $this->mockRepository->shouldReceive('getPaginate')
+            ->with(0,"TESTQUERY")
+            ->andReturn(true);
+
+        $ret = $this->service->getPageInProject(0, "TESTPROJECT");
+        $this->assertTrue($ret);
     }
 
 }

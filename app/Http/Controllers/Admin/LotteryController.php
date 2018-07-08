@@ -67,7 +67,7 @@ class LotteryController extends Controller
      * @param  \App\Lottery  $lottery
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $campaign_id, $id)
     {
         $data = $this->lotteryService->getById($id);
         return response($data->toArray(), 200);
