@@ -24,5 +24,6 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         \App::bind('App\Repositories\CampaignRepositoryInterface', 'App\Repositories\Eloquent\CampaignRepository');
+        \App::bind('App\Repositories\LotteryRepositoryInterface', 'App\Repositories\Eloquent\LotteryRepository');
     }
 }

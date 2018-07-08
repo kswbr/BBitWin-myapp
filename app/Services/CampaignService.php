@@ -14,16 +14,6 @@ class CampaignService
         $this->repository = $repository;
     }
 
-    /**
-     * Save the model from the database.
-     *
-     * @param string $name
-     * @param string $code
-     * @param int $limited_days
-     * @param string $project
-     *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
-     */
     public function getPageInProject($page,$project)
     {
         $query = $this->repository->getProjectQuery($project);

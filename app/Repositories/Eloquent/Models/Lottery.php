@@ -37,4 +37,8 @@ class Lottery extends Model
         return $query;
     }
 
+    // public function campaign() {
+    //     return $this->belongsTo(Campaign::class,"campaign_code","code");
+    // }
+
 }

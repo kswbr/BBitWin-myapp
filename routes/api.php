@@ -17,4 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/campaigns', 'Admin\CampaignController')->middleware('auth:api');
+Route::resource('campaigns', 'Admin\CampaignController')->middleware('auth:api');
+Route::resource('campaigns.lotteries', 'Admin\LotteryController')->middleware('auth:api');
+

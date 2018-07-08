@@ -14,19 +14,9 @@ class LotteryService
         $this->repository = $repository;
     }
 
-    /**
-     * Save the model from the database.
-     *
-     * @param string $name
-     * @param string $code
-     * @param int $limited_days
-     * @param string $project
-     *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
-     */
-    public function getPageInProject($page,$project)
+    public function getPageInCampaign($page,$campaign)
     {
-        $query = $this->repository->getProjectQuery($project);
+        $query = $this->repository->getCampaignQuery($campaign->code);
         return $this->repository->getPaginate($page,$query);
     }
 
@@ -55,15 +45,29 @@ class LotteryService
      * Save the model from the database.
      *
      * @param string $name
+     * @param double $rate
+     * @param int $total
+     * @param int $limit
      * @param string $code
-     * @param int $limited_days
-     * @param string $project
+     * @param string $start_date
+     * @param string $end_date
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
-    public function create(array $inputs)
+    public function create($name, $rate, $total, $limit, $code, $start_date, $end_date, $campaign)
     {
-        return $this->repository->store($inputs);
+        return $this->repository->store([
+            "name" => $name,
+            "rate" => $rate,
+            "total" => $total,
+            "limit" => $limit,
+            "code" => $code,
+            "start_date" => $start_date,
+            "end_date" => $end_date,
+            "campaign_code" => $campaign->code,
+            "active" => true,
+            "order" => 0
+        ]);
     }
 
     /**

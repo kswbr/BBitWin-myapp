@@ -32,6 +32,12 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         return gettype($this->model);
     }
 
+    public function getCampaignQuery($campaign_code)
+    {
+        return $this->model->campaign($campaign_code);
+    }
+
+
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {
@@ -44,8 +50,7 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
     public function store(array $inputs)
     {
         $model = $this->model->newInstance();
-        $model->create($inputs);
-        return $model;
+        return $model->create($inputs);
     }
 
     public function getById($id)
