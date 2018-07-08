@@ -75,6 +75,22 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
         return $this->model->lotteryCode($lottery_code)->state($state)->count();
     }
 
+    public function updateStateWhenLimitedDaysPassed($campaign_limited_days,$lottery_code){
+        $limited_time = Carbon::parse("-" . (int)$campaign_limited_days . " days");
+        $entries = $this->model->lotteryCode($lottery_code)->winner(false);
+
+        foreach($entries->passed($limited_time)->get() as $entry){
+            $entry->state = config("contents.entry.state.win_posting_expired");
+            $entry->save();
+        }
+
+        foreach($entries->notPassed($limited_time)->get() as $entry){
+            $entry->state = config("contents.entry.state.win");
+            $entry->save();
+        }
+        return true;
+    }
+
     public function getPrevDataOfPlayerInCampaign($player_id, $player_type, $campaign_code, $campaign_limited_days)
     {
         $winner_types = implode(",", [config("contents.entry.state.win"),config("contents.entry.state.win_special")]);

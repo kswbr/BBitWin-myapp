@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Repositories\Eloquent\Models\Player;
 use App\Repositories\Eloquent\Models\Entry;
 use App\Repositories\Eloquent\Models\Campaign;
+use App\Repositories\Eloquent\Models\Lottery;
 
 class EntryTest extends TestCase
 {
@@ -37,5 +38,40 @@ class EntryTest extends TestCase
         $this->assertEquals($entry->id,$data->id);
     }
 
+    public function testSearch()
+    {
+
+        $lottery = factory(Lottery::class)->create();
+        $entry = factory(Entry::class)->create([
+           "state"  => 100,
+           "lottery_code" => $lottery->code,
+           "player_id" => 9999,
+           "created_at" => Carbon::tomorrow()
+        ]);
+        $data = Entry::state(100)->lotteryCode($lottery->code)->playerId(9999)->NotPassed(Carbon::now())->first();
+        $this->assertEquals($entry->id,$data->id);
+
+        $entry2 = factory(Entry::class)->create([
+           "state"  => 100,
+           "lottery_code" => $lottery->code,
+           "player_id" => 9999,
+           "created_at" => Carbon::yesterday()
+        ]);
+
+        $data2 = Entry::state(100)->lotteryCode($lottery->code)->playerId(9999)->Passed(Carbon::now())->first();
+        $this->assertEquals($entry2->id,$data2->id);
+    }
+
+    public function testSearchWinner(){
+        factory(Entry::class,200)->create([ "state"  => config("contents.entry.state.win") ]);
+
+        factory(Entry::class,100)->create([ "state"  => config("contents.entry.state.win_special") ]);
+
+        $count = Entry::winner(false)->count();
+        $this->assertEquals($count,200);
+
+        $count = Entry::winner()->count();
+        $this->assertEquals($count,300);
+    }
 
 }
