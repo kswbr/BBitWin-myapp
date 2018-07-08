@@ -52,10 +52,10 @@ class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryI
         return $model;
     }
 
-    public function updateOrCreateOnProjectAndCode(array $inputs, string $project, string $code)
-    {
-        return $this->model->updateOrCreate(["project" => $project,"code" => $code],$inputs);
-    }
+    // public function updateOrCreateOnProjectAndCode(array $inputs, string $project, string $code)
+    // {
+    //     return $this->model->updateOrCreate(["project" => $project,"code" => $code],$inputs);
+    // }
 
     public function getById($id)
     {
