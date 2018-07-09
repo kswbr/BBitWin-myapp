@@ -33,6 +33,11 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
         return gettype($this->model);
     }
 
+    public function getLotteryQuery($lottery_code)
+    {
+        return $this->model->lotteryCode($lottery_code);
+    }
+
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {
