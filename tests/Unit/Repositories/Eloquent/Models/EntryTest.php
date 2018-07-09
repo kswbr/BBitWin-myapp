@@ -48,7 +48,7 @@ class EntryTest extends TestCase
            "player_id" => 9999,
            "created_at" => Carbon::tomorrow()
         ]);
-        $data = Entry::state(100)->lotteryCode($lottery->code)->playerId(9999)->NotPassed(Carbon::now())->first();
+        $data = Entry::state(100)->lotteryCode($lottery->code)->playerId(9999)->notPassed(Carbon::now())->first();
         $this->assertEquals($entry->id,$data->id);
 
         $entry2 = factory(Entry::class)->create([
@@ -58,7 +58,7 @@ class EntryTest extends TestCase
            "created_at" => Carbon::yesterday()
         ]);
 
-        $data2 = Entry::state(100)->lotteryCode($lottery->code)->playerId(9999)->Passed(Carbon::now())->first();
+        $data2 = Entry::state(100)->lotteryCode($lottery->code)->playerId(9999)->passed(Carbon::now())->first();
         $this->assertEquals($entry2->id,$data2->id);
     }
 

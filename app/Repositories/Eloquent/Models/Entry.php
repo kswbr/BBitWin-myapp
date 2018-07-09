@@ -22,6 +22,12 @@ class Entry extends Model
         return $query;
     }
 
+    public function scopePostingExpiredWinner($query)
+    {
+        $query->where("state",config("contents.entry.state.win_posting_expired"));
+        return $query;
+    }
+
     public function lottery()
     {
        return $this->belongsTo(Lottery::class,"lottery_code","code");
@@ -42,12 +48,12 @@ class Entry extends Model
         return $query->where("player_id",$player_id);
     }
 
-    public function scopePassed($query, $limited_time)
+    public function scopePassed($query, string $limited_time)
     {
         return $query->where("created_at","<",$limited_time);
     }
 
-    public function scopeNotPassed($query, $limited_time)
+    public function scopeNotPassed($query, string $limited_time)
     {
         return $query->where("created_at",">=",$limited_time);
     }

@@ -79,11 +79,12 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
         $limited_time = Carbon::parse("-" . (int)$campaign_limited_days . " days");
         $entries = $this->model->lotteryCode($lottery_code)->winner(false);
 
-        foreach($entries->passed($limited_time)->get() as $entry){
+        foreach($entries->passed((string)$limited_time)->get() as $entry){
             $entry->state = config("contents.entry.state.win_posting_expired");
             $entry->save();
         }
 
+        $entries = $this->model->lotteryCode($lottery_code)->postingExpiredWinner();
         foreach($entries->notPassed($limited_time)->get() as $entry){
             $entry->state = config("contents.entry.state.win");
             $entry->save();

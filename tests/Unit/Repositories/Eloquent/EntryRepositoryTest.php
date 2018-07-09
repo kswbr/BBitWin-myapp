@@ -89,5 +89,28 @@ class EntryRepositoryTest extends TestCase
         $this->assertEquals($entry->id,$prev_entry->id);
     }
 
+    /**
+     *
+     * @return void
+     *
+     */
+    public function testUpdateStateWhenLimitedDaysPassed()
+    {
+        $player = factory(Player::class)->create(["type" => 1]);
+        $campaign = factory(Campaign::class)->create();
+        $lottery = factory(Lottery::class)->create(['campaign_code' => $campaign->code]);
+
+        factory(Entry::class,10)->create(["state" => config("contents.entry.state.win"),'created_at' => Carbon::yesterday(), "lottery_code" => $lottery->code]);
+        factory(Entry::class,20)->create(["state" => config("contents.entry.state.win_posting_expired"),'created_at' => Carbon::tomorrow(), "lottery_code" => $lottery->code]);
+
+        $mock = \Mockery::mock(EntryRepository::class,[$this->model]);
+        $this->app->instance(EntryRepository::class,$mock);
+        $mock->shouldReceive('updateStateWhenLimitedDaysPassed')->passthru();
+        $mock->updateStateWhenLimitedDaysPassed(1,$lottery->code);
+
+        $this->assertEquals(Entry::state(config("contents.entry.state.win"))->count(), 20);
+        $this->assertEquals(Entry::state(config("contents.entry.state.win_posting_expired"))->count(), 10);
+    }
+
 
 }
