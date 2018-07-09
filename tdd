@@ -36,7 +36,7 @@ case ${1} in
     ;;
 
     e2e)
-        executor "php artisan dusk" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
+        npm run dev && executor "php artisan dusk" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
     ;;
 
     help|--help|-h)

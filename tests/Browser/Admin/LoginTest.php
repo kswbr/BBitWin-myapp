@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser;
+namespace Tests\Browser\Admin;
 
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LoginTest extends DuskTestCase
 {
+
     /**
      * A Dusk test example.
      *
@@ -25,16 +26,13 @@ class LoginTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($email){
             $browser->visit('/admin')
-                    ->pause(2000)
                     ->type('username',$email)
                     ->type('password',"secret")
                     ->press('Login')
                     ->waitUntilMissing('#login',20)
                     ->assertSee('Campaigns')
-                    ->pause(2000)
                     ->click('#logoutLink')
                     ->dismissDialog()
-                    ->pause(2000)
                     ->assertSee('Campaigns')
                     ->click('#logoutLink')
                     ->acceptDialog()
@@ -43,8 +41,7 @@ class LoginTest extends DuskTestCase
                     ->type('password',"sece")
                     ->press('Login')
                     ->waitUntilMissing('.el-loading-parent',20)
-                    ->pause(10000)
-                    ->assertSee('誤りがあります')
+                    ->waitForText('誤りがあります')
                     ->type('username',$email)
                     ->type('password',"secret")
                     ->press('Login')
