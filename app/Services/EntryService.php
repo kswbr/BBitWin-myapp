@@ -54,8 +54,13 @@ class EntryService
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
-    public function create($player, $lottery, int $state)
+    public function create($player, $lottery, string $state_label)
     {
+        $state = config("contents.entry.state." . $state_label);
+        if (!$state) {
+            return false;
+        }
+
         return $this->repository->store([
             "player_id" => $player->id,
             "player_type" => $player->type,
@@ -90,6 +95,23 @@ class EntryService
 
         $this->repository->update($id,["state" => $state]);
         return true;
+    }
+
+    public function getCountOfStateInLottery($lottery, string $state_label)
+    {
+        $state = config("contents.entry.state." . $state_label);
+        if (!$state) {
+            return false;
+        }
+        return $this->repository->getCountOfStateInLottery($lottery->code,$state);
+    }
+
+    public function updateStateWhenLimitedDaysPassed($campaign,$lottery){
+        return $this->repository->updateStateWhenLimitedDaysPassed($campaign->limited_days,$lottery->code);
+    }
+
+    public function getPrevDataOfPlayerInCampaign($player,$campaign){
+        return $this->repository->getPrevDataOfPlayerInCampaign($player->id,$player->type,$campaign->code,$campaign->limited_days);
     }
 
 

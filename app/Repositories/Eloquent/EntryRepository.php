@@ -110,7 +110,7 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
               $query->where("start_date","<" ,Carbon::now());
               $query->where("end_date",">", $dt->subDays((int)$campaign_limited_days));
           }])
-          ->orderBy("created_at","DESC")
+          ->orderBy("created_at","DESC") //TODO 順番が怪しいのでテストをもう少し書いておく
           ->orderByRaw(DB::raw("FIELD(state, ".$winner_types." ) DESC"))
           ->first();
     }
