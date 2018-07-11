@@ -78,8 +78,8 @@ class EntryRepositoryTest extends TestCase
         $campaign = factory(Campaign::class)->create();
         $lottery = factory(Lottery::class)->create(['campaign_code' => $campaign->code]);
 
-        factory(Entry::class,10)->create(["state" => config("contents.entry.state.lose"),'lottery_code' => $lottery->code, 'player_id' => $player->id, "player_type" => 1]);
         $entry = factory(Entry::class)->create(["state" => config("contents.entry.state.win"),'lottery_code' => $lottery->code, 'player_id' => $player->id, "player_type" => 1]);
+        factory(Entry::class,10)->create(["state" => config("contents.entry.state.lose"),'lottery_code' => $lottery->code, 'player_id' => $player->id, "player_type" => 1]);
 
         $mock = \Mockery::mock(EntryRepository::class,[$this->model]);
         $this->app->instance(EntryRepository::class,$mock);
@@ -87,6 +87,14 @@ class EntryRepositoryTest extends TestCase
 
         $prev_entry = $mock->getPrevDataOfPlayerInCampaign($player->id, $player->type,$campaign->code,$campaign->limited_days);
         $this->assertEquals($entry->id,$prev_entry->id);
+
+        $entry_special = factory(Entry::class)->create(["state" => config("contents.entry.state.win_special"),'lottery_code' => $lottery->code, 'player_id' => $player->id, "player_type" => 1]);
+        $entry = factory(Entry::class)->create(["state" => config("contents.entry.state.win"),'lottery_code' => $lottery->code, 'player_id' => $player->id, "player_type" => 1]);
+
+        $prev_entry = $mock->getPrevDataOfPlayerInCampaign($player->id, $player->type,$campaign->code,$campaign->limited_days);
+
+        $this->assertNotEquals($entry->id,$prev_entry->id);
+        $this->assertEquals($entry_special->id,$prev_entry->id);
     }
 
     /**
