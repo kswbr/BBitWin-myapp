@@ -42,7 +42,7 @@ Axios.interceptors.request.use((config) => {
   return Promise.reject(error)
 })
 
-// API終了時のローディング非憑依
+// API終了時のローディング非表示
 Axios.interceptors.response.use((response) => {
   store.commit(types.API_REQUEST_END, { label: 'REQUEST_END', response })
   return response

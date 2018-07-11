@@ -25,7 +25,8 @@
               label="操作"
               width="130">
               <template slot-scope="scope">
-                <el-button type="text" @click="editRow(scope.row)" >編集</el-button>
+                <el-button type="text" @click="editRow(scope.row)">編集</el-button>
+                <el-button type="text" @click="showLottery(scope.row)">賞品</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -53,6 +54,9 @@ export default {
       Axios.get('/api/campaigns', { page: 0 }).then((res) => {
         this.tableData = res.data.data
       })
+    },
+    showLottery (item) {
+      this.$router.push('campaigns/' + item.id + '/lotteries')
     },
     editRow (item) {
       this.$router.push('campaigns/' + item.id)

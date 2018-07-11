@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\LotteryRepositoryInterface;
+use Carbon\Carbon;
 
 class LotteryService
 {
@@ -62,8 +63,8 @@ class LotteryService
             "total" => $total,
             "limit" => $limit,
             "code" => $code,
-            "start_date" => $start_date,
-            "end_date" => $end_date,
+            "start_date" => new Carbon($start_date),
+            "end_date" => new Carbon($end_date),
             "campaign_code" => $campaign->code,
             "active" => true,
             "order" => 0

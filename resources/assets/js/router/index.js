@@ -4,6 +4,11 @@ import UserArea from '../components/UserArea'
 import Campaign from '../components/UserArea/Campaign'
 import CampaignCreate from '../components/UserArea/Campaign/Create'
 import CampaignEdit from '../components/UserArea/Campaign/Edit'
+import Lottery from '../components/UserArea/Lottery'
+import LotteryCreate from '../components/UserArea/Lottery/Create'
+import LotteryEdit from '../components/UserArea/Lottery/Edit'
+import Entry from '../components/UserArea/Entry'
+import EntryEdit from '../components/UserArea/Entry/Edit'
 
 const router = new Router({
   mode: 'history',
@@ -21,7 +26,12 @@ const router = new Router({
         { path: '', redirect: '/admin/userarea/campaigns' },
         { path: 'campaigns', component: Campaign },
         { path: 'campaigns/create', component: CampaignCreate },
-        { path: 'campaigns/:id', component: CampaignEdit }
+        { path: 'campaigns/:id', component: CampaignEdit },
+        { path: 'campaigns/:campaignId/lotteries/', component: Lottery },
+        { path: 'campaigns/:campaignId/lotteries/create', component: LotteryCreate },
+        { path: 'campaigns/:campaignId/lotteries/:id', component: LotteryEdit },
+        { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries', component: Entry },
+        { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries/edit', component: EntryEdit }
       ]
     }
 
