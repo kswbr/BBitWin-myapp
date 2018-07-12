@@ -4,8 +4,8 @@
       <el-row>
         <el-header >
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{path:'../../../../.'}">キャンペーン</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{path:'../../.'}" >抽選賞品</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{path:'../../../.'}">キャンペーン</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{path:'../.'}" >抽選賞品</el-breadcrumb-item>
             <el-breadcrumb-item>応募状況</el-breadcrumb-item>
           </el-breadcrumb>
           <el-col :offset="1" :span="21">
