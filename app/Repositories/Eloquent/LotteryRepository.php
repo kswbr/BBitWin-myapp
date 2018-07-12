@@ -110,6 +110,13 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         return $ret;
     }
 
+    public function getStateCount($lottery_code, $state_label)
+    {
+        $lottery = $this->model->code($lottery_code)->first();
+        $state = config("contents.entry.state.$state_label");
+        return $lottery->entries()->state($state)->count();
+    }
+
     public function getRemainingOfCompleted($lottery_code)
     {
         $state = config("contents.entry.state");

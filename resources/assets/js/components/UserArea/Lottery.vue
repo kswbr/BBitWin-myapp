@@ -3,8 +3,12 @@
     <el-main>
       <el-row>
         <el-header >
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{path:'../../.'}">キャンペーン</el-breadcrumb-item>
+            <el-breadcrumb-item>抽選賞品</el-breadcrumb-item>
+          </el-breadcrumb>
           <el-col :offset="1" :span="21">
-            <h2 class="h2">Lotteries <small >抽選商品一覧 </small></h2>
+            <h2 class="h2">Lotteries <small >抽選賞品一覧 </small></h2>
           </el-col>
           <el-col :offset="20" :span="2">
             <el-button type="success" @click="() => (this.$router.push('lotteries/create'))">
@@ -16,7 +20,7 @@
 
       <el-row>
         <el-col :offset="2" :span="20">
-          <el-table :data="tableData" >
+          <el-table  v-loading="loading"  :data="tableData" >
             <el-table-column prop="code" label="コード" width="140"/>
             <el-table-column prop="name" label="賞品名称" width="400"/>
             <el-table-column prop="total" label="賞品総数"/>
@@ -47,7 +51,8 @@ export default {
   name: 'Lottery',
   data () {
     return {
-      tableData: []
+      tableData: [],
+      loading: true
     }
   },
   mounted () {
@@ -57,6 +62,7 @@ export default {
     getList () {
       Axios.get('/api/campaigns/' + this.$route.params.campaignId + '/lotteries', { page: 0 }).then((res) => {
         this.tableData = res.data.data
+        this.loading = false
         console.log(this.tableData)
       })
     },

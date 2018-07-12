@@ -10,6 +10,7 @@ use App\Repositories\Eloquent\Models\Lottery as Model;
 use App\Services\LotteryService;
 use App\Repositories\Eloquent\LotteryRepository;
 use App\Repositories\Eloquent\Models\Campaign;
+use Carbon\Carbon;
 
 class LotteryServiceTest extends TestCase
 {
@@ -50,8 +51,8 @@ class LotteryServiceTest extends TestCase
                 "total" => 100,
                 "limit" => 20,
                 "code" => "TestCode",
-                "start_date" => "TestStartDate",
-                "end_date" => "TestEndDate",
+                "start_date" => Carbon::yesterday(),
+                "end_date" => Carbon::tomorrow(),
                 "campaign_code" => $campaign->code,
                 "active" => true,
                 "order" => 0
@@ -64,8 +65,8 @@ class LotteryServiceTest extends TestCase
             100,
             20,
             "TestCode",
-            "TestStartDate",
-            "TestEndDate",
+            Carbon::yesterday(),
+            Carbon::tomorrow(),
             $campaign
         );
         $this->assertTrue($data);

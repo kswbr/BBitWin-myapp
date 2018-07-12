@@ -11,6 +11,9 @@
         <template slot="append">個</template>
       </el-input>
     </el-form-item>
+    <el-form-item label="本日の賞品残り数">
+      {{form.remaining}} 個
+    </el-form-item>
     <el-form-item label="当選制限数">
       <el-input placeholder="10" v-model="form.limit">
         <template slot="append">個</template>
@@ -71,7 +74,7 @@ export default {
         total: 0,
         limit: 0,
         rate: 0.0,
-        remain: 0,
+        remaining: 0,
         start_date: '',
         update: {
             daily_increment: 0,

@@ -3,6 +3,9 @@
     <el-main>
       <el-row>
         <el-header >
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item>キャンペーン</el-breadcrumb-item>
+          </el-breadcrumb>
           <el-col :offset="1" :span="21">
             <h2 class="h2">Campaigns <small >キャンペーン一覧 </small></h2>
           </el-col>
@@ -16,7 +19,7 @@
 
       <el-row>
         <el-col :offset="2" :span="20">
-          <el-table :data="tableData" >
+          <el-table v-loading="loading" :data="tableData" >
             <el-table-column prop="code" label="コード" width="140"/>
             <el-table-column prop="name" label="キャンペーン名称" width="300"/>
             <el-table-column prop="limited_days" label="当選時の有効日数"/>
@@ -43,7 +46,8 @@ export default {
   name: 'Campaign',
   data () {
     return {
-      tableData: []
+      tableData: [],
+      loading: true
     }
   },
   mounted () {
@@ -53,6 +57,7 @@ export default {
     getList () {
       Axios.get('/api/campaigns', { page: 0 }).then((res) => {
         this.tableData = res.data.data
+        this.loading = false
       })
     },
     showLottery (item) {

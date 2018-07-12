@@ -2,11 +2,16 @@
   <el-container id="campaignCreate" >
     <el-main>
       <el-row>
-        <el-col :offset="1" :span="21">
-          <el-header >
-            <h2 class="h2">Edit Campaign <small >キャンペーン編集 </small></h2>
-          </el-header >
-        </el-col>
+        <el-header >
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{path:'../../.'}">キャンペーン</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{path:'.'}" >抽選賞品</el-breadcrumb-item>
+            <el-breadcrumb-item>{{form.name}}</el-breadcrumb-item>
+          </el-breadcrumb>
+          <el-col :offset="1" :span="21">
+            <h2 class="h2">Edit Lottery <small >抽選賞品編集 </small></h2>
+          </el-col>
+        </el-header >
       </el-row>
       <el-row>
         <el-col :offset="1" :span="21">
@@ -35,7 +40,7 @@ export default {
         total: 0,
         limit: 0,
         rate: 0.0,
-        remain: 0,
+        remaining: 0,
         start_date: '',
         update: {
             daily_increment: 0,
