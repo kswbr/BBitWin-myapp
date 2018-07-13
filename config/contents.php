@@ -1,6 +1,9 @@
 <?php
 
 return [
+  "admin" => [
+    "show_page_count" => 15
+  ],
   "lottery" => [
     "state" => [
       "active" => ["type" => 1, "label" => "公開中" ,"css_style" => "success"],

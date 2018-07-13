@@ -32,7 +32,7 @@ class EntryController extends Controller
     public function index(Request $request, $campaign_id, $lottery_id)
     {
         $lottery = $this->lotteryService->getById($lottery_id);
-        return response($this->entryService->getPageInLottery(0,$lottery));
+        return response($this->entryService->getPageInLottery(config("contents.admin.show_page_count"),$lottery));
     }
 
     /**

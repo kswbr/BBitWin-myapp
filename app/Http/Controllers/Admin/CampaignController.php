@@ -31,7 +31,7 @@ class CampaignController extends Controller
     {
         $project = $this->projectService->getCode();
 
-        return response($this->campaignService->getPageInProject(0,$project));
+        return response($this->campaignService->getPageInProject(config("contents.admin.show_page_count"),$project));
     }
 
     /**

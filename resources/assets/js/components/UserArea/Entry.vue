@@ -13,7 +13,7 @@
           </el-col>
         </el-header >
       </el-row>
-
+      <Pagination :handleCurrentChange="handleCurrentChange" :pagination="pagination" />
       <el-row>
         <el-col :offset="2" :span="20">
           <el-table v-loading="loading" :data="tableData" >
@@ -33,17 +33,23 @@
           </el-table>
         </el-col>
       </el-row>
+      <Pagination :handleCurrentChange="handleCurrentChange" :pagination="pagination" />
     </el-main>
   </el-container>
 </template>
 
 <script>
 import Axios from 'axios'
+import Pagination from './Pagination'
 
 export default {
   name: 'Entry',
+  components: {
+    Pagination
+  },
   data () {
     return {
+      pagination: {},
       tableData: [],
       loading: true
     }
@@ -53,10 +59,17 @@ export default {
   },
   methods: {
     getList () {
-      Axios.get('/api/campaigns/' + this.$route.params.campaignId + '/lotteries/' + this.$route.params.lotteryId + '/entries', { page: 0 }).then((res) => {
+      const page = this.$route.query.page
+      this.loading = true
+      Axios.get('/api/campaigns/' + this.$route.params.campaignId + '/lotteries/' + this.$route.params.lotteryId + '/entries', { params:{page}}).then((res) => {
+        this.pagination = Object.assign({},this.pagination,res.data)
         this.tableData = res.data.data
         this.loading = false
       })
+    },
+    handleCurrentChange (page) {
+        this.$router.push({query: {page}})
+        this.getList()
     },
     editRow (item) {
       this.$router.push('entries/' + item.id)

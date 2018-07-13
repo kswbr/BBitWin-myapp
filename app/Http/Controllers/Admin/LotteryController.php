@@ -35,7 +35,7 @@ class LotteryController extends Controller
     public function index($campaign_id, Request $request)
     {
         $campaign = $this->campaignService->getById($campaign_id);
-        return response($this->lotteryService->getPageInCampaign(0,$campaign));
+        return response($this->lotteryService->getPageInCampaign(config("contents.admin.show_page_count"),$campaign));
     }
 
     /**
