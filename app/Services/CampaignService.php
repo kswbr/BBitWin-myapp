@@ -37,6 +37,8 @@ class CampaignService
 
     public function update($id, array $inputs)
     {
+        unset($inputs["project"]);
+        unset($inputs["code"]);
         $this->repository->update($id,$inputs);
     }
 

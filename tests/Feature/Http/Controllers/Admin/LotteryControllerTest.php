@@ -151,8 +151,9 @@ class LotteryControllerTest extends TestCase
                          ->assertStatus(201);
 
         $find = $this->service->getById($lottery->id);
-        $this->assertNotEquals($find->code,$lottery->code);
-        $this->assertEquals($find->code,$input["code"]);
+        $this->assertEquals($find->code,$lottery->code);
+        $this->assertNotEquals($find->code,$input["code"]);
+        $this->assertEquals($find->name,$input["name"]);
 
     }
 

@@ -49,6 +49,8 @@ class LotteryService
         if (isset($inputs["end_date"])) {
             $inputs["end_date"] = new Carbon($inputs["end_date"]);
         }
+        unset($inputs["campaign_code"]);
+        unset($inputs["code"]);
         $this->repository->update($id,$inputs);
     }
 

@@ -1,7 +1,7 @@
 <template>
   <el-form :model="form" status-icon label-width="160px" >
     <el-form-item label="抽選賞品コード">
-      <el-input placeholder="example_lottery_code" v-model="form.code"/>
+      <el-input :disabled="form.code !== ''" placeholder="example_lottery_code" v-model="form.code"/>
     </el-form-item>
     <el-form-item label="抽選賞品名">
       <el-input placeholder="サンプル賞品プレゼント" v-model="form.name"/>
