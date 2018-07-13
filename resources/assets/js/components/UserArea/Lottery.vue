@@ -2,12 +2,15 @@
   <el-container id="lottery" >
     <el-main>
       <el-row>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'../../.'}">キャンペーン</el-breadcrumb-item>
+          <el-breadcrumb-item>抽選賞品</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-row>
+      <el-row>
         <el-header >
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{path:'../../.'}">キャンペーン</el-breadcrumb-item>
-            <el-breadcrumb-item>抽選賞品</el-breadcrumb-item>
-          </el-breadcrumb>
-          <el-col :offset="1" :span="21">
+         <el-col :offset="1" :span="21">
             <h2 class="h2">Lotteries <small >抽選賞品一覧 </small></h2>
           </el-col>
           <el-col :offset="20" :span="2">

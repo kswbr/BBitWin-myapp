@@ -2,12 +2,15 @@
   <el-container id="campaignCreate" >
     <el-main>
       <el-row>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'.'}">キャンペーン</el-breadcrumb-item>
+          <el-breadcrumb-item>新規作成</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-row>
+      <el-row>
         <el-header >
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{path:'.'}">キャンペーン</el-breadcrumb-item>
-            <el-breadcrumb-item>新規作成</el-breadcrumb-item>
-          </el-breadcrumb>
-          <el-col :offset="1" :span="21">
+         <el-col :offset="1" :span="21">
             <h2 class="h2">Create Campaign <small >キャンペーン新規作成 </small></h2>
           </el-col>
         </el-header >

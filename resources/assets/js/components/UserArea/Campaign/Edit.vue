@@ -2,11 +2,14 @@
   <el-container id="campaignCreate" >
     <el-main>
       <el-row>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'.'}">キャンペーン</el-breadcrumb-item>
+          <el-breadcrumb-item>{{form.name}}</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-row>
+      <el-row>
         <el-header >
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{path:'.'}">キャンペーン</el-breadcrumb-item>
-            <el-breadcrumb-item>{{form.name}}</el-breadcrumb-item>
-          </el-breadcrumb>
           <el-col :offset="1" :span="21">
             <h2 class="h2">Edit Campaign <small >キャンペーン編集 </small></h2>
           </el-col>

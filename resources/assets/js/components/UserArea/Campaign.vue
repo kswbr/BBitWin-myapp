@@ -2,11 +2,14 @@
   <el-container id="campaign" >
     <el-main>
       <el-row>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
+          <el-breadcrumb-item>キャンペーン</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-row>
+      <el-row>
         <el-header >
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item>キャンペーン</el-breadcrumb-item>
-          </el-breadcrumb>
-          <el-col :offset="1" :span="21">
+         <el-col :offset="1" :span="21">
             <h2 class="h2">Campaigns <small >キャンペーン一覧 </small></h2>
           </el-col>
           <el-col :offset="20" :span="2">
