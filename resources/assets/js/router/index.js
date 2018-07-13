@@ -1,6 +1,7 @@
 import Router from 'vue-router'
 import Login from '../components/Login'
 import UserArea from '../components/UserArea'
+import Dashboard from '../components/UserArea/Dashboard'
 import Campaign from '../components/UserArea/Campaign'
 import CampaignCreate from '../components/UserArea/Campaign/Create'
 import CampaignEdit from '../components/UserArea/Campaign/Edit'
@@ -23,7 +24,7 @@ const router = new Router({
       component: UserArea,
       meta: { isUserArea: true },
       children: [
-        { path: '', redirect: '/admin/userarea/campaigns' },
+        { path: '', component: Dashboard },
         { path: 'campaigns', component: Campaign },
         { path: 'campaigns/create', component: CampaignCreate },
         { path: 'campaigns/:id', component: CampaignEdit },
