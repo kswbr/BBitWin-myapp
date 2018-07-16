@@ -17,7 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/chart','Admin\EntryController@chart')->middleware('auth:api');
+
 Route::resource('campaigns', 'Admin\CampaignController')->middleware('auth:api');
 Route::resource('campaigns.lotteries', 'Admin\LotteryController')->middleware('auth:api');
 Route::resource('campaigns.lotteries.entries', 'Admin\EntryController')->middleware('auth:api');
+
 

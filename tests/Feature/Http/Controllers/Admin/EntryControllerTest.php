@@ -66,6 +66,21 @@ class EntryControllerTest extends TestCase
                          ->assertStatus(200)
                          ->assertJson($entry->toArray());
     }
+    public function testChart()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code]);
+        factory(Entry::class,3)->create(["lottery_code" => $lottery->code]);
+
+        $user = factory(User::class)->create();
+        $ret = $this->service->getDataSetInLottery($lottery);
+        $response = $this->actingAs($user,"api")
+                         ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . '/entries/chart')
+                         ->assertStatus(200)
+                         ->assertJson($ret);
+
+    }
 
     /**
      *

@@ -35,6 +35,11 @@ class EntryController extends Controller
         return response($this->entryService->getPageInLottery(config("contents.admin.show_page_count"),$lottery));
     }
 
+    public function chart(Request $request, $campaign_id, $lottery_id) {
+        $lottery = $this->lotteryService->getById($lottery_id);
+        return response($this->entryService->getDataSetInLottery($lottery));
+    }
+
     /**
      * Display the specified resource.
      *

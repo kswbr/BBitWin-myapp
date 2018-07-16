@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\EntryRepositoryInterface;
+use Carbon\Carbon;
 
 class EntryService
 {
@@ -19,6 +20,17 @@ class EntryService
         $query = $this->repository->getLotteryQuery($lottery->code);
         return $this->repository->getPaginate($page,$query);
     }
+
+    public function getDataSetInLottery($lottery)
+    {
+        $data = $this->repository->getDataInLottery($lottery->code);
+        $grouped = $data->groupBy(function($item, $key){
+            return Carbon::parse($item["created_at"])->format("Y-m-d-h");
+        });
+
+        return $grouped->toArray();
+    }
+
 
      /**
      * FindOrFail Model and return the instance.

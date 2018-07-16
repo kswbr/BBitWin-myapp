@@ -13,6 +13,7 @@ use App\Repositories\Eloquent\Models\Campaign;
 use App\Repositories\Eloquent\Models\Player;
 use App\Repositories\Eloquent\Models\Lottery;
 use App\Repositories\Eloquent\Models\Entry;
+use Carbon\Carbon;
 
 class EntryServiceTest extends TestCase
 {
@@ -21,7 +22,8 @@ class EntryServiceTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->mockRepository = \Mockery::mock(EntryRepository::class);
+        $this->model = \App::make(Entry::class);
+        $this->mockRepository = \Mockery::mock(EntryRepository::class,[$this->model]);
         $this->app->instance(EntryRepository::class,$this->mockRepository);
         \App::bind('App\Repositories\EntryRepositoryInterface', 'App\Repositories\Eloquent\EntryRepository');
         $this->service = \App::make(EntryService::class);
@@ -158,6 +160,29 @@ class EntryServiceTest extends TestCase
 
         $ret = $this->service->getPrevDataOfPlayerInCampaign($player,$campaign);
         $this->assertTrue($ret);
+    }
+
+    public function testGetDatasetInLottery()
+    {
+        $campaign = factory(Campaign::class)->create();
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code]);
+        $entry = factory(Entry::class,10)->create(["state" => config("contents.entry.state.lose"),'lottery_code' => $lottery->code, "player_type" => 1]);
+
+        $this->mockRepository->shouldReceive('getDataInLottery')->passthru();
+
+        $ret = $this->service->getDataSetInLottery($lottery);
+        $this->assertTrue(is_array($ret));
+
+        $entry = factory(Entry::class,20)->create(["state" => config("contents.entry.state.lose"),'lottery_code' => $lottery->code, "player_type" => 1, "created_at" => Carbon::yesterday()]);
+
+        $ret = $this->service->getDataSetInLottery($lottery);
+        $this->assertEquals(count($ret),2);
+        $first_date = $ret[Carbon::yesterday()->format("Y-m-d-h")];
+        $this->assertEquals(count($first_date),20);
+
+        $first_data = reset($first_date);
+        $this->assertEquals(count($first_data),3);
+
     }
 
 
