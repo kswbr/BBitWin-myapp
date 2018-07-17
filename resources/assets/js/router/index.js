@@ -10,6 +10,7 @@ import LotteryCreate from '../components/UserArea/Lottery/Create'
 import LotteryEdit from '../components/UserArea/Lottery/Edit'
 import Entry from '../components/UserArea/Entry'
 import EntryEdit from '../components/UserArea/Entry/Edit'
+import EntryChart from '../components/UserArea/Entry/Chart'
 
 const router = new Router({
   mode: 'history',
@@ -32,7 +33,8 @@ const router = new Router({
         { path: 'campaigns/:campaignId/lotteries/create', component: LotteryCreate },
         { path: 'campaigns/:campaignId/lotteries/:id', component: LotteryEdit },
         { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries', component: Entry },
-        { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries/edit', component: EntryEdit }
+        { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries/edit', component: EntryEdit },
+        { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries/chart', component: EntryChart }
       ]
     }
 
