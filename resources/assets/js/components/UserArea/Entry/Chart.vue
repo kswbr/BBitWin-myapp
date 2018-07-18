@@ -22,6 +22,11 @@
           <canvas id="canvas"></canvas>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :offset="1" :span="21">
+          <canvas id="canvas2"></canvas>
+        </el-col>
+      </el-row>
     </el-main>
   </el-container>
 </template>
@@ -102,6 +107,12 @@ export default {
             this.createDataset(filterByState([2,3],this.datasets.all) ,"当選者推移","#36a2eb")
         ]
 
+        const datasetListSpot = [
+            this.createDataset(this.datasets.all,"応募合計数推移","#ff6384",false),
+            this.createDataset(filterByState([2,3],this.datasets.all) ,"当選者推移","#36a2eb",false)
+        ]
+
+
         const createDateLabel = (dataset) =>{
             const labels = _.keys(dataset);
             return _.map(labels,(label) => {
@@ -123,15 +134,39 @@ export default {
                 }
             }
         })
+        const configSpot = _.assign({},this.configBase,{
+            data: {
+                labels: createDateLabel(this.datasets.all),
+                datasets: datasetListSpot,
+            },
+            options:{
+                title:{
+                    display:true,
+                    text:'応募者時間別推移'
+                }
+            }
+        })
+
         const ctx = document.getElementById("canvas").getContext("2d");
         window.myLineTotal = new Chart(ctx, configTotal);
+
+        const ctx2 = document.getElementById("canvas2").getContext("2d");
+        window.myLineSpot = new Chart(ctx2, configSpot);
     },
-    createDataset (dataset,label,color) {
+    createDataset (dataset,label,color, isSum = true) {
+
+       let allCount = 0
 
        const dataList = _.reduce(dataset,(result,data) => {
            const before = _.last(result) ? _.last(result) : 0;
-           const sum = before + data.length;
-           result.push(sum)
+           if (isSum) {
+               const sum = before + data.length;
+               result.push(sum)
+           } else {
+               const spot = data.length;
+               result.push(spot)
+           }
+           allCount += data.length
            return result;
        },[]);
 
@@ -140,7 +175,7 @@ export default {
        });
 
        return {
-           label: label,
+           label: label + '（計:' + allCount + '）　 ',
            backgroundColor: color,
            borderColor: color,
            data:dataList,
