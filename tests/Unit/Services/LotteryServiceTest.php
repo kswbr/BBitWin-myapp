@@ -53,6 +53,8 @@ class LotteryServiceTest extends TestCase
                 "code" => "TestCode",
                 "start_date" => Carbon::yesterday(),
                 "end_date" => Carbon::tomorrow(),
+                "daily_increment" => 10,
+                "daily_increment_time" => 12,
                 "campaign_code" => $campaign->code,
                 "active" => true,
                 "order" => 0
@@ -67,6 +69,8 @@ class LotteryServiceTest extends TestCase
             "TestCode",
             Carbon::yesterday(),
             Carbon::tomorrow(),
+            10,
+            12,
             $campaign
         );
         $this->assertTrue($data);

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class Lottery extends Model
 {
-    protected $fillable = ['name', 'rate', 'total', 'limit', 'start_date', 'end_date', 'active', 'order', 'campaign_code','code'];
+    protected $fillable = ['name', 'rate', 'total', 'limit', 'start_date', 'end_date', 'active', 'order', 'campaign_code','code', 'daily_increment', 'daily_increment_time'];
 
     public function entries() {
         return $this->hasMany(Entry::class,'lottery_code','code');
@@ -36,6 +36,26 @@ class Lottery extends Model
         $query->where("end_date",">",Carbon::now());
         return $query;
     }
+
+    public function scopeCheckIfSetDailyIncrement($query){
+        $query->where("daily_increment","!=",0);
+        return $query;
+    }
+
+    public function scopeCheckIfDailyIncrementHourNow($query){
+        $date = Carbon::parse();
+        $current_h = $date->hour;
+        $query->where("daily_increment_time","=",$current_h);
+        return $query;
+    }
+
+    public function scopeCheckIfRunTimeOlder($query){
+        $update_check = Carbon::now();
+        $query->where("run_time","<",$update_check);
+        return $query;
+    }
+
+
 
     // public function campaign() {
     //     return $this->belongsTo(Campaign::class,"campaign_code","code");

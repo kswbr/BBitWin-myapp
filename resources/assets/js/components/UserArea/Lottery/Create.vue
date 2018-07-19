@@ -44,11 +44,9 @@ export default {
         limit: 0,
         rate: 0.0,
         remaining: 0,
+        daily_increment: 0,
+        daily_increment_time: 0,
         start_date: '',
-        update: {
-            daily_increment: 0,
-            daily_increment_time: 0
-        },
         end_date: ''
       }
     }

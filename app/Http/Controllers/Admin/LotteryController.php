@@ -55,6 +55,8 @@ class LotteryController extends Controller
             $request->input("code"),
             $request->input("start_date"),
             $request->input("end_date"),
+            $request->input("daily_increment"),
+            $request->input("daily_increment_time"),
             $campaign
         );
         return response(['created_id' => $lottery->id], 201);

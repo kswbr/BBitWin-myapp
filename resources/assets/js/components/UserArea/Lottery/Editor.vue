@@ -20,7 +20,7 @@
       </el-input>
     </el-form-item>
     <el-form-item  label="当選制限緩和の時間">
-      <el-select v-model="form.update.daily_increment_time" placeholder="0時">
+      <el-select v-model="form.daily_increment_time" placeholder="0時">
         <el-option
           v-for="item in dailyIncrementTimeOptions"
           :key="item.value"
@@ -30,7 +30,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="一日ごとの制限緩和数">
-      <el-input :span="8" placeholder="10" v-model="form.update.daily_increment">
+      <el-input :span="8" placeholder="10" v-model="form.daily_increment">
         <template slot="append">個</template>
       </el-input>
     </el-form-item>
@@ -75,11 +75,9 @@ export default {
         limit: 0,
         rate: 0.0,
         remaining: 0,
+        daily_increment: 0,
+        daily_increment_time: 0,
         start_date: '',
-        update: {
-            daily_increment: 0,
-            daily_increment_time: 0
-        },
         end_date: ''
       }
     }

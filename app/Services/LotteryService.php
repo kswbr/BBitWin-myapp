@@ -68,7 +68,7 @@ class LotteryService
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
-    public function create($name, $rate, $total, $limit, $code, $start_date, $end_date, $campaign)
+    public function create($name, $rate, $total, $limit, $code, $start_date, $end_date, $daily_increment, $daily_increment_time, $campaign)
     {
         return $this->repository->store([
             "name" => $name,
@@ -79,6 +79,8 @@ class LotteryService
             "start_date" => new Carbon($start_date),
             "end_date" => new Carbon($end_date),
             "campaign_code" => $campaign->code,
+            "daily_increment" => $daily_increment,
+            "daily_increment_time" => $daily_increment_time,
             "active" => true,
             "order" => 0
         ]);

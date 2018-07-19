@@ -45,6 +45,7 @@ $factory->define(App\Repositories\Eloquent\Models\Campaign::class, function (Fak
 });
 
 $factory->define(App\Repositories\Eloquent\Models\Lottery::class, function (Faker\Generator $faker) {
+    $dt = Carbon::parse();
     return [
         'name' => $faker->name,
         'code' => uniqid(rand()),
@@ -55,6 +56,9 @@ $factory->define(App\Repositories\Eloquent\Models\Lottery::class, function (Fake
         'end_date' => date("Y-m-d H:i:s",strtotime("+1 day")),
         'active' => true,
         'order' => 0,
+        "daily_increment" => 10,
+        "daily_increment_time" => $dt->hour,
+        "run_time" => Carbon::yesterday(),
         'campaign_code' => function () {
             return factory(App\Repositories\Eloquent\Models\Campaign::class)->create()->code;
         }

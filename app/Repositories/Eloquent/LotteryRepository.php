@@ -148,5 +148,27 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         return config("contents.lottery.state.active");
     }
 
+    public function limitUpDaily($campaign_code)
+    {
+        $lotteries = $this->model
+            ->campaign($campaign_code)
+            ->active()
+            ->inSession()
+            ->checkIfSetDailyIncrement()
+            ->checkIfDailyIncrementHourNow()
+            ->checkIfRunTimeOlder()
+            ->get();
+
+        foreach($lotteries as $lottery) {
+            $lottery->limit += (int)$lottery->daily_increment;
+            if ($lottery->limit > $lottery->total) {
+                $lottery->limit = $lottery->total;
+            }
+            $lottery->run_time = Carbon::now();
+            $lottery->save();
+        }
+        return $lotteries;
+    }
+
 
 }
