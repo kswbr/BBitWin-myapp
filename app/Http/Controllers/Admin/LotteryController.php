@@ -46,6 +46,18 @@ class LotteryController extends Controller
      */
     public function store($campaign_id, Request $request)
     {
+
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'rate' => 'required|numeric|max:100|min:0',
+            'total' => 'required|integer|min:0',
+            'code' => 'required|string|unique:lotteries',
+            'start_date' => 'required|string',
+            'end_date' => 'required|string',
+            'daily_increment' => 'required|integer|min:0',
+            'daily_increment_time' => 'required|integer|max:23|min:0'
+        ]);
+
         $campaign = $this->campaignService->getById($campaign_id);
         $lottery = $this->lotteryService->create(
             $request->input("name"),
@@ -84,6 +96,17 @@ class LotteryController extends Controller
      */
     public function update(Request $request, $campaign_id, $id)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'rate' => 'required|numeric|max:100|min:0',
+            'total' => 'required|integer|min:0',
+            'code' => 'required|string|unique:lotteries',
+            'start_date' => 'required|string',
+            'end_date' => 'required|string',
+            'daily_increment' => 'required|integer|min:0',
+            'daily_increment_time' => 'required|integer|max:23|min:0'
+        ]);
+
         $this->lotteryService->update($id,$request->all());
         return response(['update' => true], 201);
     }

@@ -108,6 +108,16 @@ class LotteryControllerTest extends TestCase
         $find = $this->service->getById($response->getOriginalContent()["created_id"]);
         $this->assertEquals($find->code,$input["code"]);
 
+        //重複チェック
+        $lottery = factory(Lottery::class)->make(["campaign_code" => $campaign->code]);
+        $input = $lottery->toArray();
+        $input["name"] =  "CREATED_NAME" ;
+        $input["code"] =  "CREATED_CODE" ;
+
+        $response = $this->actingAs($user,"api")
+                         ->json("POST",'/api/campaigns/' . $campaign->id . '/lotteries',$input)
+                         ->assertStatus(422);
+
     }
 
     /**
