@@ -56,7 +56,6 @@ class EntryController extends Controller
      */
     public function show(Request $request, $campaign_id, $lottery_id, $id)
     {
-
         $data = $this->entryService->getById($id);
         return response($data->toArray(), 200);
     }
@@ -68,6 +67,9 @@ class EntryController extends Controller
      */
     public function update(Request $request, $campaign_id, $lottery_id, $id)
     {
+        $validatedData = $request->validate([
+            'state' => 'required|numeric|max:5',
+        ]);
         $this->entryService->update($id,$request->all());
         return response(['update' => true], 201);
     }

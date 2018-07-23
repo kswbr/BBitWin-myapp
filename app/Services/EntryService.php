@@ -49,7 +49,7 @@ class EntryService
 
     public function update($id, array $inputs)
     {
-        $this->repository->update($id,$inputs);
+        $this->repository->update($id,["state" => $inputs["state"]]);
     }
 
 

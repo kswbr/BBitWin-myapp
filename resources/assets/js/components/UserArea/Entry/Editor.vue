@@ -1,49 +1,26 @@
 <template>
   <el-form :model="form" status-icon label-width="160px" >
-    <el-form-item label="抽選賞品コード">
-      <el-input placeholder="example_lottery_code" v-model="form.code"/>
+    <el-form-item label="お問い合わせID">
+      {{form.id}}
     </el-form-item>
-    <el-form-item label="抽選賞品名">
-      <el-input placeholder="サンプル賞品プレゼント" v-model="form.name"/>
+    <el-form-item label="ユーザーID">
+      {{form.player_id}}
     </el-form-item>
-    <el-form-item label="賞品総数">
-      <el-input placeholder="100" v-model="form.total">
-        <template slot="append">個</template>
-      </el-input>
-    </el-form-item>
-    <el-form-item label="当選制限数">
-      <el-input placeholder="10" v-model="form.limit">
-        <template slot="append">個</template>
-      </el-input>
-    </el-form-item>
-    <el-form-item  label="当選制限緩和の時間">
-      <el-select v-model="form.update.daily_increment_time" placeholder="0時">
+    <el-form-item label="状態">
+      <el-select v-model="form.state" placeholder="0時">
         <el-option
-          v-for="item in dailyIncrementTimeOptions"
+          v-for="item in stateLabels"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="一日ごとの制限緩和数">
-      <el-input :span="8" placeholder="10" v-model="form.update.daily_increment">
-        <template slot="append">個</template>
-      </el-input>
+    <el-form-item label="応募日時">
+      {{form.created_at}}
     </el-form-item>
-    <el-form-item label="応募開始日時">
-      <el-date-picker
-        v-model="form.start_date"
-        type="datetime"
-        placeholder="開始日時">
-      </el-date-picker>
-    </el-form-item>
-    <el-form-item label="応募終了日時">
-      <el-date-picker
-        v-model="form.end_date"
-        type="datetime"
-        placeholder="終了日時">
-      </el-date-picker>
+    <el-form-item label="更新日時">
+      {{form.updated_at}}
     </el-form-item>
     <el-form-item >
       <el-button type="default" @click="() => (this.$router.push('.'))">戻る</el-button>
@@ -55,30 +32,21 @@
 
 <script>
 
+import Axios from 'axios'
+import _ from 'lodash'
+
 export default {
-  name: 'CampaignEditor',
+  name: 'EntryEditor',
   props: {
     input: Object,
+    apiPath: String,
     save: Function,
     remove: Function
   },
   data () {
     return {
-      dailyIncrementTimeOptions: [],
-      form: {
-        code: '',
-        name: '',
-        total: 0,
-        limit: 0,
-        rate: 0.0,
-        remain: 0,
-        start_date: '',
-        update: {
-            daily_increment: 0,
-            daily_increment_time: 0
-        },
-        end_date: ''
-      }
+      stateLabels: [],
+      form: {}
     }
   },
   watch: {
@@ -87,9 +55,9 @@ export default {
     }
   },
   mounted () {
-    for(let i = 0; i < 24; i++) {
-      this.dailyIncrementTimeOptions.push({ value: i, label: i + '時' })
-    }
+    Axios.get(this.apiPath + '/state_list').then((res) => {
+      this.stateLabels = _.map(res.data, (data,i) => { return {label: data.label, value: i} })
+    })
   },
   methods: {
     submitForm () {
