@@ -14,6 +14,11 @@
          <el-col :offset="1" :span="21">
             <h2 class="h2">Entries <small >応募状況一覧 </small></h2>
           </el-col>
+          <el-col :offset="20" :span="2">
+            <el-button type="primary" @click="() => (this.$router.push('entries/chart'))">
+              グラフ表示
+            </el-button>
+          </el-col>
         </el-header >
       </el-row>
       <Pagination :handleCurrentChange="handleCurrentChange" :pagination="pagination" />
