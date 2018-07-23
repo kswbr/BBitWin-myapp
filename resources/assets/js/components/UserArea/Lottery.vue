@@ -37,7 +37,7 @@
               width="140">
               <template slot-scope="scope">
                 <el-button type="text" @click="editRow(scope.row)" >編集</el-button>
-                <el-button @click="showEntry(scope.row)">応募</el-button>
+                <el-button type="text" @click="showEntry(scope.row)">応募<i class="el-icon-arrow-right"></i></el-button>
               </template>
             </el-table-column>
 

@@ -37,8 +37,8 @@ class AdminController extends Controller
         $response = $http->post(env('OAUTH2_URL') . '/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
-                'client_id' => env("PASSPORT_CLIENT_ID"),
-                'client_secret' => env("PASSPORT_CLIENT_SECRET"),
+                'client_id' => config("passport.client_id",env("PASSPORT_CLIENT_ID")),
+                'client_secret' => config("passport.client_secret",env("PASSPORT_CLIENT_SECRET")),
                 'username' => $request->input("username"),
                 'password' => $request->input("password"),
                 'scope' => '',
