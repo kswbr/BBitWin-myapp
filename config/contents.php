@@ -24,10 +24,10 @@ return [
     ],
     "state_data" => [
       ["label" =>  "初期状態", "css_style" => "warning"],
-      ["label" =>  "落選", "css_style" => "danger"],
+      ["label" =>  "落選", "css_style" => "info"],
       ["label" =>  "当選（未応募）", "css_style" => "success"],
-      ["label" =>  "当選", "css_style" => "info"],
-      ["label" =>  "当選（有効期限切れ）", "css_style" => "danger"],
+      ["label" =>  "当選", "css_style" => "success"],
+      ["label" =>  "当選（有効期限切れ）", "css_style" => "warning"],
       ["label" =>  "特別当選（未応募）", "css_style" => "success"]
     ]
   ],

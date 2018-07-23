@@ -18,11 +18,20 @@ class EntryController extends Controller
     ) {
         $this->middleware('checkIfCampaignBelongsToProject');
         $this->middleware('checkIfLotteryBelongsToCampaign');
-        $this->middleware('checkIfEntryBelongsToLottery',["except" => ["index","chart"]]);
+        $this->middleware('checkIfEntryBelongsToLottery',["except" => ["index","state_list","chart"]]);
         $this->lotteryService = $lotteryService;
         $this->entryService = $entryService;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function state_list(Request $request, $campaign_id, $lottery_id)
+    {
+        return response(config("contents.entry.state_data"));
+    }
 
     /**
      * Display a listing of the resource.
