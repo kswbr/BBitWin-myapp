@@ -34,4 +34,11 @@ class Vote extends Model
         return $this->hasMany(Vote\Count::class,'vote_code','code');
     }
 
+    public function scopeCountsByChoice($query, $choice){
+        return $query->withCount(["counts" => function($query) use ($choice){
+            $query->where("choice",$choice);
+        }]);
+    }
+
+
 }
