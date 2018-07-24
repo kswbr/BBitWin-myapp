@@ -29,4 +29,9 @@ class Vote extends Model
         $query->where("end_date",">",Carbon::now());
         return $query;
     }
+
+    public function counts() {
+        return $this->hasMany(Vote\Count::class,'vote_code','code');
+    }
+
 }

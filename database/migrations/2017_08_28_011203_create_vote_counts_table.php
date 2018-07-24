@@ -17,7 +17,7 @@ class CreateVoteCountsTable extends Migration
             $table->increments('id');
             $table->char('choice',100);
             $table->char('vote_code',100)->nullable();
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('player_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

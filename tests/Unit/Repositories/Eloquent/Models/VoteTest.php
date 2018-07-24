@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 use App\Repositories\Eloquent\Models\Player;
 use App\Repositories\Eloquent\Models\Vote;
+use App\Repositories\Eloquent\Models\Vote\Count;
 use App\Repositories\Eloquent\Models\Entry;
 use App\Repositories\Eloquent\Models\Campaign;
 
@@ -64,6 +65,13 @@ class VoteTest extends TestCase
         $vote = factory(Vote::class)->create(["project" => "test"]);
         $data = Vote::project("test")->first();
         $this->assertEquals($data->id, $vote->id);
+    }
+
+    public function testCountRelation() {
+        $vote = factory(Vote::class)->create(["name" => "test"]);
+        $count = factory(Count::class)->create(["vote_code" => $vote->code]);
+
+        $this->assertEquals($vote->counts->count(), 1);
     }
 
 }
