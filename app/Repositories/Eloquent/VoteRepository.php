@@ -82,7 +82,7 @@ class VoteRepository implements VoteRepositoryInterface, BaseRepositoryInterface
     public function getParsedChoiceList($project, $code)
     {
         $vote = $this->getByProjectAndCode($project, $code);
-        $list = explode("\n",$vote->choice);
+        $list = array_filter(explode("\n",$vote->choice));
         $parsed_list = [];
 
         foreach($list as $key => $val){
@@ -102,6 +102,19 @@ class VoteRepository implements VoteRepositoryInterface, BaseRepositoryInterface
         $vote = $this->getByProjectAndCode($project, $code);
         return $vote->counts()->select(["id","choice","created_at"])->get();
     }
+
+    public function choice($project, $code, $choice)
+    {
+        $parsed_list = $this->getParsedChoiceList($project, $code);
+
+        if (!isset($parsed_list[$choice])) {
+          return null;
+        }
+
+        $vote = $this->getByProjectAndCode($project, $code);
+        return $vote->counts()->create(["choice" => $choice]);
+    }
+
 
     public function getState($project, $code)
     {
