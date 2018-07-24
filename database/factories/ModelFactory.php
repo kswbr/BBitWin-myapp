@@ -90,7 +90,7 @@ $factory->define(App\Repositories\Eloquent\Models\Entry::class, function (Faker\
     ];
 });
 
-$factory->define(App\Vote::class, function (Faker\Generator $faker) {
+$factory->define(App\Repositories\Eloquent\Models\Vote::class, function (Faker\Generator $faker) {
     return [
         "name" => "テストキャンペーン",
         "choice" => "sample_1,TEST\nsample_2,TEST2\nsample_3,TEST3\n\n",
@@ -102,7 +102,7 @@ $factory->define(App\Vote::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Vote\Count::class, function (Faker\Generator $faker) {
+$factory->define(App\Repositories\Eloquent\Models\Vote\Count::class, function (Faker\Generator $faker) {
     return [
         "choice" => "sample_1",
         'player_id' => function () {
