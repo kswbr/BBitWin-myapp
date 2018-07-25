@@ -1,39 +1,22 @@
 <template>
   <el-form :model="form" status-icon label-width="160px" >
-    <el-form-item label="抽選賞品コード">
-      <el-input :disabled="input.code !== ''" placeholder="example_lottery_code" v-model="form.code"/>
+    <el-form-item label="投票イベントコード">
+      <el-input :disabled="input.code !== ''" placeholder="example_vote_code" v-model="form.code"/>
     </el-form-item>
-    <el-form-item label="抽選賞品名">
-      <el-input placeholder="サンプル賞品プレゼント" v-model="form.name"/>
+    <el-form-item label="投票イベント名">
+      <el-input placeholder="サンプル投票イベント" v-model="form.name"/>
     </el-form-item>
-    <el-form-item label="賞品総数">
-      <el-input placeholder="100" v-model="form.total">
-        <template slot="append">個</template>
-      </el-input>
+    <el-form-item label="選択肢">
+      <el-input type="textarea" rows="10" placeholder="choice_1,選択肢
+choice_2,選択肢B
+choice_3,選択肢C
+choice_4,選択肢D" v-model="form.choice"></el-input>
     </el-form-item>
-    <el-form-item label="本日の賞品残り数">
-      {{form.remaining}} 個
+    <el-form-item label="公開状態">
+      <el-checkbox v-model="form.active">公開状態にする</el-checkbox>
     </el-form-item>
-    <el-form-item label="当選制限数">
-      <el-input placeholder="10" v-model="form.limit">
-        <template slot="append">個</template>
-      </el-input>
-    </el-form-item>
-    <el-form-item  label="当選制限緩和の時間">
-      <el-select v-model="form.daily_increment_time" placeholder="0時">
-        <el-option
-          v-for="item in dailyIncrementTimeOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="一日ごとの制限緩和数">
-      <el-input :span="8" placeholder="10" v-model="form.daily_increment">
-        <template slot="append">個</template>
-      </el-input>
-    </el-form-item>
+
+
     <el-form-item label="応募開始日時">
       <el-date-picker
         v-model="form.start_date"
@@ -71,12 +54,8 @@ export default {
       form: {
         code: '',
         name: '',
-        total: 0,
-        limit: 0,
-        rate: 0.0,
-        remaining: 0,
-        daily_increment: 0,
-        daily_increment_time: 0,
+        choice: '',
+        active: false,
         start_date: '',
         end_date: ''
       }
@@ -88,9 +67,6 @@ export default {
     }
   },
   mounted () {
-    for(let i = 0; i < 24; i++) {
-      this.dailyIncrementTimeOptions.push({ value: i, label: i + '時' })
-    }
   },
   methods: {
     submitForm () {

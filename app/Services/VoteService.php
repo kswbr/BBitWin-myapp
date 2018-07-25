@@ -86,8 +86,8 @@ class VoteService
             "code" => $code,
             "choice" => $choice,
             "active" => $active,
-            "start_date" => $start_date,
-            "end_date" => $end_date,
+            "start_date" => new Carbon($start_date),
+            "end_date" => new Carbon($end_date),
             "project" => $project
         ]);
     }
