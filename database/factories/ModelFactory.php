@@ -96,8 +96,8 @@ $factory->define(App\Repositories\Eloquent\Models\Vote::class, function (Faker\G
         "choice" => "sample_1,TEST\nsample_2,TEST2\nsample_3,TEST3\n\n",
         'code' => uniqid(rand()),
         "active" => true,
-        "start_date" => Carbon::yesterday(),
-        "end_date" => Carbon::tomorrow(),
+        "start_date" => (string)Carbon::yesterday(),
+        "end_date" => (string)Carbon::tomorrow(),
         "project" => "testcampaign",
     ];
 });

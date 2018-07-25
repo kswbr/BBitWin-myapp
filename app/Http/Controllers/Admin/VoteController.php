@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\CampaignService;
 use App\Services\VoteService;
 use App\Services\ProjectService;
 use Illuminate\Http\Request;
@@ -17,7 +16,7 @@ class VoteController extends Controller
         VoteService $voteService,
         ProjectService $projectService
     ) {
-        $this->middleware('checkIfVoteBelongsToProject');
+        $this->middleware('checkIfVoteBelongsToProject',["except" => ["index","store"]]);
         $this->projectService = $projectService;
         $this->voteService = $voteService;
     }
@@ -27,10 +26,16 @@ class VoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($campaign_id, Request $request)
+    public function index(Request $request)
     {
         $project = $this->projectService->getCode();
-        return response($this->voteService->getPageInCampaign(config("contents.admin.show_page_count"),$project));
+        return response($this->voteService->getPageInProject(config("contents.admin.show_page_count"),$project));
+    }
+
+    public function chart(Request $request, $id) {
+        $project = $this->projectService->getCode();
+        $vote = $this->voteService->getById($id);
+        return response($this->voteService->getDataSet($project, $vote));
     }
 
     /**
@@ -55,6 +60,7 @@ class VoteController extends Controller
             $request->input("name"),
             $request->input("code"),
             $request->input("choice"),
+            $request->input("active"),
             $request->input("start_date"),
             $request->input("end_date"),
             $project
@@ -69,7 +75,7 @@ class VoteController extends Controller
      * @param  \App\Vote  $vote
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $campaign_id, $id)
+    public function show(Request $request, $id)
     {
         $data = $this->voteService->getById($id);
         return response($data->toArray(), 200);

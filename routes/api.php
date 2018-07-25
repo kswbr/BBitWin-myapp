@@ -24,4 +24,5 @@ Route::resource('campaigns', 'Admin\CampaignController')->middleware('auth:api')
 Route::resource('campaigns.lotteries', 'Admin\LotteryController')->middleware('auth:api');
 Route::resource('campaigns.lotteries.entries', 'Admin\EntryController')->middleware('auth:api');
 
-
+Route::get('votes/{vote}/chart','Admin\VoteController@chart')->middleware('auth:api');
+Route::resource('votes', 'Admin\VoteController')->middleware('auth:api');
