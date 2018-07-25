@@ -29,13 +29,14 @@ class VoteService
             return $item["choice"];
         });
 
-        $grouped = array_map( function($group) {
-            return $group->groupBy(function($item, $key) {
+        $grouped = [];
+        foreach($groupByChoice as $group) {
+            $grouped[] = $group->groupBy(function($item, $key) {
                 return Carbon::parse($item["created_at"])->format("Y-m-d-h");
-            });
-        }, $groupByChoice);
+            })->toArray();
+        }
 
-        return $grouped->toArray();
+        return $grouped;
     }
 
     public function choice($project, $vote, $choice)
