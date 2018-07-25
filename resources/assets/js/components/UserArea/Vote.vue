@@ -24,9 +24,9 @@
         <el-col :offset="2" :span="20">
           <el-table v-loading="loading" :data="tableData" >
             <el-table-column prop="code" label="コード" width="140"/>
-            <el-table-column prop="name" label="投票イベント名称" width="300"/>
-            <el-table-column prop="start_date" label="開始　日時" width="100"/>
-            <el-table-column prop="end_date" label="終了　日時" width="100"/>
+            <el-table-column prop="name" label="投票イベント名称" />
+            <el-table-column prop="start_date" label="開始日時" width="100"/>
+            <el-table-column prop="end_date" label="終了日時" width="100"/>
             <el-table-column
               fixed="right"
               label="操作"
