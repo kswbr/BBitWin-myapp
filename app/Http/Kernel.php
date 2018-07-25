@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checkIfCampaignBelongsToProject' => \App\Http\Middleware\CheckIfCampaignBelongsToProject::class,
+        'checkIfVoteBelongsToProject' => \App\Http\Middleware\CheckIfVoteBelongsToProject::class,
         'checkIfLotteryBelongsToCampaign' => \App\Http\Middleware\CheckIfLotteryBelongsToCampaign::class,
         'checkIfEntryBelongsToLottery' => \App\Http\Middleware\CheckIfEntryBelongsToLottery::class
     ];
