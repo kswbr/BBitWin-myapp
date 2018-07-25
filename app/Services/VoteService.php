@@ -62,6 +62,14 @@ class VoteService
     public function update($id, array $inputs)
     {
         unset($inputs["code"]);
+
+        if (isset($inputs["start_date"])) {
+            $inputs["start_date"] = new Carbon($inputs["start_date"]);
+        }
+        if (isset($inputs["end_date"])) {
+            $inputs["end_date"] = new Carbon($inputs["end_date"]);
+        }
+
         $this->repository->update($id,$inputs);
     }
 

@@ -100,7 +100,6 @@ class LotteryController extends Controller
             'name' => 'required|max:255',
             'rate' => 'required|numeric|max:100|min:0',
             'total' => 'required|integer|min:0',
-            'code' => 'required|string|unique:lotteries',
             'start_date' => 'required|string',
             'end_date' => 'required|string',
             'daily_increment' => 'required|integer|min:0',

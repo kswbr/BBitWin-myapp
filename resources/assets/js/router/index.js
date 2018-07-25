@@ -13,6 +13,7 @@ import EntryEdit from '../components/UserArea/Entry/Edit'
 import EntryChart from '../components/UserArea/Entry/Chart'
 import Vote from '../components/UserArea/Vote'
 import VoteCreate from '../components/UserArea/Vote/Create'
+import VoteEdit from '../components/UserArea/Vote/Edit'
 
 const router = new Router({
   mode: 'history',
@@ -38,7 +39,8 @@ const router = new Router({
         { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries/chart', component: EntryChart },
         { path: 'campaigns/:campaignId/lotteries/:lotteryId/entries/:id', component: EntryEdit },
         { path: 'votes', component: Vote },
-        { path: 'votes/create', component: VoteCreate }
+        { path: 'votes/create', component: VoteCreate },
+        { path: 'votes/:id', component: VoteEdit }
       ]
     }
 

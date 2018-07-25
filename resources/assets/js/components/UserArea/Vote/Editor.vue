@@ -13,10 +13,8 @@ choice_3,選択肢C
 choice_4,選択肢D" v-model="form.choice"></el-input>
     </el-form-item>
     <el-form-item label="公開状態">
-      <el-checkbox v-model="form.active">公開状態にする</el-checkbox>
+      <el-checkbox v-model="form.active === 1">公開状態にする</el-checkbox>
     </el-form-item>
-
-
     <el-form-item label="応募開始日時">
       <el-date-picker
         v-model="form.start_date"
@@ -50,7 +48,6 @@ export default {
   },
   data () {
     return {
-      dailyIncrementTimeOptions: [],
       form: {
         code: '',
         name: '',

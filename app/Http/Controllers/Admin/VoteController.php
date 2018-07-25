@@ -93,7 +93,6 @@ class VoteController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'choice' => 'required|string|check_vote_choice',
-            'code' => 'required|string|unique:votes',
             'start_date' => 'required|string',
             'end_date' => 'required|string'
         ]);

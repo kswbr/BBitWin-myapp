@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     fetch () {
-      Axios.get('/api/votes/' + this.$route.params.voteId).then((res) => {
+      Axios.get('/api/votes/' + this.$route.params.id).then((res) => {
         this.form = Object.assign({}, this.form, res.data)
       }).catch((e) => (console.error(e)))
     },
