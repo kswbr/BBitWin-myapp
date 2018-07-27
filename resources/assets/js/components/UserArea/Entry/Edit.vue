@@ -4,8 +4,8 @@
       <el-row>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{path:'../../../../'}">キャンペーン</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{path:'../../'}" >抽選賞品</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'../../../.'}">キャンペーン</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'../../.'}" >抽選賞品</el-breadcrumb-item>
           <el-breadcrumb-item :to="{path:'.'}">応募状況</el-breadcrumb-item>
           <el-breadcrumb-item >{{form.id}}</el-breadcrumb-item>
         </el-breadcrumb>

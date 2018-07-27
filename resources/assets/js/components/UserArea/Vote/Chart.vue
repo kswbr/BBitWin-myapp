@@ -1,19 +1,18 @@
 <template>
-  <el-container id="entryChart" >
+  <el-container id="voteChart" >
     <el-main>
       <el-row>
         <el-breadcrumb separator="/">
+
           <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{path:'../../../../.'}">キャンペーン</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{path:'../../.'}" >抽選賞品</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{path:'.'}">応募状況</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'../.'}" >投票イベント</el-breadcrumb-item>
           <el-breadcrumb-item>グラフ表示</el-breadcrumb-item>
         </el-breadcrumb>
       </el-row>
       <el-row>
         <el-header >
          <el-col :offset="1" :span="21">
-            <h2 class="h2">Entry Chart <small >グラフ表示 </small></h2>
+            <h2 class="h2">Vote Chart <small >グラフ表示 </small></h2>
           </el-col>
         </el-header >
       </el-row>
@@ -38,11 +37,10 @@ import _ from 'lodash'
 import Chart from 'Chart.js'
 
 export default {
-  name: 'EntryChart',
+  name: 'VoteChart',
   data () {
     return {
         datasets: {
-            all: null
         },
         configBase: {
             type: 'line',
@@ -85,36 +83,46 @@ export default {
   },
   methods: {
     fetch () {
-      Axios.get('/api/campaigns/' + this.$route.params.campaignId + '/lotteries/' + this.$route.params.lotteryId + '/entries/chart').then((res) => {
-        this.datasets.all = Object.assign({}, this.datasets.all, res.data)
+      Axios.get('/api/votes/' + this.$route.params.id + '/chart').then((res) => {
+        this.datasets = Object.assign({}, this.datasets, res.data)
         this.createDatasets()
       }).catch((e) => (console.error(e)))
     },
     createDatasets () {
 
-        const filterByState = (states,dataset) => {
-            let copyDataset = _.assign({}, dataset)
-            _.each(copyDataset, (v, k) => {
-                copyDataset[k] = _.filter(v, (nv) => {
-                    return _.indexOf(states, nv.state) >= 0
-                })
-            })
-            return copyDataset
-        }
-
         const datasetListTotal = [
-            this.createDataset(this.datasets.all,"応募合計数推移","#ff6384"),
-            this.createDataset(filterByState([2,3],this.datasets.all) ,"当選者推移","#36a2eb")
+            /* this.createDataset(this.datasets.all,"応募合計数推移","#ff6384"), */
+            /* this.createDataset(filterByState([2,3],this.datasets.all) ,"当選者推移","#36a2eb") */
         ]
 
         const datasetListSpot = [
-            this.createDataset(this.datasets.all,"応募合計数推移","#ff6384",false),
-            this.createDataset(filterByState([2,3],this.datasets.all) ,"当選者推移","#36a2eb",false)
+            /* this.createDataset(this.datasets,"応募合計数推移","#ff6384",false), */
+            /* this.createDataset(filterByState([2,3],this.datasets.all) ,"当選者推移","#36a2eb",false) */
         ]
 
+        let datasetAll = {}
+        let index = 0
+        const colorList = [
+            "#ff6384",
+            "#36a2eb",
+            "#58Fea9",
+            "#4a3bcd",
+            "#febcd2",
+        ]
+        console.log(this.datasets)
+        let firstKey = null
+
+        _.each(this.datasets, (dataset, key) => {
+            if (!firstKey) {
+                firstKey = key
+            }
+            datasetListTotal.push(this.createDataset(dataset, key, colorList[index]))
+            datasetListSpot.push(this.createDataset(dataset, key, colorList[index],false))
+            index++
+        })
 
         const createDateLabel = (dataset) =>{
-            const labels = _.keys(dataset);
+            const labels = _.keys(dataset).sort();
             return _.map(labels,(label) => {
                 const list = label.split("-");
                 return list[0]  + "/" + list[1] + "/" + list[2] + " " + list[3] + ":00";
@@ -124,7 +132,7 @@ export default {
 
         const configTotal = _.assign({},this.configBase,{
             data: {
-                labels: createDateLabel(this.datasets.all),
+                labels: createDateLabel(this.datasets[firstKey]),
                 datasets: datasetListTotal,
             },
             options:{
@@ -136,7 +144,7 @@ export default {
         })
         const configSpot = _.assign({},this.configBase,{
             data: {
-                labels: createDateLabel(this.datasets.all),
+                labels: createDateLabel(this.datasets[firstKey]),
                 datasets: datasetListSpot,
             },
             options:{

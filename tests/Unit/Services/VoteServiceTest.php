@@ -97,6 +97,7 @@ class VoteServiceTest extends TestCase
     public function testGetDataSet()
     {
         $this->mockRepository->shouldReceive('getByProjectAndCode')->passthru();
+        $this->mockRepository->shouldReceive('getParsedChoiceList')->passthru();
         $this->mockRepository->shouldReceive('getCounts')->passthru();
 
         $vote = factory(Vote::class)->create();

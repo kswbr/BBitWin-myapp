@@ -24,14 +24,15 @@ class VoteService
     public function getDataSet($project, $vote)
     {
         $data = $this->repository->getCounts($project, $vote->code);
+        $choice_list = $this->repository->getParsedChoiceList($project, $vote->code);
 
         $groupByChoice = $data->groupBy(function($item, $key){
             return $item["choice"];
         });
 
         $grouped = [];
-        foreach($groupByChoice as $group) {
-            $grouped[] = $group->groupBy(function($item, $key) {
+        foreach($groupByChoice as $key => $group) {
+            $grouped[$choice_list[$key]] = $group->groupBy(function($item, $key) {
                 return Carbon::parse($item["created_at"])->format("Y-m-d-h");
             })->toArray();
         }

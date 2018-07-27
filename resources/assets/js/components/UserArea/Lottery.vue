@@ -4,7 +4,7 @@
       <el-row>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{path:'../../.'}">キャンペーン</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'../.'}">キャンペーン</el-breadcrumb-item>
           <el-breadcrumb-item>抽選賞品</el-breadcrumb-item>
         </el-breadcrumb>
       </el-row>

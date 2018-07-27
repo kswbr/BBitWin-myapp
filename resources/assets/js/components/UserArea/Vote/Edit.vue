@@ -4,14 +4,14 @@
       <el-row>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{path:'/admin/userarea'}">Home</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{path:'.'}" >抽選賞品</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{path:'.'}" >投票イベント</el-breadcrumb-item>
           <el-breadcrumb-item>{{form.name}}</el-breadcrumb-item>
         </el-breadcrumb>
       </el-row>
       <el-row>
         <el-header >
          <el-col :offset="1" :span="21">
-            <h2 class="h2">Edit Vote <small >抽選賞品編集 </small></h2>
+            <h2 class="h2">Edit Vote <small >投票イベント編集 </small></h2>
           </el-col>
         </el-header >
       </el-row>
