@@ -28,3 +28,5 @@ Route::resource('campaigns.lotteries.entries', 'Admin\EntryController')->middlew
 
 Route::get('votes/{vote}/chart','Admin\VoteController@chart')->middleware('auth:api');
 Route::resource('votes', 'Admin\VoteController')->middleware('auth:api');
+
+Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect');
