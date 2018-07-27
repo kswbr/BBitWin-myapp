@@ -6,12 +6,37 @@
 
 <script>
 import { mapState } from 'vuex'
+import { Message } from 'element-ui'
+import _ from 'lodash'
 
 export default {
   computed: {
-    ...mapState(['inRequest'])
+    ...mapState(['inRequest','errors'])
   },
   mounted () {
+  },
+  watch: {
+    errors: {
+      handler: function () {
+        if (!_.isEmpty(this.errors)) {
+            let messageLabel = ""
+            _.each(this.errors.messages, (data) => {
+                _.each(data, (message) => {
+                    messageLabel += "<p style='margin:10px;'>" + message + "</p>"
+                })
+            })
+            this.$message.error({
+                dangerouslyUseHTMLString: true,
+                message: messageLabel,
+                duration: 0,
+                showClose: true
+            });
+        } else {
+            Message.closeAll()
+        }
+      },
+      deep: true
+    }
   }
 }
 </script>

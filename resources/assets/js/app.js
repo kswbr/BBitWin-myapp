@@ -51,6 +51,8 @@ Axios.interceptors.response.use((response) => {
   // トークンが切れたりして401のときに ログインへ戻す
   if (error.response.status === 401) {
     store.commit(types.API_REQUEST_FAILED, { label: '401', error })
+  } else if (error.response.status === 422) {
+    store.commit(types.FORM_VALIDATION_FAILED, { label: '422', messages: error.response.data.errors })
   }
 
   return Promise.reject(error.response)

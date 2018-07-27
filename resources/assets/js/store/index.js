@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 
+import { Message } from 'element-ui'
 import * as types from './mutation-types'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -15,6 +16,7 @@ const state = {
   route: {},
   requestConfig: {},
   requestResponse: {},
+  errors: {},
   debug,
   devenv
 }
@@ -27,11 +29,11 @@ const mutations = {
   [types.API_REQUEST_END] (state, payload) {
     state.inRequest = false
     state.requestResponse = Object.assign({}, payload.response)
+    state.errors = {}
   },
   [types.API_REQUEST_FAILED] (state, payload) {
     state.inRequest = false
     state.error = payload.error
-    console.error(state.error)
   },
 
   [types.LOGGED_IN] (state, auth) {
@@ -46,8 +48,15 @@ const mutations = {
     state.loggedIn = false
   },
   [types.CHANGE_ROUTE] (state, payload) {
+    Message.closeAll()
     state.route = Object.assign({}, payload)
+  },
+  [types.FORM_VALIDATION_FAILED] (state, payload) {
+    Message.closeAll()
+    state.inRequest = false
+    state.errors = Object.assign({}, payload)
   }
+
 }
 
 const actions = {
