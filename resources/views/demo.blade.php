@@ -64,8 +64,8 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
     $("#twitterLogin").click(function(){
-        axios.get('/api/oauth/twitter/redirect',{withCredentials: true}).then(function(data){
-            window.location.href = data.redirect_url
+        axios.get('/api/oauth/twitter/redirect',{withCredentials: true}).then(function(res){
+            window.location.href = res.data.redirect_url
         }).catch(function(e) {
             console.error({ message: e.message, statusCode: e.statusCode })
         })
