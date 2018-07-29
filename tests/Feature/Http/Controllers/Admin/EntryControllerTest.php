@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Passport;
 
 use App\Repositories\Eloquent\Models\Lottery;
 use App\Repositories\Eloquent\Models\Entry;
@@ -45,6 +46,7 @@ class EntryControllerTest extends TestCase
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . '/entries')
                          ->assertStatus(302);
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . '/entries')
                          ->assertStatus(200);
@@ -61,6 +63,7 @@ class EntryControllerTest extends TestCase
         $entry = $entries->first();
 
         $user = factory(User::class)->create();
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . '/entries/'. $entry->id)
                          ->assertStatus(200)
@@ -75,6 +78,7 @@ class EntryControllerTest extends TestCase
 
         $user = factory(User::class)->create();
         $ret = $this->service->getDataSetInLottery($lottery);
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . '/entries/chart')
                          ->assertStatus(200)
@@ -99,6 +103,7 @@ class EntryControllerTest extends TestCase
         $entry = $entries->first();
 
         $user = factory(User::class)->create();
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $wrong_lottery->id . '/entries/'. $entry->id)
                          ->assertStatus(403)
@@ -120,6 +125,7 @@ class EntryControllerTest extends TestCase
 
         $user = factory(User::class)->create();
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("DELETE",'/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . '/entries/' . $entry->id)
                          ->assertStatus(201);
@@ -140,6 +146,7 @@ class EntryControllerTest extends TestCase
         $input = $entry->toArray();
         $input["state"] =  config("contents.entry.state.win_posting_expired");
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("PATCH",'/api/campaigns/'.$campaign->id.'/lotteries/' . $lottery->id . '/entries/' . $entry->id,$input)
                          ->assertStatus(201);

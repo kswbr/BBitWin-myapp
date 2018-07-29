@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Passport;
 
 use App\Repositories\Eloquent\Models\Vote;
 use App\Repositories\Eloquent\Models\Vote\Count;
@@ -44,6 +45,7 @@ class VoteControllerTest extends TestCase
                          ->get('/api/votes')
                          ->assertStatus(302);
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/votes')
                          ->assertStatus(200);
@@ -58,6 +60,7 @@ class VoteControllerTest extends TestCase
         $vote = $votes->first();
 
         $user = factory(User::class)->create();
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/votes/' . $vote->id)
                          ->assertStatus(200)
@@ -73,6 +76,7 @@ class VoteControllerTest extends TestCase
 
         $user = factory(User::class)->create();
         $ret = $this->service->getDataSet($project, $vote);
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/votes/' . $vote->id . '/chart')
                          ->assertStatus(200)
@@ -92,6 +96,7 @@ class VoteControllerTest extends TestCase
         $input["name"] =  "CREATED_NAME" ;
         $input["code"] =  "CREATED_CODE" ;
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("POST",'/api/votes/',$input)
                          ->assertStatus(201);
@@ -113,6 +118,7 @@ class VoteControllerTest extends TestCase
 
         $user = factory(User::class)->create();
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("DELETE",'/api/votes/' . $vote->id)
                          ->assertStatus(201);
@@ -136,6 +142,7 @@ class VoteControllerTest extends TestCase
         $input["code"] =  "UPDATED_CODE" ;
         $input["project"] =  "UPDATED_PROJECT" ;
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("PATCH",'/api/votes/' . $vote->id,$input)
                          ->assertStatus(201);

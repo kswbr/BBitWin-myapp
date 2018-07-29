@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Passport;
 
 use App\Repositories\Eloquent\Models\Campaign;
 use App\Services\CampaignService;
@@ -43,6 +44,7 @@ class CampaignControllerTest extends TestCase
                          ->get('/api/campaigns')
                          ->assertStatus(302);
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns')
                          ->assertStatus(200);
@@ -57,6 +59,7 @@ class CampaignControllerTest extends TestCase
         $campaign = $campaigns->first();
 
         $user = factory(User::class)->create();
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $campaign->id)
                          ->assertStatus(200)
@@ -76,6 +79,7 @@ class CampaignControllerTest extends TestCase
         $input["code"] =  "CREATED_CODE" ;
         $input["limited_days"] =  2 ;
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("POST",'/api/campaigns/',$input)
                          ->assertStatus(201);
@@ -97,6 +101,7 @@ class CampaignControllerTest extends TestCase
 
         $user = factory(User::class)->create();
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("DELETE",'/api/campaigns/' . $campaign->id)
                          ->assertStatus(201);
@@ -121,6 +126,7 @@ class CampaignControllerTest extends TestCase
         $input["project"] =  "UPDATED_PROJECT" ;
         $input["limited_days"] =  2 ;
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("PATCH",'/api/campaigns/' . $campaign->id,$input)
                          ->assertStatus(201);

@@ -67,6 +67,8 @@ class Kernel extends HttpKernel
         'checkIfCampaignBelongsToProject' => \App\Http\Middleware\CheckIfCampaignBelongsToProject::class,
         'checkIfVoteBelongsToProject' => \App\Http\Middleware\CheckIfVoteBelongsToProject::class,
         'checkIfLotteryBelongsToCampaign' => \App\Http\Middleware\CheckIfLotteryBelongsToCampaign::class,
-        'checkIfEntryBelongsToLottery' => \App\Http\Middleware\CheckIfEntryBelongsToLottery::class
+        'checkIfEntryBelongsToLottery' => \App\Http\Middleware\CheckIfEntryBelongsToLottery::class,
+        'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
+        'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class
     ];
 }

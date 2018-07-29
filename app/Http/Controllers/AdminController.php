@@ -41,7 +41,7 @@ class AdminController extends Controller
                 'client_secret' => config("passport.client_secret",env("PASSPORT_CLIENT_SECRET")),
                 'username' => $request->input("username"),
                 'password' => $request->input("password"),
-                'scope' => '',
+                'scope' => 'check-admin',
             ],
         ]);
 
