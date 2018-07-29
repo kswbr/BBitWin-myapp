@@ -19,7 +19,7 @@ class CreatePlayersTable extends Migration
             $table->string('provider_id');
             $table->string('provider');
             $table->integer('type')->default(1);
-            $table->string('token')->nullable();
+            $table->json('info')->nullable();
             $table->string('project');
             $table->timestamps();
 

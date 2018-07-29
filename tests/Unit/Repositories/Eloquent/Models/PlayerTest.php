@@ -34,6 +34,7 @@ class PlayerTest extends TestCase
         $this->assertEquals("twitter",$player->provider);
         $data = Player::find($player->id);
         $this->assertEquals($player->id,$data->id);
+        $this->assertEquals($player->etc_data,["test" => 1]);
     }
 
     /**

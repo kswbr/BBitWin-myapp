@@ -31,7 +31,7 @@ $factory->define(App\Repositories\Eloquent\Models\Player::class, function (Faker
             return factory(App\User::class)->create()->id;
         },
         'provider_id' => uniqid(rand()),
-        'token' => uniqid(rand()),
+        'etc_data' => ["test" => 1],
         'provider' => 'twitter',
         'project' => 'TESTPROJECT'
     ];

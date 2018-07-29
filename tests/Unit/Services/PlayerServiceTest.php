@@ -41,15 +41,18 @@ class PlayerServiceTest extends TestCase
      */
     public function testSaveAndDestroy()
     {
-        $player = factory(Player::class)->create();
+        $user = factory(User::class)->create();
         $this->mockRepository->shouldReceive('store')
             ->with([
                 "provider_id" => "TESTprovider_id",
                 "provider" => "twitter",
-                //TODOTODOTODO
+                "project" => "testproject",
+                "etc_data" => ["test" => 1],
+                "user_id" => $user->id,
+                "type" => 1
             ])
             ->andReturn(true);
-        $data = $this->service->create( "TESTplayer", "TESTCODE", 1, "TESTPROJECT" );
+        $data = $this->service->create( "TESTprovider_id", "twitter", "testproject", ["test" => 1], $user );
         $this->assertTrue($data);
 
 

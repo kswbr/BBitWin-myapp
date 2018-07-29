@@ -42,15 +42,15 @@ class PlayerService
         $this->repository->update($id,$inputs);
     }
 
-    public function create($provider_id, $provider,  $project, $info, $user, $type = 1)
+    public function create($provider_id, $provider,  $project, $etc_data, $user, $type = 1)
     {
         return $this->repository->store([
             "provider_id" => $provider_id,
             "provider" => $provider,
-            "info" => $info,
             "project" => $project,
-            "type" => $type,
+            "etc_data" => $etc_data,
             "user_id" => $user->id,
+            "type" => $type,
         ]);
     }
 

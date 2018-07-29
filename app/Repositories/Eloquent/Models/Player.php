@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
-    protected $fillable = ['name', 'provider_id', 'token', 'provider', 'project', 'type'];
+    protected $fillable = ['user_id', 'provider_id', 'provider', 'project', 'type'];
+    protected $appends = ['etc_data'];
 
     public function scopeProject($query,string $project_code){
         return $query->where("project",$project_code);
@@ -27,5 +28,16 @@ class Player extends Model
     public function scopeProvider($query,$provider){
         return $query->where("provider",$provider);
     }
+
+    public function getEtcDataAttribute()
+    {
+        return json_decode($this->attributes['info'], true);
+    }
+
+    public function setEtcDataAttribute($value)
+    {
+        $this->attributes['info'] = json_encode($value, JSON_PRETTY_PRINT);
+    }
+
 
 }
