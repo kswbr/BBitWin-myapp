@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('demo');
 });
 
+Route::get('/callback', function () {
+    return view('demo.callback');
+});
+
+
 Auth::routes();
 
 Route::get('/admin', 'AdminController@index');

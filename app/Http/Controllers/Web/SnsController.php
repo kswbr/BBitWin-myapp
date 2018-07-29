@@ -18,15 +18,17 @@ class SnsController extends Controller
         $this->middleware('web');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function twitter_redirect()
     {
         $redirect_url = Socialite::driver('twitter')->redirect()->getTargetUrl();
         return response(["redirect_url" => $redirect_url]);
     }
+
+    // public function twitter_register()
+    // {
+    //     $redirect_url = Socialite::driver('twitter')->redirect()->getTargetUrl();
+    //     return response(["redirect_url" => $redirect_url]);
+    // }
+
 
 }

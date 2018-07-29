@@ -33,6 +33,11 @@ class PlayerRepository implements PlayerRepositoryInterface, BaseRepositoryInter
         return gettype($this->model);
     }
 
+    public function getProjectQuery($project)
+    {
+        return $this->model->project($project);
+    }
+
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {

@@ -22,6 +22,14 @@ class CreatePlayersTable extends Migration
             $table->string('token')->nullable();
             $table->string('project');
             $table->timestamps();
+
+            $table->unique(['provider', 'provider_id', 'type']);
+
+            $table->unsignedInteger('user_id');
+    	    $table->foreign('user_id')
+              ->references('id')
+              ->on('users')
+              ->onDelete('cascade');
         });
     }
 
