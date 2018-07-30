@@ -27,6 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         Passport::tokensCan([
             'check-admin' => 'check admin',
+            'instant-win' => 'instant win',
         ]);
         Passport::routes();
     }

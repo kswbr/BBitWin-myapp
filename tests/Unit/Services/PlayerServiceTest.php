@@ -52,7 +52,7 @@ class PlayerServiceTest extends TestCase
                 "type" => 1
             ])
             ->andReturn(true);
-        $data = $this->service->create( "TESTprovider_id", "twitter", "testproject", ["test" => 1], $user );
+        $data = $this->service->create( "testproject", "twitter", "TESTprovider_id", ["test" => 1], $user );
         $this->assertTrue($data);
 
 

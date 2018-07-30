@@ -27,5 +27,6 @@ class RepositoriesServiceProvider extends ServiceProvider
         \App::bind('App\Repositories\LotteryRepositoryInterface', 'App\Repositories\Eloquent\LotteryRepository');
         \App::bind('App\Repositories\EntryRepositoryInterface', 'App\Repositories\Eloquent\EntryRepository');
         \App::bind('App\Repositories\VoteRepositoryInterface', 'App\Repositories\Eloquent\VoteRepository');
+        \App::bind('App\Repositories\PlayerRepositoryInterface', 'App\Repositories\Eloquent\PlayerRepository');
     }
 }

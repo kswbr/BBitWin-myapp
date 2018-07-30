@@ -53,11 +53,12 @@
         var obj = {};
         variables.forEach(function(v, i) {
             var variable = v.split("=");
-            obj[variable[0]] = Number(variable[1]);
+            obj[variable[0]] = variable[1];
         });
         return obj;
     }
-    axios.get("/api/oauth/instantwin/login/twitter",{params: getQuery()}).then(function(ret){
+    axios.get("/api/oauth/instantwin/login/twitter",{params: getQuery(), withCredentials: true}).then(function(ret){
+      console.log(ret)
       return axios.get("/api/instantwin/run")
     }).then(function(ret){
       console.log(ret)

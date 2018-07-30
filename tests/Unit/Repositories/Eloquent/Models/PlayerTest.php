@@ -45,7 +45,6 @@ class PlayerTest extends TestCase
     public function testSearch()
     {
         $player = factory(Player::class)->create([
-            "name" => "test",
             "project" => "__TESTPROJECT__",
             "provider" => "facebook",
             "provider_id" => "facebook_id",
@@ -56,10 +55,9 @@ class PlayerTest extends TestCase
             ->type(2)
             ->provider("facebook")
             ->providerId("facebook_id")
-            ->name("test")
             ->first();
 
-        $this->assertEquals($data->name,$player->name);
+        $this->assertEquals($data->id,$player->id);
     }
 
 

@@ -3,11 +3,10 @@
 return [
     'supportsCredentials' => true,
     'allowedOrigins' => [
-        env('APP_URL')
+        'localhost:8083'
     ],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
     'maxAge' => 0,
-
 ];

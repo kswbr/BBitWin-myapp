@@ -61,7 +61,6 @@ class PlayerRepositoryTest extends TestCase
         $this->app->instance(PlayerRepository::class,$mock);
 
         $player = factory(Player::class)->create([
-            "name" => "test",
             "project" => "__TESTPROJECT__",
             "provider" => "facebook",
             "provider_id" => "facebook_id",
@@ -71,7 +70,7 @@ class PlayerRepositoryTest extends TestCase
         $mock->shouldReceive('findByPlayerInfo')->passthru();
 
         $data = $mock->FindByPlayerInfo("__TESTPROJECT__","facebook","facebook_id");
-        $this->assertEquals($data->name,$player->name);
+        $this->assertEquals($data->id,$player->id);
 
         $data = $mock->FindByPlayerInfo("__TESTPROJECT__","facebook","facebook_id",1);
         $this->assertNull($data);
