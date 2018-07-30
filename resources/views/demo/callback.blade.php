@@ -57,13 +57,17 @@
         });
         return obj;
     }
-    axios.get("/api/oauth/instantwin/login/twitter",{params: getQuery(), withCredentials: true}).then(function(ret){
-      console.log(ret)
-      return axios.get("/api/instantwin/run")
-    }).then(function(ret){
-      console.log(ret)
-    }).catch(function(e){
-      console.error(e)
+    $(document).ready(function(){
+        setTimeout(function() {
+             axios.get("/api/oauth/instantwin/login/twitter",{params: getQuery(), withCredentials: true}).then(function(ret){
+                console.log(ret)
+                return axios.get("/api/instantwin/run")
+             }).then(function(ret){
+                console.log(ret)
+             }).catch(function(e){
+                console.error(e)
+             })
+        },500)
     })
     </script>
   </body>

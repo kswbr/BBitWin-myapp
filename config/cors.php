@@ -3,10 +3,10 @@
 return [
     'supportsCredentials' => true,
     'allowedOrigins' => [
-        'localhost:8083'
+        'http://localhost:8083/'
     ],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
-    'maxAge' => 0,
+    'maxAge' => 1000,
 ];

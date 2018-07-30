@@ -31,5 +31,5 @@ Route::resource('campaigns.lotteries.entries', 'Admin\EntryController')->middlew
 Route::get('votes/{vote}/chart','Admin\VoteController@chart')->middleware('auth:api','scopes:check-admin');
 Route::resource('votes', 'Admin\VoteController')->middleware('auth:api','scopes:check-admin');
 
-Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect');
-Route::get('oauth/instantwin/login/twitter','Web\SnsController@twitter_register');
+Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect')->middleware('cors');
+Route::get('oauth/instantwin/login/twitter','Web\SnsController@twitter_register')->middleware('cors');

@@ -24,12 +24,11 @@ class SnsController extends Controller
         ProjectService $projectService
     )
     {
-        $this->middleware(['web','session']);
         $this->playerService = $playerService;
         $this->projectService = $projectService;
     }
 
-    public function twitter_redirect()
+    public function twitter_redirect(Request $request)
     {
         $redirect_url = Socialite::driver('twitter')->redirect()->getTargetUrl();
         return response(["redirect_url" => $redirect_url]);
@@ -37,7 +36,6 @@ class SnsController extends Controller
 
     public function twitter_register(Request $request)
     {
-        var_dump($request->session());
         $twitter_user = Socialite::driver('twitter')->user();
         $project = $this->projectService->getCode();
 
