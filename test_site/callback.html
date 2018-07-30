@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="ja">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -23,21 +23,9 @@
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
       <div class="col-md-5 p-lg-5 mx-auto my-5">
-        <h1 class="display-4 font-weight-normal">Punny headline</h1>
-        <p class="lead font-weight-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple's marketing pages.</p>
-        <a class="btn btn-outline-secondary"id="twitterLogin" href="#">Twitterログイン</a>
+        <h1 class="display-4 font-weight-normal">SNS連携中</h1>
       </div>
-      <div class="product-device box-shadow d-none d-md-block"></div>
-      <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
     </div>
-
-    <footer class="container py-5">
-      <div class="row">
-        <div class="col-12 col-md">
-          BBITWIN
-        </div>
-      </div>
-    </footer>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -58,16 +46,12 @@
         return obj;
     }
     $(document).ready(function(){
-        setTimeout(function() {
-             axios.get("/api/oauth/instantwin/login/twitter",{params: getQuery(), withCredentials: true}).then(function(ret){
-                console.log(ret)
-                return axios.get("/api/instantwin/run")
-             }).then(function(ret){
-                console.log(ret)
-             }).catch(function(e){
-                console.error(e)
-             })
-        },500)
+        axios.get("http://localhost:8083/api/oauth/instantwin/login/twitter",{params: getQuery(), withCredentials: true}).then(function(ret){
+            localStorage.setItem('token', ret.data.token);
+            window.location.href = 'instantwin.html'
+        }).catch(function(e){
+            console.error(e)
+        })
     })
     </script>
   </body>

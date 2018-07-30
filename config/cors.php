@@ -3,10 +3,10 @@
 return [
     'supportsCredentials' => true,
     'allowedOrigins' => [
-        'http://localhost:8083/'
+       env('CORS_URL')
     ],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
-    'maxAge' => 1000,
+    'maxAge' => 0,
 ];
