@@ -12,13 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('demo');
+    return view('welcome');
 });
-
-Route::get('/callback', function () {
-    return view('demo.callback');
-});
-
 
 Auth::routes();
 
