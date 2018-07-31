@@ -33,3 +33,4 @@ Route::resource('votes', 'Admin\VoteController')->middleware('auth:api','scopes:
 
 Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect')->middleware('cors');
 Route::get('oauth/instantwin/login/twitter','Web\SnsController@twitter_register')->middleware('cors');
+Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
