@@ -45,6 +45,16 @@ class CampaignRepositoryTest extends TestCase
 
     /**
      *
+     * @return void
+     *
+     */
+    public function testGetFirst()
+    {
+    }
+
+
+    /**
+     *
      * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
      *
      */
