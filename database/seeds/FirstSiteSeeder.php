@@ -22,10 +22,6 @@ class FirstSiteSeeder extends Seeder
     public function run()
     {
 
-        // \DB::table('lotteries')->truncate();
-        // \DB::table('campaigns')->truncate();
-        // \DB::table('entries')->truncate();
-
         $campaigns = Campaign::all();
         foreach($campaigns as $campaign) {
             $campaign->delete();
@@ -42,7 +38,7 @@ class FirstSiteSeeder extends Seeder
         }
 
         $campaign = factory(Campaign::class)->create([
-            "name" => 'インスタントウィンキャンペーン',
+            "name" => 'インスタントウィンキャンペーン 単一商品',
             'code' => uniqid(rand()),
             "project" => env("PROJECT_NAME", config('app.name'))
         ]);
@@ -50,7 +46,59 @@ class FirstSiteSeeder extends Seeder
         $lottery = factory(Lottery::class)->create([
             "name" => 'インスタントウィンサンプル賞品',
             'campaign_code' => $campaign->code,
-            'code' => uniqid(rand()),
+            'code' => 'campaign_solo',
+            'rate' => 50,
+            'run_time' => null,
+        ]);
+
+        $campaign = factory(Campaign::class)->create([
+            "name" => 'インスタントウィンキャンペーン 複数商品選択',
+            'code' => 'campaign_select_course',
+            "project" => env("PROJECT_NAME", config('app.name'))
+        ]);
+
+        $lottery = factory(Lottery::class)->create([
+            "name" => 'インスタントウィンサンプル賞品 Aコース',
+            'campaign_code' => $campaign->code,
+            'code' => 'lottery_select_a',
+            'rate' => 50,
+            'run_time' => null,
+        ]);
+
+        $lottery = factory(Lottery::class)->create([
+            "name" => 'インスタントウィンサンプル賞品 Bコース',
+            'campaign_code' => $campaign->code,
+            'code' => 'lottery_select_b',
+            'rate' => 50,
+            'run_time' => null,
+        ]);
+
+        $campaign = factory(Campaign::class)->create([
+            "name" => 'インスタントウィンキャンペーン 複数商品同時抽選',
+            'code' => 'campaign_multi_course',
+            "project" => env("PROJECT_NAME", config('app.name'))
+        ]);
+
+        $lottery = factory(Lottery::class)->create([
+            "name" => 'インスタントウィンサンプル賞品 金賞',
+            'campaign_code' => $campaign->code,
+            'code' => 'lottery_multi_a',
+            'rate' => 50,
+            'run_time' => null,
+        ]);
+
+        $lottery = factory(Lottery::class)->create([
+            "name" => 'インスタントウィンサンプル賞品 銀賞',
+            'campaign_code' => $campaign->code,
+            'code' => 'lottery_multi_b',
+            'rate' => 50,
+            'run_time' => null,
+        ]);
+
+        $lottery = factory(Lottery::class)->create([
+            "name" => 'インスタントウィンサンプル賞品 銅賞',
+            'campaign_code' => $campaign->code,
+            'code' => 'lottery_multi_c',
             'rate' => 50,
             'run_time' => null,
         ]);
