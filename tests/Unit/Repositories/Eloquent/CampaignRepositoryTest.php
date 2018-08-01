@@ -48,8 +48,12 @@ class CampaignRepositoryTest extends TestCase
      * @return void
      *
      */
-    public function testGetFirst()
+    public function testGetFirstInProject()
     {
+        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
+        $repository = new CampaignRepository($this->model);
+        $result = $repository->getFirstInProject("TESTPROJECT");
+        $this->assertEquals($campaign->id,$result->id);
     }
 
 

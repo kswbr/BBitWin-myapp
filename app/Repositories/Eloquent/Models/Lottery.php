@@ -8,6 +8,7 @@ use Carbon\Carbon;
 class Lottery extends Model
 {
     protected $fillable = ['name', 'rate', 'total', 'limit', 'start_date', 'end_date', 'active', 'order', 'campaign_code','code', 'daily_increment', 'daily_increment_time'];
+    protected $appends = ['result'];
 
     public function entries() {
         return $this->hasMany(Entry::class,'lottery_code','code');
@@ -55,7 +56,12 @@ class Lottery extends Model
         return $query;
     }
 
-
+    public function getResultAttribute()
+    {
+        $base = 10000;
+        $rand = mt_rand(0, 100 * $base);
+        return $rand < ($this->attributes['rate'] * $base);
+    }
 
     // public function campaign() {
     //     return $this->belongsTo(Campaign::class,"campaign_code","code");

@@ -67,10 +67,15 @@ class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryI
         return $this->model->project($project);
     }
 
-
     public function getByProjectAndCode($project,$code)
     {
         return $this->model->project($project)->code($code)->firstOrFail();
+    }
+
+    public function getFirstInProject($project)
+    {
+        $query = $this->getProjectQuery($project);
+        return $query->first();
     }
 
     /**

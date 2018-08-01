@@ -34,6 +34,35 @@ class CampaignServiceTest extends TestCase
     }
 
     /**
+     *
+     * @return void
+     *
+     */
+    public function testGetFirstInProject()
+    {
+        $this->mockRepository->shouldReceive('getFirstInProject')
+        ->with( "TESTPROJECT")
+        ->andReturn(true);
+        $data = $this->service->getFirstInProject( "TESTPROJECT" );
+        $this->assertTrue($data);
+    }
+
+    /**
+     *
+     * @return void
+     *
+     */
+    public function getByProjectAndCode()
+    {
+        $this->mockRepository->shouldReceive('getByProjectAndCode')
+        ->with( "TESTPROJECT", "TESTCODE")
+        ->andReturn(true);
+        $data = $this->service->getByProjectAndCode( "TESTPROJECT" ,"TESTCODE");
+        $this->assertTrue($data);
+    }
+
+
+    /**
      * save and destroy data in project
      *
      * @return void

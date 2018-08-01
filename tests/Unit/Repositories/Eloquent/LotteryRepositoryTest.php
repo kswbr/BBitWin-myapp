@@ -76,6 +76,40 @@ class LotteryRepositoryTest extends TestCase
      * @return void
      *
      */
+    public function testGetFirstInCampaign()
+    {
+        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
+        $lottery = factory(Lottery::class)->create([
+            'campaign_code' => $campaign->code
+        ]);
+
+        $repository = new LotteryRepository($this->model);
+        $result = $repository->getFirstInCampaign($campaign->code);
+        $this->assertEquals($lottery->id,$result->id);
+    }
+
+    /**
+     *
+     * @return void
+     *
+     */
+    public function testGetByCode()
+    {
+        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
+        $lottery = factory(Lottery::class)->create([
+            'campaign_code' => $campaign->code
+        ]);
+
+        $repository = new LotteryRepository($this->model);
+        $result = $repository->getByCode($lottery->code);
+        $this->assertEquals($lottery->id,$result->id);
+    }
+
+    /**
+     *
+     * @return void
+     *
+     */
     public function testPerformInCampaignWin()
     {
         $mock = \Mockery::mock(LotteryRepository::class,[$this->model]);

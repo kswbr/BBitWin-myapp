@@ -74,19 +74,17 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         $this->getById($id)->delete();
     }
 
+    public function getFirstInCampaign($campaign_code) {
+        return $this->model->campaign($campaign_code)->active()->inSession()->first();
+    }
+
     public function performInCampaign($campaign_code)
     {
         $result = ["is_winner" => false, "winning_lottery" => null,"losed_lotteries" => []];
         $lotteries = $this->model->campaign($campaign_code)->active()->inSession()->get();
 
-        $to_draw = function($lottery) {
-            $base = 10000;
-            $rand = mt_rand(0, 100 * $base);
-            return $rand < ($lottery->rate * $base);
-        };
-
         foreach($lotteries as $lottery){
-            if ($to_draw($lottery) && $this->getRemaining($lottery->code) > 0){
+            if ($lottery->result && $this->getRemaining($lottery->code) > 0){
                 $result["is_winner"] = true;
                 $result["winning_lottery"] = $lottery;
                 break;
@@ -116,6 +114,12 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         $state = config("contents.entry.state.$state_label");
         return $lottery->entries()->state($state)->count();
     }
+
+    public function getByCode($lottery_code)
+    {
+        return $this->model->code($lottery_code)->active()->inSession()->first();
+    }
+
 
     public function getRemainingOfCompleted($lottery_code)
     {

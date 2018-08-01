@@ -106,4 +106,35 @@ class LotteryServiceTest extends TestCase
         $this->assertTrue($ret);
     }
 
+    /**
+     *
+     * @return void
+     *
+     */
+    public function testGetFirstInCampaign(){
+        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
+        $this->mockRepository->shouldReceive('getFirstInCampaign')
+            ->with($campaign->code)
+            ->andReturn(true);
+
+        $ret = $this->service->getFirstInCampaign($campaign);
+        $this->assertTrue($ret);
+
+    }
+
+    /**
+     *
+     * @return void
+     *
+     */
+    public function testGetByCode(){
+        $this->mockRepository->shouldReceive('getByCode')
+            ->with("TESTCODE")
+            ->andReturn(true);
+
+        $ret = $this->service->getByCode("TESTCODE");
+        $this->assertTrue($ret);
+
+    }
+
 }

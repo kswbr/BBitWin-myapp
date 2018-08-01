@@ -85,4 +85,13 @@ class LotteryTest extends TestCase
         $this->assertEquals($data->entries_count,10);
     }
 
+    public function testResult() {
+        $lottery = factory(Lottery::class)->create(["name" => "test","rate" => 100.0]);
+        $this->assertTrue($lottery->result);
+
+        $lottery = factory(Lottery::class)->create(["name" => "test","rate" => 0]);
+        $this->assertFalse($lottery->result);
+    }
+
+
 }

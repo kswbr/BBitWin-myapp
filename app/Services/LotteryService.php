@@ -41,6 +41,16 @@ class LotteryService
         return $this->repository->getModelName();
     }
 
+    public function getFirstInCampaign($campaign)
+    {
+        return $this->repository->getFirstInCampaign($campaign->code);
+    }
+
+    public function getByCode($code)
+    {
+        return $this->repository->getByCode($code);
+    }
+
     public function update($id, array $inputs)
     {
         if (isset($inputs["start_date"])) {
