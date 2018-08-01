@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Entry extends Model
 {
     protected $fillable = ['lottery_code','player_id', 'player_type', 'state'];
+    protected $appends = ['state_code'];
 
     public function scopeState($query,int $state)
     {
@@ -57,4 +58,12 @@ class Entry extends Model
     {
         return $query->where("created_at",">=",$limited_time);
     }
+
+    public function getStateCodeAttribute()
+    {
+        $states = config("contents.entry.state");
+        return array_search($this->attributes['state'],$states);
+    }
+
+
 }

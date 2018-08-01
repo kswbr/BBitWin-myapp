@@ -34,6 +34,7 @@ class EntryTest extends TestCase
     {
         $entry = factory(Entry::class)->create();
         $this->assertEquals(1,$entry->state);
+        $this->assertEquals("lose",$entry->state_code);
         $data = Entry::find($entry->id);
         $this->assertEquals($entry->id,$data->id);
     }

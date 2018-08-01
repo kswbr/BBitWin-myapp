@@ -181,7 +181,7 @@ class EntryServiceTest extends TestCase
         $this->assertEquals(count($first_date),20);
 
         $first_data = reset($first_date);
-        $this->assertEquals(count($first_data),3);
+        $this->assertEquals(count($first_data),4);
 
     }
 

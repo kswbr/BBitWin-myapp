@@ -54,7 +54,7 @@ class LotteryControllerTest extends TestCase
     {
         $project = env("PROJECT_NAME", config('app.name'));
         $campaign = factory(Campaign::class)->create(["project" => $project]);
-        factory(Lottery::class,3)->create(["campaign_code" => $campaign->code]);
+        factory(Lottery::class,3)->create(["campaign_code" => $campaign->code, "rate" => 100]);
 
         $wrong_campaign = factory(Campaign::class)->create(["project" => $project]);
         $lotteries = $this->service->getPageInCampaign(0,$campaign);

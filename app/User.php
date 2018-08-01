@@ -4,6 +4,7 @@ namespace App;
 
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use App\Repositories\Eloquent\Models\Player;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -26,4 +27,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function player()
+    {
+        return $this->hasOne(Player::class);
+    }
 }
