@@ -28,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'check-admin' => 'check admin',
             'instant-win' => 'instant win',
+            'retry' => 'instant win retry challenge',
+            'winner' => 'instant win winner',
         ]);
         Passport::routes();
     }
