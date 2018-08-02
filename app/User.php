@@ -32,4 +32,21 @@ class User extends Authenticatable
     {
         return $this->hasOne(Player::class);
     }
+
+    public function getInstantWinTokenAttribute()
+    {
+        return $this->createToken('InstantWinToken', ['instant-win'])->accessToken;
+    }
+
+    public function getRetryTokenAttribute()
+    {
+        return $this->createToken('RetryToken', ['instant-win','retry'])->accessToken;
+    }
+
+    public function getWinnerTokenAttribute()
+    {
+        return $this->createToken('WinnerToken', ['instant-win','winner'])->accessToken;
+    }
+
+
 }

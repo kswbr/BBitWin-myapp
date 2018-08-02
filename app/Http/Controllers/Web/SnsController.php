@@ -50,8 +50,10 @@ class SnsController extends Controller
             $player = $this->playerService->create($project, "twitter", $twitter_user->getId(), [], $user);
         }
 
+        $user->append('instant_win_token');
+
         return response([
-            "token" => $user->createToken('InstantWinToken', ['instant-win'])->accessToken
+            "token" => $user->instant_win_token
         ]);
     }
 
