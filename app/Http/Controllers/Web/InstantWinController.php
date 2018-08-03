@@ -67,7 +67,16 @@ class InstantWinController extends Controller
         $user->append('instant_win_token');
         $token = $user->instant_win_token;
 
-        if ($prev_entry_state_code === "win_posting_completed") {
+        if ($prev_entry_state_code === "win_posting_completed" || $lottery->remaining <= 0) {
+
+            //本日初挑戦の場合
+            if (!$challenged_today && !$is_retry_challenge) {
+                $user->append('retry_token');
+                $token = $user->retry_token;
+            }
+
+            // 商品残数が0の場合必ず落選
+            // 商品残数が0の場合必ず落選(リトライ)
             // 前回当選して応募完了した人は必ず落選
             // 前回当選して応募完了した人は必ず落選(リトライ)
             return response(["result" => false, "finish" => $is_retry_challenge ,"token" => $token ]);
