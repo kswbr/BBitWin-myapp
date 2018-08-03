@@ -29,7 +29,6 @@ class LotteryService
     public function getById($id)
     {
         $lottery = $this->repository->getById($id);
-        $lottery->remaining = $this->repository->getRemaining($lottery->code);
         foreach(config("contents.entry.state") as $state_label => $state) {
             $lottery->{$state_label} = $this->getStateCount($lottery,$state_label);
         }
@@ -112,11 +111,6 @@ class LotteryService
     public function performInCampaign($campaign)
     {
         return $this->repository->performInCampaign($campaign->code);
-    }
-
-    public function getRemaining($lottery)
-    {
-        return $this->repository->getRemaining($lottery->code);
     }
 
     public function getRemainingOfCompleted($lottery)

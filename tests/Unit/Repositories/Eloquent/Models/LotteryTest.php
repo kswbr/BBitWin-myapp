@@ -93,5 +93,29 @@ class LotteryTest extends TestCase
         $this->assertFalse($lottery->result);
     }
 
+    public function testRemaining() {
+        $lottery = factory(Lottery::class)->create(["limit" => 100]);
+
+        factory(Entry::class,10)->create(["state" => config("contents.entry.state.win"),'lottery_code' => $lottery->code  ]);
+        factory(Entry::class,20)->create(["state" => config("contents.entry.state.win_special"), 'lottery_code' => $lottery->code ]);
+        factory(Entry::class,5)->create(["state" => config("contents.entry.state.win_posting_completed"), 'lottery_code' => $lottery->code ]);
+
+        $this->assertEquals($lottery->remaining,65);
+        $this->assertEquals($lottery->remaining_of_completed,95);
+    }
+
+    public function testState() {
+        $lottery = factory(Lottery::class)->create();
+        $this->assertEquals($lottery->state,config("contents.lottery.state.active"));
+
+        $lottery = factory(Lottery::class)->create( ["start_date" => Carbon::tomorrow()]);
+        $this->assertEquals($lottery->state,config("contents.lottery.state.stand_by"));
+
+        $lottery = factory(Lottery::class)->create( ["end_date" => Carbon::yesterday()]);
+        $this->assertEquals($lottery->state,config("contents.lottery.state.finish"));
+
+        $lottery = factory(Lottery::class)->create(["limit" => 0]);
+        $this->assertEquals($lottery->state,config("contents.lottery.state.full_entry"));
+    }
 
 }

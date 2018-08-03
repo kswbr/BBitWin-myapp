@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Lottery extends Model
 {
     protected $fillable = ['name', 'rate', 'total', 'limit', 'start_date', 'end_date', 'active', 'order', 'campaign_code','code', 'daily_increment', 'daily_increment_time'];
-    protected $appends = ['result'];
+    protected $appends = ['result', 'remaining', 'remaining_of_completed', 'state'];
 
     public function entries() {
         return $this->hasMany(Entry::class,'lottery_code','code');
@@ -61,6 +61,45 @@ class Lottery extends Model
         $base = 10000;
         $rand = mt_rand(0, 100 * $base);
         return $rand < ($this->attributes['rate'] * $base);
+    }
+
+    public function getRemainingAttribute()
+    {
+        $state = config("contents.entry.state");
+        $win_count = $this->entries()->state($state["win"])->count();
+        $win_special_count = $this->entries()->state($state["win_special"])->count();
+        $win_completed_count = $this->entries()->state($state["win_posting_completed"])->count();
+        $ret = $this->attributes['limit'] - ($win_count + $win_special_count + $win_completed_count);
+        ($ret < 0) and $ret = 0;
+        return $ret;
+    }
+
+    public function getRemainingOfCompletedAttribute()
+    {
+        $state = config("contents.entry.state");
+        $win_completed_count = $this->entries()->state($state["win_posting_completed"])->count();
+        return $this->attributes['limit'] - $win_completed_count;
+    }
+
+    public function getStateAttribute()
+    {
+        if ($this->attributes['active'] === false){
+            return config("contents.lottery.state.inactive");
+        }
+
+        if (Carbon::now() < $this->attributes['start_date']){
+            return config("contents.lottery.state.stand_by");
+        }
+
+        if (Carbon::now() > $this->attributes['end_date']){
+            return config("contents.lottery.state.finish");
+        }
+
+        if ($this->getRemainingAttribute() <= 0){
+            return config("contents.lottery.state.full_entry");
+        }
+
+        return config("contents.lottery.state.active");
     }
 
     // public function campaign() {

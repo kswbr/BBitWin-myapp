@@ -84,7 +84,7 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         $lotteries = $this->model->campaign($campaign_code)->active()->inSession()->get();
 
         foreach($lotteries as $lottery){
-            if ($lottery->result && $this->getRemaining($lottery->code) > 0){
+            if ($lottery->result && $lottery->remaining > 0){
                 $result["is_winner"] = true;
                 $result["winning_lottery"] = $lottery;
                 break;
@@ -94,18 +94,6 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
             $result["losed_lotteries"][] = $lottery;
         }
         return $result;
-    }
-
-    public function getRemaining($lottery_code)
-    {
-        $state = config("contents.entry.state");
-        $lottery = $this->model->code($lottery_code)->first();
-        $win_count = $lottery->entries()->state($state["win"])->count();
-        $win_special_count = $lottery->entries()->state($state["win_special"])->count();
-        $win_completed_count = $lottery->entries()->state($state["win_posting_completed"])->count();
-        $ret = $lottery->limit - ($win_count + $win_special_count + $win_completed_count);
-        ($ret < 0) and $ret = 0;
-        return $ret;
     }
 
     public function getStateCount($lottery_code, $state_label)
@@ -120,37 +108,6 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         return $this->model->code($lottery_code)->active()->inSession()->first();
     }
 
-
-    public function getRemainingOfCompleted($lottery_code)
-    {
-        $state = config("contents.entry.state");
-        $lottery = $this->model->code($lottery_code)->first();
-        $win_completed_count = $lottery->entries()->state($state["win_posting_completed"])->count();
-        return $lottery->limit - $win_completed_count;
-    }
-
-    public function getState($lottery_code)
-    {
-        $lottery = $this->model->code($lottery_code)->first();
-
-        if ($lottery->active === false){
-            return config("contents.lottery.state.inactive");
-        }
-
-        if (Carbon::now() < $lottery->start_date){
-            return config("contents.lottery.state.stand_by");
-        }
-
-        if (Carbon::now() > $lottery->end_date){
-            return config("contents.lottery.state.finish");
-        }
-
-        if ($this->getRemaining($lottery) <= 0){
-            return config("contents.lottery.state.full_entry");
-        }
-
-        return config("contents.lottery.state.active");
-    }
 
     public function limitUpDaily($campaign_code)
     {
