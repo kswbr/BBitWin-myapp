@@ -57,9 +57,9 @@ class InstantWinControllerTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testRunPtn1()
+    // 初回で当選した場合
+    public function testRunPtnWinner()
     {
-
         $user = factory(User::class)->create();
         $player = factory(Player::class)->create(["user_id" => $user->id]);
         $project = $this->projectService->getCode();
@@ -69,11 +69,42 @@ class InstantWinControllerTest extends TestCase
         $obj = new \stdClass();
         $obj->accessToken = "dummy token !";
         $mock = \Mockery::mock(\App\User::class)->makePartial();
-        $mock->shouldReceive("createToken")->andReturn($obj);
+        // $mock->shouldReceive("createToken")->andReturn($obj);
         $mock->player = $player;
 
-        // $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("OK");
+        $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
+
+        Passport::actingAs( $user, ['instant-win']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->andReturn($mock);
+        \Auth::makePartial();
+
+        $response = $response->get('/api/instantwin/run');
+        $response->assertStatus(200);
+        $response->assertJson([
+          "result" => true,
+          "finish" => true,
+          "token" => "WINNER",
+        ]);
+    }
+
+    // 初回で落選してリトライの権利を得た場合
+    public function testRunPtnGetRetryChance()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 0]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("OK");
 
         Passport::actingAs( $user, ['instant-win']);
@@ -83,9 +114,204 @@ class InstantWinControllerTest extends TestCase
         \Auth::makePartial();
 
         $response = $response->get('/api/instantwin/run');
-        // var_dump($response->content());
         $response->assertStatus(200);
+        $response->assertJson([
+          "result" => false,
+          "finish" => false,
+          "token" => "RETRY",
+        ]);
+    }
 
+    // 前回当選して未応募の場合必ず当選
+    public function testRunPtnPrevWinner()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 0]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code, "player_id" => $player->id, "player_type" => $player->type, "state" => 2]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
+
+        Passport::actingAs( $user, ['instant-win']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->andReturn($mock);
+        \Auth::makePartial();
+
+        $response = $response->get('/api/instantwin/run');
+        $response->assertStatus(200);
+        $response->assertJson([
+          "result" => true,
+          "finish" => true,
+          "token" => "WINNER",
+        ]);
+    }
+
+    // 前回当選(管理画面にて特別当選扱い)して未応募の場合必ず当選
+    public function testRunPtnPrevWinnerPtn2()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 0]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code, "player_id" => $player->id, "player_type" => $player->type, "state" => 5]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
+
+        Passport::actingAs( $user, ['instant-win']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->andReturn($mock);
+        \Auth::makePartial();
+
+        $response = $response->get('/api/instantwin/run');
+        $response->assertStatus(200);
+        $response->assertJson([
+          "result" => true,
+          "finish" => true,
+          "token" => "WINNER",
+        ]);
+    }
+
+    // 前回当選してリトライ後当選
+    public function testRunPtnRetryAndWin()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 100]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code, "player_id" => $player->id, "player_type" => $player->type, "state" => 1]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
+
+        Passport::actingAs( $user, ['instant-win','retry']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->andReturn($mock);
+        \Auth::makePartial();
+
+        $response = $response->get('/api/instantwin/run/retry');
+        $response->assertStatus(200);
+        $response->assertJson([
+          "result" => true,
+          "finish" => true,
+          "token" => "WINNER",
+        ]);
+    }
+
+    // 前回当選してリトライ後落選
+    public function testRunPtnRetryAndLose()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 0]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code, "player_id" => $player->id, "player_type" => $player->type, "state" => 4]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
+
+        Passport::actingAs( $user, ['instant-win','retry']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->andReturn($mock);
+        \Auth::makePartial();
+
+        $response = $response->get('/api/instantwin/run/retry');
+        $response->assertStatus(200);
+        $response->assertJson([
+          "result" => false,
+          "finish" => true,
+          "token" => "LOSE",
+        ]);
+    }
+
+    // 前回当選して応募完了した人は必ず落選
+    public function testRunPtnWinPostingCompleted()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 100]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code, "player_id" => $player->id, "player_type" => $player->type, "state" => 3]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
+
+        Passport::actingAs( $user, ['instant-win']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->andReturn($mock);
+        \Auth::makePartial();
+
+        $response = $response->get('/api/instantwin/run');
+        $response->assertStatus(200);
+        $response->assertJson([
+          "result" => false,
+          "finish" => false,
+          "token" => "LOSE",
+        ]);
+    }
+
+    // 前回当選して応募完了した人は必ず落選(リトライ)
+    public function testRunPtnWinPostingCompletedWhenRetry()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 100]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code, "player_id" => $player->id, "player_type" => $player->type, "state" => 3]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+
+        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
+
+        Passport::actingAs( $user, ['instant-win','retry']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->andReturn($mock);
+        \Auth::makePartial();
+
+        $response = $response->get('/api/instantwin/run/retry');
+        $response->assertStatus(200);
+        $response->assertJson([
+          "result" => false,
+          "finish" => true,
+          "token" => "LOSE",
+        ]);
     }
 
 }
