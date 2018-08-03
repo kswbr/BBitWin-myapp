@@ -33,6 +33,7 @@ $factory->define(App\Repositories\Eloquent\Models\Player::class, function (Faker
         'provider_id' => uniqid(rand()),
         'etc_data' => ["test" => 1],
         'provider' => 'twitter',
+        'type' => 1,
         'project' => 'TESTPROJECT'
     ];
 });
