@@ -28,16 +28,6 @@ class EntryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function state_list(Request $request, $campaign_id, $lottery_id)
-    {
-        return response(config("contents.entry.state_data"));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request, $campaign_id, $lottery_id)
     {
         $lottery = $this->lotteryService->getById($lottery_id);

@@ -74,26 +74,15 @@ export default {
     }
   },
   mounted () {
-    this.getStateList().then(() => {
-      this.getList()
-    })
+    this.getList()
   },
   methods: {
-    getStateList () {
-      return Axios.get(this.apiPath + '/state_list').then((res) => {
-        this.stateList = Object.assign({}, this.stateList, res.data)
-      })
-    },
     getList () {
       const page = this.$route.query.page
       this.loading = true
       return Axios.get(this.apiPath, { params:{page}}).then((res) => {
         this.pagination = Object.assign({},this.pagination,res.data)
-        this.tableData = _.map(res.data.data, (data) => {
-            return Object.assign({}, data, {
-                state_data: this.stateList[data.state]
-            })
-        })
+        this.tableData = res.data.data
         this.loading = false
       })
     },

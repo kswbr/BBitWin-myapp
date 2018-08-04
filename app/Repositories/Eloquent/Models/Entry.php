@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Entry extends Model
 {
     protected $fillable = ['lottery_code','player_id', 'player_type', 'state'];
-    protected $appends = ['state_code'];
+    protected $appends = ['state_code','state_data'];
 
     public function scopeState($query,int $state)
     {
@@ -63,6 +63,12 @@ class Entry extends Model
     {
         $states = config("contents.entry.state");
         return array_search($this->attributes['state'],$states);
+    }
+
+    public function getStateDataAttribute()
+    {
+        $states = config("contents.entry.state_data");
+        return $states[$this->attributes['state']];
     }
 
 

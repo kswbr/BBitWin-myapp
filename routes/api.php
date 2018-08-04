@@ -22,7 +22,6 @@ Route::get('user/info','Admin\UserController@info')->middleware('auth:api','scop
 Route::get('user/info','Admin\UserController@info')->middleware('auth:api','scopes:check-admin');
 
 Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/chart','Admin\EntryController@chart')->middleware('auth:api','scopes:check-admin');
-Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/state_list','Admin\EntryController@state_list')->middleware('auth:api','scopes:check-admin');
 
 Route::resource('campaigns', 'Admin\CampaignController')->middleware('auth:api','scopes:check-admin');
 Route::resource('campaigns.lotteries', 'Admin\LotteryController')->middleware('auth:api','scopes:check-admin');
