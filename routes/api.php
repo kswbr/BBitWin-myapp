@@ -38,3 +38,8 @@ Route::get('instantwin/run/retry','Web\InstantWinController@run')->middleware(['
 
 Route::get('instantwin/run/{campaign_code}/{lottery_code}','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
 Route::get('instantwin/run/{campaign_code}/{lottery_code}/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
+Route::get('instantwin/multi/run','Web\InstantWinMultiController@run')->middleware(['cors','auth:api','scopes:instant-win']);
+Route::get('instantwin/multi/run/retry','Web\InstantWinMultiController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
+
+Route::get('instantwin/run/{campaign_code}','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
+Route::get('instantwin/run/{campaign_code}/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);

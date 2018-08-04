@@ -74,16 +74,18 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
         $this->getById($id)->delete();
     }
 
-    public function getFirstInCampaign($campaign_code) {
+    public function getFirstInCampaign($campaign_code)
+    {
         return $this->model->campaign($campaign_code)->active()->inSession()->first();
     }
 
     public function performInCampaign($campaign_code)
     {
-        $result = ["is_winner" => false, "winning_lottery" => null,"losed_lotteries" => []];
+        $result = ["is_winner" => false, "winning_lottery" => null,"losed_lotteries" => [], "lotteries" => []];
         $lotteries = $this->model->campaign($campaign_code)->active()->inSession()->get();
 
         foreach($lotteries as $lottery){
+            $result["lotteries"][] = $lottery;
             if ($lottery->result && $lottery->remaining > 0){
                 $result["is_winner"] = true;
                 $result["winning_lottery"] = $lottery;
