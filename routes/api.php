@@ -35,3 +35,6 @@ Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect')->middl
 Route::get('oauth/instantwin/login/twitter','Web\SnsController@twitter_register')->middleware('cors');
 Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
 Route::get('instantwin/run/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
+
+Route::get('instantwin/run/{campaign_code}/{lottery_code}','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
+Route::get('instantwin/run/{campaign_code}/{lottery_code}/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);

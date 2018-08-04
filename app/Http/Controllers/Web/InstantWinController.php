@@ -41,11 +41,16 @@ class InstantWinController extends Controller
         $this->projectService = $projectService;
     }
 
-    public function run(Request $request)
+    public function run(Request $request, $campaign_code = null, $lottery_code = null)
     {
         $project = $this->projectService->getCode();
-        $campaign = $this->campaignService->getFirstInProject($project);
-        $lottery = $this->lotteryService->getFirstInCampaign($campaign);
+        if (!$campaign_code || !$lottery_code) {
+            $campaign = $this->campaignService->getFirstInProject($project);
+            $lottery = $this->lotteryService->getFirstInCampaign($campaign);
+        } else {
+            $campaign = $this->campaignService->getByProjectAndCode($project,$campaign_code);
+            $lottery = $this->lotteryService->getByCode($lottery_code);
+        }
         $user = \Auth::user();
         $player = $user->player;
         $prev_entry = $this->entryService->getPrevDataOfPlayerInCampaign($user->player,$campaign);
