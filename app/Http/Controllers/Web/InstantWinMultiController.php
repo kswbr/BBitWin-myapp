@@ -99,11 +99,11 @@ class InstantWinMultiController extends Controller
                     $this->entryService->create($player, $lottery, $state);
                 }
                 if ($state === "win") {
-                    // 前回落選してリトライ後当選
+                    // 本日落選してリトライ後当選
                     $user->append('winner_token');
                     $token = $user->winner_token;
                 } else {
-                    // 前回落選してリトライ後落選
+                    // 本日落選してリトライ後落選
                 }
                 return response([
                   "result" => $results["is_winner"],
@@ -112,7 +112,10 @@ class InstantWinMultiController extends Controller
                   "winning_lottery" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"]->code : null
                 ]);
             } else {
-                return response(["result" => false, "finish" => true,"token" => $token, "winning_lottery" => null]);
+                $user->append('retry_token');
+                $token = $user->retry_token;
+                //本日落選して、リトライせずに再応募した場合落選にする
+                return response(["result" => false, "finish" => false,"token" => $token, "winning_lottery" => null]);
             }
         }
 
