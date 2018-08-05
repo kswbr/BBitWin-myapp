@@ -75,10 +75,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
+        $entry = Entry::first() ;
         $response->assertJson([
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_entry_id" => $entry->id
         ]);
     }
 
@@ -106,10 +108,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
+        $entry = Entry::first() ;
         $response->assertJson([
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
+          "winning_entry_id" => null
         ]);
     }
 
@@ -142,6 +146,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_entry_id" => $entry->id
         ]);
     }
 
@@ -174,6 +179,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_entry_id" => $entry->id
         ]);
     }
 
@@ -202,10 +208,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run/retry');
         $response->assertStatus(200);
+        $entry = Entry::orderBy("id","desc")->first() ;
         $response->assertJson([
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_entry_id" => $entry->id
         ]);
     }
 
@@ -234,10 +242,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run/retry');
         $response->assertStatus(200);
+        $entry = Entry::orderBy("id","desc")->first() ;
         $response->assertJson([
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
+          "winning_entry_id" => null
         ]);
     }
 
@@ -270,6 +280,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
+          "winning_entry_id" => null
         ]);
     }
 
@@ -299,10 +310,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
+        $entry = Entry::orderBy("id","desc")->first() ;
         $response->assertJson([
           "result" => false,
           "finish" => false,
           "token" => "LOSE",
+          "winning_entry_id" => null
         ]);
     }
 
@@ -331,10 +344,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run/retry');
         $response->assertStatus(200);
+        $entry = Entry::orderBy("id","desc")->first() ;
         $response->assertJson([
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
+          "winning_entry_id" => null
         ]);
     }
 
@@ -365,10 +380,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
+        $entry = Entry::orderBy("id","desc")->first() ;
         $response->assertJson([
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
+          "winning_entry_id" => null
         ]);
     }
 
@@ -399,10 +416,12 @@ class InstantWinControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run/retry');
         $response->assertStatus(200);
+        $entry = Entry::orderBy("id","desc")->first() ;
         $response->assertJson([
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
+          "winning_entry_id" => null
         ]);
     }
 

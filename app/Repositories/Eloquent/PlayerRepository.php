@@ -50,8 +50,7 @@ class PlayerRepository implements PlayerRepositoryInterface, BaseRepositoryInter
     public function store(array $inputs)
     {
         $model = $this->model->newInstance();
-        $model->create($inputs);
-        return $model;
+        return $model->create($inputs);
     }
 
     public function getById($id)

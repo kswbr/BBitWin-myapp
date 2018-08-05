@@ -81,7 +81,10 @@ class InstantWinMultiController extends Controller
 
             // 前回当選して応募完了した人は必ず落選
             // 前回当選して応募完了した人は必ず落選(リトライ)
-            return response(["result" => false, "finish" => $is_retry_challenge ,"token" => $token, "winning_lottery" => null]);
+            foreach ($results["lotteries"] as $lottery) {
+                $this->entryService->create($player, $lottery, "lose");
+            }
+            return response(["result" => false, "finish" => $is_retry_challenge ,"token" => $token, "winning_lottery_code" => null, "winning_entry_id" => null]);
         }
 
         if ($is_winner) {
@@ -89,19 +92,23 @@ class InstantWinMultiController extends Controller
             // 前回当選(管理画面にて特別当選扱い)して未応募の場合必ず当選
             $user->append('winner_token');
             $token = $user->winner_token;
-            return response(["result" => true, "finish" => true,"token" => $token, "winning_lottery" => $prev_entry->lottery_code]);
+            return response(["result" => true, "finish" => true,"token" => $token, "winning_lottery_code" => $prev_entry->lottery_code, "winning_entry_id" => $prev_entry->id]);
         }
 
         if ($challenged_today && $is_looser) {
             if ($is_retry_challenge) {
                 $state = ($results["is_winner"] === true) ? "win" : "lose";
-                foreach ($results["lotteries"] as $lottery) {
-                    $this->entryService->create($player, $lottery, $state);
+                foreach ($results["losed_lotteries"] as $lottery) {
+                    $this->entryService->create($player, $lottery, "lose");
                 }
+
+                $entry_id = null;
                 if ($state === "win") {
                     // 本日落選してリトライ後当選
                     $user->append('winner_token');
                     $token = $user->winner_token;
+                    $entry = $this->entryService->create($player, $results["winning_lottery"], "win");
+                    $entry_id = $entry->id;
                 } else {
                     // 本日落選してリトライ後落選
                 }
@@ -109,25 +116,29 @@ class InstantWinMultiController extends Controller
                   "result" => $results["is_winner"],
                   "finish" => true,
                   "token" => $token,
-                  "winning_lottery" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"]->code : null
+                  "winning_lottery_code" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"]->code : null,
+                  "winning_entry_id" => $entry_id
                 ]);
             } else {
                 $user->append('retry_token');
                 $token = $user->retry_token;
                 //本日落選して、リトライせずに再応募した場合落選にする
-                return response(["result" => false, "finish" => false,"token" => $token, "winning_lottery" => null]);
+                return response(["result" => false, "finish" => false,"token" => $token, "winning_lottery_code" => null, "winning_entry_id" => null]);
             }
         }
 
         $state = ($results["is_winner"] === true) ? "win" : "lose";
-        foreach ($results["lotteries"] as $lottery) {
-            $this->entryService->create($player, $lottery, $state);
+        foreach ($results["losed_lotteries"] as $lottery) {
+            $this->entryService->create($player, $lottery, "lose");
         }
 
+        $entry_id = null;
         if ($state === "win") {
             // 初回で当選した場合
             $user->append('winner_token');
             $token = $user->winner_token;
+            $entry = $this->entryService->create($player, $results["winning_lottery"], "win");
+            $entry_id = $entry->id;
         } else if (!$is_retry_challenge){
             // 初回で落選してリトライの権利を得た場合
             $user->append('retry_token');
@@ -138,7 +149,8 @@ class InstantWinMultiController extends Controller
           "result" => $results["is_winner"],
           "finish" => $results["is_winner"] || $is_retry_challenge,
           "token" => $token,
-          "winning_lottery" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"]->code : null
+          "winning_lottery_code" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"]->code : null,
+          "winning_entry_id" => $entry_id
         ]);
 
     }

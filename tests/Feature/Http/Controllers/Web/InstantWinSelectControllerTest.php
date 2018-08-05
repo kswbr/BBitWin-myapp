@@ -72,10 +72,12 @@ class InstantWinSelectControllerTest extends TestCase
 
         $response = $response->get('/api/instantwin/run/campaign_code/lottery_code');
         $response->assertStatus(200);
+        $entry = Entry::first() ;
         $response->assertJson([
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_entry_id" => $entry->id
         ]);
     }
 
