@@ -71,6 +71,7 @@ class LotteryServiceTest extends TestCase
             Carbon::tomorrow(),
             10,
             12,
+            0,
             $campaign
         );
         $this->assertTrue($data);
