@@ -48,6 +48,11 @@
         placeholder="終了日時">
       </el-date-picker>
     </el-form-item>
+    <el-form-item label="抽選の優先度(数値が高いほうが優先)">
+      <el-input :span="8" placeholder="0" v-model="form.order">
+      </el-input>
+    </el-form-item>
+
     <el-form-item >
       <el-button type="default" @click="() => (this.$router.push('.'))">戻る</el-button>
       <el-button type="primary" @click="submitForm()">保存</el-button>
@@ -78,7 +83,8 @@ export default {
         daily_increment: 0,
         daily_increment_time: 0,
         start_date: '',
-        end_date: ''
+        end_date: '',
+        order: 0
       }
     }
   },

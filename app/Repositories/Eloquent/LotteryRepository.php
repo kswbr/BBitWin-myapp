@@ -34,7 +34,7 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
 
     public function getCampaignQuery($campaign_code)
     {
-        return $this->model->campaign($campaign_code);
+        return $this->model->campaign($campaign_code)->ordered();
     }
 
 
@@ -82,7 +82,7 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
     public function performInCampaign($campaign_code)
     {
         $result = ["is_winner" => false, "winning_lottery" => null,"losed_lotteries" => [], "lotteries" => []];
-        $lotteries = $this->model->campaign($campaign_code)->active()->inSession()->get();
+        $lotteries = $this->model->ordered()->campaign($campaign_code)->active()->inSession()->get();
 
         foreach($lotteries as $lottery){
             $result["lotteries"][] = $lottery;

@@ -47,7 +47,8 @@ export default {
         daily_increment: 0,
         daily_increment_time: 0,
         start_date: '',
-        end_date: ''
+        end_date: '',
+        order: 0
       }
     }
   },

@@ -18,6 +18,11 @@ class Lottery extends Model
         return $query->where("code",$lottery_code);
     }
 
+    public function scopeOrdered($query){
+        return $query->orderBy("order","desc");
+    }
+
+
     public function scopeCampaign($query,string $campaign_code){
         return $query->where("campaign_code",$campaign_code);
     }

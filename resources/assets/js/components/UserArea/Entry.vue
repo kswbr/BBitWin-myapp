@@ -80,7 +80,7 @@ export default {
     getList () {
       const page = this.$route.query.page
       this.loading = true
-      return Axios.get(this.apiPath, { params:{page}}).then((res) => {
+      return Axios.get(this.apiPath, {params:{page}}).then((res) => {
         this.pagination = Object.assign({},this.pagination,res.data)
         this.tableData = res.data.data
         this.loading = false

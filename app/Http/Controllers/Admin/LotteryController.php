@@ -55,7 +55,8 @@ class LotteryController extends Controller
             'start_date' => 'required|string',
             'end_date' => 'required|string',
             'daily_increment' => 'required|integer|min:0',
-            'daily_increment_time' => 'required|integer|max:23|min:0'
+            'daily_increment_time' => 'required|integer|max:23|min:0',
+            'order' => 'integer|min:0|required'
         ]);
 
         $campaign = $this->campaignService->getById($campaign_id);
@@ -69,6 +70,7 @@ class LotteryController extends Controller
             $request->input("end_date"),
             $request->input("daily_increment"),
             $request->input("daily_increment_time"),
+            $request->input("order"),
             $campaign
         );
         return response(['created_id' => $lottery->id], 201);
