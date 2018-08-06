@@ -1,16 +1,22 @@
 <template>
-  <div id="app">
-    <hello></hello>
+  <div id="app" class="container">
+    <router-view />
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello.vue'
-
 export default {
   name: 'app',
   components: {
-    Hello
   }
 }
 </script>
+<style>
+.container {
+  max-width: 960px;
+}
+#app {
+  margin:40px auto;
+}
+.lh-condensed { line-height: 1.25; }
+</style>
