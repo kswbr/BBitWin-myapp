@@ -72,6 +72,7 @@ class InstantWinController extends Controller
         $is_looser = $prev_entry_state_code === "lose" || $prev_entry_state_code === "win_posting_expired";
         $is_winner = $prev_entry_state_code === "win" || $prev_entry_state_code === "win_special";
         $state_list = config("contents.entry.state");
+        $lottery->append("result");
         $result = $lottery->result;
 
         $user->append('instant_win_token');

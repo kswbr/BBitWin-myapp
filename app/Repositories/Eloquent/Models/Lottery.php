@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Lottery extends Model
 {
     protected $fillable = ['name', 'rate', 'total', 'limit', 'start_date', 'end_date', 'active', 'order', 'campaign_code','code', 'daily_increment', 'daily_increment_time'];
-    protected $appends = ['result', 'remaining', 'remaining_of_completed', 'state'];
+    protected $appends = ['remaining', 'remaining_of_completed', 'state'];
 
     public function entries() {
         return $this->hasMany(Entry::class,'lottery_code','code');

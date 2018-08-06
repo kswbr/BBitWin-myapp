@@ -86,6 +86,7 @@ class LotteryRepository implements LotteryRepositoryInterface, BaseRepositoryInt
 
         foreach($lotteries as $lottery){
             $result["lotteries"][] = $lottery;
+            $lottery->append("result");
             if ($lottery->result && $lottery->remaining > 0){
                 $result["is_winner"] = true;
                 $result["winning_lottery"] = $lottery;
