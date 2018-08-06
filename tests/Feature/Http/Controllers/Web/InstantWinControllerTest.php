@@ -81,6 +81,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_lottery_code" => "WINNERCODE",
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -114,6 +115,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
+          "winning_lottery_code" => null,
           "winning_entry_code" => null
         ]);
     }
@@ -148,6 +150,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_lottery_code" => "WINNERCODE",
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -176,12 +179,14 @@ class InstantWinControllerTest extends TestCase
         \Auth::makePartial();
 
         \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
+        // \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
         $response->assertJson([
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_lottery_code" => "WINNERCODE",
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -217,6 +222,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
+          "winning_lottery_code" => "WINNERCODE",
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -251,6 +257,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
+          "winning_lottery_code" => null,
           "winning_entry_code" => null
         ]);
     }
@@ -284,6 +291,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
+          "winning_lottery_code" => null,
           "winning_entry_code" => null
         ]);
     }
@@ -319,6 +327,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "LOSE",
+          "winning_lottery_code" => null,
           "winning_entry_code" => null
         ]);
     }
@@ -353,6 +362,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
+          "winning_lottery_code" => null,
           "winning_entry_code" => null
         ]);
     }
@@ -389,6 +399,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
+          "winning_lottery_code" => null,
           "winning_entry_code" => null
         ]);
     }
@@ -425,6 +436,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
+          "winning_lottery_code" => null,
           "winning_entry_code" => null
         ]);
     }

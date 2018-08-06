@@ -92,7 +92,7 @@ class InstantWinMultiController extends Controller
             // 前回当選(管理画面にて特別当選扱い)して未応募の場合必ず当選
             $user->append('winner_token');
             $token = $user->winner_token;
-            return response(["result" => true, "finish" => true,"token" => $token, "winning_lottery_code" => $prev_entry->lottery_code, "winning_entry_code" => encrypt($prev_entry->id)]);
+            return response(["result" => true, "finish" => true,"token" => $token, "winning_lottery_code" => encrypt($prev_entry->lottery_code), "winning_entry_code" => encrypt($prev_entry->id)]);
         }
 
         if ($challenged_today && $is_looser) {
@@ -116,7 +116,7 @@ class InstantWinMultiController extends Controller
                   "result" => $results["is_winner"],
                   "finish" => true,
                   "token" => $token,
-                  "winning_lottery_code" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"]->code : null,
+                  "winning_lottery_code" => isset($results["winning_lottery"]->code) ? encrypt($results["winning_lottery"]->code) : null,
                   "winning_entry_code" => $entry_code
                 ]);
             } else {
@@ -149,7 +149,7 @@ class InstantWinMultiController extends Controller
           "result" => $results["is_winner"],
           "finish" => $results["is_winner"] || $is_retry_challenge,
           "token" => $token,
-          "winning_lottery_code" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"]->code : null,
+          "winning_lottery_code" => isset($results["winning_lottery"]->code) ? encrypt($results["winning_lottery"]->code) : null,
           "winning_entry_code" => $entry_code
         ]);
 
