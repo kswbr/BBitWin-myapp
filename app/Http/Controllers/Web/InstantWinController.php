@@ -154,7 +154,7 @@ class InstantWinController extends Controller
         $user = \Auth::user();
         $user->append('form_token');
         $token = $user->form_token;
-        $form_url = "./form"; //MEMO 要件によってフォームURLは変更する
+        $form_url = config("contents.form.url.start");
 
         return response(["token" => $token, "form_url" => $form_url])->cookie(
             'entry_code', $request->input("winning_entry_code"), 24 * 60
