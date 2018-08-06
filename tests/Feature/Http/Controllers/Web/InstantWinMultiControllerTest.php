@@ -71,6 +71,7 @@ class InstantWinMultiControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/multi/run');
         $response->assertStatus(200);
         $entry = Entry::where("state",2)->first() ;
@@ -79,7 +80,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => true,
           "token" => "WINNER",
           "winning_lottery_code" => $win_lottery->code,
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -113,7 +114,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => false,
           "token" => "RETRY",
           "winning_lottery_code" => null,
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 
@@ -140,6 +141,7 @@ class InstantWinMultiControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/multi/run');
         $response->assertStatus(200);
         $response->assertJson([
@@ -147,7 +149,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => true,
           "token" => "WINNER",
           "winning_lottery_code" => $lottery->code,
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -174,6 +176,7 @@ class InstantWinMultiControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/multi/run');
         $response->assertStatus(200);
         $response->assertJson([
@@ -181,7 +184,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => true,
           "token" => "WINNER",
           "winning_lottery_code" => $lottery->code,
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -210,6 +213,7 @@ class InstantWinMultiControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/multi/run/retry');
         $entry = Entry::where("state",2)->first() ;
         $response->assertStatus(200);
@@ -218,7 +222,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => true,
           "token" => "WINNER",
           "winning_lottery_code" => $win_lottery->code,
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -253,7 +257,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => true,
           "token" => "LOSE",
           "winning_lottery_code" => null,
-          "winning_entry_id" => null,
+          "winning_entry_code" => null,
         ]);
     }
 
@@ -288,7 +292,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => false,
           "token" => "RETRY",
           "winning_lottery_code" => null,
-          "winning_entry_id" => null,
+          "winning_entry_code" => null,
         ]);
     }
 
@@ -323,7 +327,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => false,
           "token" => "LOSE",
           "winning_lottery_code" => null,
-          "winning_entry_id" => null,
+          "winning_entry_code" => null,
         ]);
     }
 
@@ -357,7 +361,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => true,
           "token" => "LOSE",
           "winning_lottery_code" => null,
-          "winning_entry_id" => null,
+          "winning_entry_code" => null,
         ]);
     }
 
@@ -393,7 +397,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => false,
           "token" => "RETRY",
           "winning_lottery_code" => null,
-          "winning_entry_id" => null,
+          "winning_entry_code" => null,
         ]);
     }
 
@@ -428,7 +432,7 @@ class InstantWinMultiControllerTest extends TestCase
           "finish" => true,
           "token" => "LOSE",
           "winning_lottery_code" => null,
-          "winning_entry_id" => null,
+          "winning_entry_code" => null,
         ]);
     }
 }

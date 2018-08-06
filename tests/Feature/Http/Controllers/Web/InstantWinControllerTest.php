@@ -73,6 +73,7 @@ class InstantWinControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
         $entry = Entry::first() ;
@@ -80,7 +81,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -113,7 +114,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 
@@ -140,13 +141,14 @@ class InstantWinControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
         $response->assertJson([
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -173,13 +175,14 @@ class InstantWinControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/run');
         $response->assertStatus(200);
         $response->assertJson([
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -206,6 +209,7 @@ class InstantWinControllerTest extends TestCase
         \Auth::shouldReceive("user")->andReturn($mock);
         \Auth::makePartial();
 
+        \Crypt::shouldReceive("encrypt")->andReturn("WINNERCODE");
         $response = $response->get('/api/instantwin/run/retry');
         $response->assertStatus(200);
         $entry = Entry::orderBy("id","desc")->first() ;
@@ -213,7 +217,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_entry_id" => $entry->id
+          "winning_entry_code" => "WINNERCODE"
         ]);
     }
 
@@ -247,7 +251,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 
@@ -280,7 +284,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 
@@ -315,7 +319,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "LOSE",
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 
@@ -349,7 +353,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 
@@ -385,7 +389,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => false,
           "token" => "RETRY",
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 
@@ -421,7 +425,7 @@ class InstantWinControllerTest extends TestCase
           "result" => false,
           "finish" => true,
           "token" => "LOSE",
-          "winning_entry_id" => null
+          "winning_entry_code" => null
         ]);
     }
 

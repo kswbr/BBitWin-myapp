@@ -48,5 +48,10 @@ class User extends Authenticatable
         return $this->createToken('WinnerToken', ['instant-win','winner'])->accessToken;
     }
 
+    public function getFormTokenAttribute()
+    {
+        return $this->createToken('FormToken', ['instant-win','form'])->accessToken;
+    }
+
 
 }

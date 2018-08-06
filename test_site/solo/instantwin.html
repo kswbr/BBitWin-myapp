@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="../css/product.css">
 
     <title>BbItWin</title>
   </head>
@@ -70,7 +70,18 @@
               'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
         }).then(function(res){
+            localStorage.setItem('token', res.data.token);
+            return axios.get('http://localhost:8083/api/instantwin/winner/regist',{
+              withCredentials: true,
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+              },
+              params: res.data
+            })
+        }).then(function(res){
             console.log(res)
+            localStorage.setItem('token', res.data.token);
+            location.href = res.data.form_url
         }).catch(function(e) {
             console.error({ message: e.message, statusCode: e.statusCode })
         })

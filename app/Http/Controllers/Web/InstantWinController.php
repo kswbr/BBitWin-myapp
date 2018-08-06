@@ -44,13 +44,18 @@ class InstantWinController extends Controller
     public function run(Request $request, $campaign_code = null, $lottery_code = null)
     {
         $project = $this->projectService->getCode();
-        if (!$campaign_code || !$lottery_code) {
+        if (!$campaign_code) {
             $campaign = $this->campaignService->getFirstInProject($project);
-            $lottery = $this->lotteryService->getFirstInCampaign($campaign);
         } else {
             $campaign = $this->campaignService->getByProjectAndCode($project,$campaign_code);
+        }
+
+        if (!$lottery_code) {
+            $lottery = $this->lotteryService->getFirstInCampaign($campaign);
+        } else {
             $lottery = $this->lotteryService->getByCode($lottery_code);
         }
+
         $user = \Auth::user();
         $player = $user->player;
         $prev_entry = $this->entryService->getPrevDataOfPlayerInCampaign($user->player,$campaign);
@@ -85,7 +90,7 @@ class InstantWinController extends Controller
             // 前回当選して応募完了した人は必ず落選
             // 前回当選して応募完了した人は必ず落選(リトライ)
             $this->entryService->create($player, $lottery, "lose");
-            return response(["result" => false, "finish" => $is_retry_challenge ,"token" => $token, "winning_entry_id" => null]);
+            return response(["result" => false, "finish" => $is_retry_challenge ,"token" => $token, "winning_entry_code" => null]);
         }
 
         if ($is_winner) {
@@ -93,47 +98,67 @@ class InstantWinController extends Controller
             // 前回当選(管理画面にて特別当選扱い)して未応募の場合必ず当選
             $user->append('winner_token');
             $token = $user->winner_token;
-            return response(["result" => true, "finish" => true,"token" => $token, "winning_entry_id" => $prev_entry->id]);
+
+            return response(["result" => true, "finish" => true,"token" => $token, "winning_entry_code" => encrypt($prev_entry->id)]);
         }
 
         if ($challenged_today && $is_looser) {
             if ($is_retry_challenge) {
                 $state = ($result === true) ? "win" : "lose";
                 $entry = $this->entryService->create($player, $lottery, $state);
-                $entry_id = null;
+                $entry_code = null;
                 if ($state === "win") {
                     // 本日当選してリトライ後当選
                     $user->append('winner_token');
                     $token = $user->winner_token;
-                    $entry_id = $entry->id;
+                    $entry_code = encrypt($entry->id);
                 } else {
                     // 本日当選してリトライ後落選
                 }
-                return response(["result" => $result, "finish" => true,"token" => $token, "winning_entry_id" => $entry_id]);
+                return response(["result" => $result, "finish" => true,"token" => $token, "winning_entry_code" => $entry_code]);
             } else {
                 $user->append('retry_token');
                 $token = $user->retry_token;
                 //本日落選して、リトライせずに再応募した場合落選にする
-                return response(["result" => false, "finish" => false,"token" => $token, "winning_entry_id" => null]);
+                return response(["result" => false, "finish" => false,"token" => $token, "winning_entry_code" => null]);
             }
         }
 
         $state = ($result === true) ? "win" : "lose";
         $entry = $this->entryService->create($player, $lottery, $state);
-        $entry_id = null;
+        $entry_code = null;
 
         if ($state === "win") {
             // 初回で当選した場合
             $user->append('winner_token');
             $token = $user->winner_token;
-            $entry_id = $entry->id;
+            $entry_code = encrypt($entry->id);
         } else {
             // 初回で落選してリトライの権利を得た場合
             $user->append('retry_token');
             $token = $user->retry_token;
         }
 
-        return response(["result" => $result, "finish" => $state === "win", "token" => $token, "winning_entry_id" => $entry_id]);
+        return response(["result" => $result, "finish" => $state === "win", "token" => $token, "winning_entry_code" => $entry_code]);
+    }
+
+    public function winner_regist(Request $request)
+    {
+        $project = $this->projectService->getCode();
+        $entry_id = decrypt($request->input("winning_entry_code"));
+        $entry = $this->entryService->getById($entry_id);
+        if ($entry->state_code !== "win" && $entry->state_code !== "win_special") {
+            return response(["result" => false, "finish" => false, "token" => null, "error" => 1]);
+        }
+
+        $user = \Auth::user();
+        $user->append('form_token');
+        $token = $user->form_token;
+        $form_url = "./form"; //MEMO 要件によってフォームURLは変更する
+
+        return response(["token" => $token, "form_url" => $form_url])->cookie(
+            'entry_code', $request->input("winning_entry_code"), 24 * 60
+        );
     }
 
 }
