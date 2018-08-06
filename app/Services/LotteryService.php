@@ -50,6 +50,16 @@ class LotteryService
         return $this->repository->getByCode($code);
     }
 
+    public function getByCodeForWinner($code)
+    {
+        $lottery = $this->repository->getByCode($code);
+        return [
+          "name" => $lottery->name,
+          "code" => $lottery->code,
+        ];
+    }
+
+
     public function update($id, array $inputs)
     {
         if (isset($inputs["start_date"])) {

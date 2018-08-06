@@ -81,7 +81,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -150,7 +150,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -186,7 +186,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -222,7 +222,7 @@ class InstantWinControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }

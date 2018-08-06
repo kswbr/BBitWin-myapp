@@ -79,7 +79,7 @@ class InstantWinMultiControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $win_lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($win_lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -148,7 +148,7 @@ class InstantWinMultiControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -183,7 +183,7 @@ class InstantWinMultiControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }
@@ -221,7 +221,7 @@ class InstantWinMultiControllerTest extends TestCase
           "result" => true,
           "finish" => true,
           "token" => "WINNER",
-          "winning_lottery" => $win_lottery->toArray(),
+          "winning_lottery" => $this->lotteryService->getByCodeForWinner($win_lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
     }

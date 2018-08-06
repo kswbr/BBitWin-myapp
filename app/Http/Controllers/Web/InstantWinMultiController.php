@@ -92,7 +92,7 @@ class InstantWinMultiController extends Controller
             // 前回当選(管理画面にて特別当選扱い)して未応募の場合必ず当選
             $user->append('winner_token');
             $token = $user->winner_token;
-            $winning_lottery = $this->lotteryService->getByCode($prev_entry->lottery_code);
+            $winning_lottery = $this->lotteryService->getByCodeForWinner($prev_entry->lottery_code);
             return response(["result" => true, "finish" => true,"token" => $token, "winning_lottery" => $winning_lottery, "winning_entry_code" => encrypt($prev_entry->id)]);
         }
 
@@ -117,7 +117,7 @@ class InstantWinMultiController extends Controller
                   "result" => $results["is_winner"],
                   "finish" => true,
                   "token" => $token,
-                  "winning_lottery" => isset($results["winning_lottery"]->code) ? $results["winning_lottery"] : null,
+                  "winning_lottery" => $results["winning_lottery"] ? $this->lotteryService->getByCodeForWinner($results["winning_lottery"]->code) : null,
                   "winning_entry_code" => $entry_code
                 ]);
             } else {
@@ -150,7 +150,7 @@ class InstantWinMultiController extends Controller
           "result" => $results["is_winner"],
           "finish" => $results["is_winner"] || $is_retry_challenge,
           "token" => $token,
-          "winning_lottery" => $results["winning_lottery"] ? $results["winning_lottery"] : null,
+          "winning_lottery" => $results["winning_lottery"] ? $this->lotteryService->getByCodeForWinner($results["winning_lottery"]->code) : null,
           "winning_entry_code" => $entry_code
         ]);
 
