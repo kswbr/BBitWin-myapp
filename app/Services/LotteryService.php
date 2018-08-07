@@ -53,6 +53,9 @@ class LotteryService
     public function getByCodeForWinner($code)
     {
         $lottery = $this->repository->getByCode($code);
+        if (!$lottery) {
+          return false;
+        }
         return [
           "name" => $lottery->name,
           "code" => $lottery->code,

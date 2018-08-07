@@ -3,32 +3,38 @@
     <div class="row">
       <div class="col-md-12 order-md-1">
         <h4 class="mb-3">賞品応募フォーム</h4>
-        <form class="needs-validation" novalidate>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="lottery">当選賞品</label>
+            <h5>{{form.lottery}}</h5>
+          </div>
+        </div>
+        <form class="needs-validation" v-if="approval">
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="firstName">姓</label>
-              <input type="text" class="form-control" id="name_1" placeholder="" value="" required>
+              <input type="text" class="form-control" name="name_1" placeholder="" value="" required>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="lastName">名</label>
-              <input type="text" class="form-control" id="name_2" placeholder="" value="" required>
+              <input type="text" class="form-control" name="name_2" placeholder="" value="" required>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="firstName">セイ</label>
-              <input type="text" class="form-control" id="kana_1" placeholder="" value="" required>
+              <input type="text" class="form-control" name="kana_1" placeholder="" value="" required>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="lastName">メイ</label>
-              <input type="text" class="form-control" id="kana_2" placeholder="" value="" required>
+              <input type="text" class="form-control" name="kana_2" placeholder="" value="" required>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
@@ -39,7 +45,7 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com">
+              <input type="email" class="form-control" name="email" placeholder="you@example.com">
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -81,7 +87,7 @@
             </div>
           </div>
 
-          <div class=" mb-3">
+          <div class="mb-3">
             <label for="address">住所 1</label>
             <input type="text" class="form-control" id="address_1" placeholder="1234 Main St" required>
             <div class="invalid-feedback">
@@ -100,7 +106,30 @@
   </div>
 </template>
 <script>
+import Axios from 'axios'
+
 export default {
-  name: 'winnerForm'
+  name: 'WinnerForm',
+  data () {
+    return {
+      url: 'http://localhost:8083/api/instantwin/form/',
+      form:{
+        lottery:''
+      },
+      approval: false,
+    }
+  },
+  mounted () {
+    Axios.get(this.url + 'init', {
+      withCredentials: true,
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+    }).then((res) => {
+      console.log(res)
+      this.form.lottery = res.data.lottery.name
+      this.approval = true
+    })
+  }
 }
 </script>

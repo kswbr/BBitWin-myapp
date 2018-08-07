@@ -44,3 +44,6 @@ Route::get('instantwin/run/{campaign_code}','Web\InstantWinController@run')->mid
 Route::get('instantwin/run/{campaign_code}/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
 
 Route::get('instantwin/winner/regist','Web\InstantWinController@winner_regist')->middleware(['cors','auth:api','scopes:instant-win,winner']);
+
+Route::get('instantwin/form/init','Web\InstantWin\FormController@init')->middleware(['cors','auth:api','scopes:instant-win,form']);
+
