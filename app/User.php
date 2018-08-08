@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'project'
+        'name', 'email', 'password', 'project', 'role', 'allow_over_project', 'allow_campaign', 'allow_vote', 'allow_user'
     ];
 
     /**
@@ -31,6 +31,28 @@ class User extends Authenticatable
     public function player()
     {
         return $this->hasOne(Player::class);
+    }
+
+    public function scopeProject($query, $project)
+    {
+        return $query->where("project",$project);
+    }
+
+    public function scopeInstantWinPlayers($query)
+    {
+        return $query->where("email",null)->where("password", null);
+    }
+
+    public function scopeAdminMembers($query)
+    {
+        return $query->whereNotIn("email",null)->whereNotIn("password", null);
+    }
+
+    public function scopeProjectMembers($query,$project)
+    {
+        return $query->where(function($query) use ($project){
+            $query->where("project", $project)->orWhere("allow_over_project", true);
+        });
     }
 
     public function getInstantWinTokenAttribute()
