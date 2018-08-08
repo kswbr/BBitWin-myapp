@@ -18,6 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('password')->nullable();
+            $table->tinyInteger('role')->default(0);
+            $table->boolean('allow_over_project')->default(false);
+            $table->boolean('allow_campaign')->default(true);
+            $table->boolean('allow_vote')->default(true);
+            $table->string('project');
             $table->rememberToken();
             $table->timestamps();
         });
