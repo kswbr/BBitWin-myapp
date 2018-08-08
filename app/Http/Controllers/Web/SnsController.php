@@ -46,6 +46,7 @@ class SnsController extends Controller
                 'name'         => $twitter_user->getName(),
                 'email'        => null,
                 'password'     => null,
+                'project'      => $project
             ]);
             $player = $this->playerService->create($project, "twitter", $twitter_user->getId(), [], $user);
         }
