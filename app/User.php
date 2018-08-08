@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function scopeAdminMembers($query)
     {
-        return $query->whereNotIn("email",null)->whereNotIn("password", null);
+        return $query->whereNotNull("email")->whereNotNull("password");
     }
 
     public function scopeProjectMembers($query,$project)

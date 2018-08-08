@@ -63,7 +63,7 @@ class UserController extends Controller
         $password = \Auth::user()->password;
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email,NULL,id,id,' . $id,
             // 'old_password' => "required|old_password:$password",
             // 'password' => 'required|string|min:6|confirmed',
             'allow_campaign' => 'boolean',
@@ -72,8 +72,10 @@ class UserController extends Controller
             'allow_over_project' => 'boolean',
             'role' => 'required|integer',
         ]);
+        $input = $request->all();
+        unset($input["password"]);
         $user = $this->model->find($id);
-        $user->update($request->all());
+        $user->update($input);
         return response(['update' => true], 201);
     }
 
