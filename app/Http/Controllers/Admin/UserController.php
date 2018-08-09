@@ -93,6 +93,20 @@ class UserController extends Controller
         return response(['update' => true], 201);
     }
 
+    public function change_password(Request $request, $id)
+    {
+        $password = \Auth::user()->password;
+        $validatedData = $request->validate([
+            'old_password' => "required|old_password:$password",
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $user = $this->model->find($id);
+        $user->password = bcrypt($request->input("password"));
+        $ret = $user->save();
+        return response(['update' => true], 201);
+    }
+
+
     public function destroy(Request $request, $id)
     {
         $user = $this->model->find($id);

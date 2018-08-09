@@ -23,6 +23,7 @@ Route::get('user/info','Admin\UserController@info')->middleware('auth:api','scop
 Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/chart','Admin\EntryController@chart')->middleware('auth:api','scopes:check-admin');
 Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/state_list','Admin\EntryController@state_list')->middleware('auth:api','scopes:check-admin');
 
+Route::patch('users/{user}/change_password', 'Admin\UserController@change_password')->middleware('auth:api','scopes:check-admin');
 Route::get('users/role_list', 'Admin\UserController@role_list')->middleware('auth:api','scopes:check-admin');
 Route::resource('users', 'Admin\UserController')->middleware('auth:api','scopes:check-admin');
 Route::resource('campaigns', 'Admin\CampaignController')->middleware('auth:api','scopes:check-admin');

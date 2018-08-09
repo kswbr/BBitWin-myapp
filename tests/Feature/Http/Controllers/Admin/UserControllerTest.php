@@ -109,4 +109,22 @@ class UserControllerTest extends TestCase
 
     }
 
+    public function testChangePassword()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $user = factory(User::class)->create();
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->json("PATCH",'/api/users/' . $user->id . '/change_password',[
+                            'old_password' => 'secret',
+                            'password' => 'secret2',
+                            'password_confirmation' => 'secret2',
+                         ]);
+        $response->assertStatus(201);
+        $data = $this->model->find($user->id);
+        $this->assertTrue(\Hash::check("secret2",$data->password));
+
+    }
+
 }
