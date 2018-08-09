@@ -23,6 +23,11 @@ class EntryController extends Controller
         $this->entryService = $entryService;
     }
 
+    public function state_list(Request $request, $campaign_id, $lottery_id)
+    {
+        return response(config("contents.entry.state_data"));
+    }
+
     /**
      * Display a listing of the resource.
      *

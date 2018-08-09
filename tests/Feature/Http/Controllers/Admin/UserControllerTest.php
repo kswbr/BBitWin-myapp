@@ -94,7 +94,7 @@ class UserControllerTest extends TestCase
         $response = $this->actingAs($user,"api")
                          ->json("PATCH",'/api/users/' . $user->id,[
                             'name' => 'TESTNAME2',
-                            'email' => 'm.testtest@dummymail.com',
+                            'email' => $user->email,
                             'password' => 'secret2',
                             'allow_campaign' => true,
                             'allow_vote' => true,

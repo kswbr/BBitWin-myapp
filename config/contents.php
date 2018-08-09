@@ -4,9 +4,8 @@ return [
   "admin" => [
     "user" => [
       "role" => [
-        ["label" => "ログイン不可ユーザー" , "login" => 0, "allow_delete" => 0, "allow_create" => 0],
-        ["label" => "編集専用ユーザー" , "login" => 1, "allow_delete" => 0, "allow_create" => 0],
-        ["label" => "新規作成,削除許可ユーザー" , "login" => 1, "allow_delete" => 1, "allow_create" => 1],
+        ["label" => "編集のみ" , "login" => 1, "allow_delete" => 0, "allow_create" => 0],
+        ["label" => "新規作成,削除,編集可能" , "login" => 1, "allow_delete" => 1, "allow_create" => 1],
       ]
     ],
     "show_page_count" => 15

@@ -21,7 +21,7 @@
         :offset="7">
         <el-form :model="form" >
           <el-form-item >
-            <el-input name="username" placeholder="ユーザー名又はメールアドレス" v-model="form.username"/>
+            <el-input name="username" placeholder="メールアドレス" v-model="form.username"/>
           </el-form-item>
           <el-form-item >
             <el-input name="password" type="password" v-model="form.password" auto-complete="off"/>
@@ -57,7 +57,6 @@ export default {
   },
   mounted: function () {
     if (this.loggedIn) {
-      // TODO チェック用のAPIあとで作る
       Axios.get('/api/campaigns', { page: 0 }).then((res) => {
         this.$router.push('/admin/userarea')
       })

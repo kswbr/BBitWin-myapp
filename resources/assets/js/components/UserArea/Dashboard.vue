@@ -9,7 +9,7 @@
       <el-row>
         <el-header >
          <el-col :offset="1" :span="21">
-            <h2 class="h2">Bbm Instant Win Admin<small >インスタントウィン管理画面トップ </small></h2>
+            <h2 class="h2">Bbm Instant Win Admin<small >ホーム </small></h2>
           </el-col>
         </el-header >
       </el-row>
@@ -28,9 +28,17 @@
             </el-button>
           </el-card>
         </el-col>
-
-
       </el-row>
+      <el-row>
+        <el-col :offset="3" :span="8">
+          <el-card class="box-card" >
+            <el-button style="font-size:1.25em" @click="$router.push('userarea/users')" type="text">
+              <i class="el-icon-check"></i> ユーザー管理
+            </el-button>
+          </el-card>
+        </el-col>
+      </el-row>
+
     </el-main>
   </el-container>
 </template>

@@ -32,6 +32,12 @@ class UserController extends Controller
         return response($user->toArray());
     }
 
+    public function role_list(Request $request)
+    {
+        return response(config("contents.admin.user.role"));
+    }
+
+
     public function index(Request $request)
     {
         $project = $this->projectService->getCode();
@@ -54,16 +60,24 @@ class UserController extends Controller
         ]);
 
         $params = array_merge($request->all(),["project" => $project, "password" => bcrypt($request->input("password"))]);
+
         $user = $this->model->create($params);
 
         return response(['created_id' => $user->id], 201);
     }
+
+    public function show(Request $request, $id)
+    {
+        $data = User::find($id);
+        return response($data->toArray(), 200);
+    }
+
     public function update(Request $request, $id)
     {
         $password = \Auth::user()->password;
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,NULL,id,id,' . $id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id.',id',
             // 'old_password' => "required|old_password:$password",
             // 'password' => 'required|string|min:6|confirmed',
             'allow_campaign' => 'boolean',
