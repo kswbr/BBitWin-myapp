@@ -1,0 +1,10 @@
+nginx:
+  build: ./nginx
+  ports:
+    - "8080:80"
+  links:
+    - php-fpm
+
+php-fpm:
+  build: .
+  dockerfile: ./php-fpm/Dockerfile
