@@ -124,13 +124,13 @@ WORKDIR /var/www
 COPY dist/src /var/www
 
 # install composer
-RUN rm -rf /var/www/storage/logs/*
 RUN chmod -R 777 /var/www/storage
 RUN chmod -R 777 /var/www/bootstrap/cache
 COPY manifest/oauth-public.key /var/www/storage/.
 COPY manifest/oauth-private.key /var/www/storage/.
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer install --no-dev
 RUN composer install --optimize-autoloader
 RUN composer dump-autoload
 

@@ -1,5 +1,3 @@
-SHA=`git rev-parse HEAD`
+cd src && npm run prod && cd -
+rsync -av --delete src dist --exclude="test_site" --exclude="node_modules"
 
-rsync -av --delete src dist --exclude="test_site"
-
-cd dist/src && npm run prod && rm -rf node_modules
