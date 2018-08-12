@@ -22,6 +22,7 @@ ARG LARADOCK_PHP_VERSION=7.2
 
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
+ENV APP_ENV production
 
 # always run apt update when start and after add new source list, then clean up at end.
 RUN apt-get update -yqq && \
@@ -131,7 +132,6 @@ COPY manifest/oauth-private.key /var/www/storage/.
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev
-RUN composer install --optimize-autoloader
 RUN composer dump-autoload
 
 RUN php artisan cache:clear
