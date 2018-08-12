@@ -28,6 +28,13 @@ RUN apt-get update -yqq && \
     apt-get install -y apt-utils && \
     pecl channel-update pecl.php.net
 
+RUN apt-get install curl gnupg cmake -y &&\
+    mkdir /tmp/libzip && cd /tmp/libzip && curl -sSLO https://libzip.org/download/libzip-1.4.0.tar.gz &&\
+    tar zxf libzip-1.4.0.tar.gz && cd libzip-1.4.0/ && mkdir build && cd build && cmake ../ &&\
+    make > /dev/null && make install &&\
+    docker-php-ext-configure zip --with-libzip=/usr/local/lib/libzip.so &&\
+    docker-php-ext-install zip
+
 #
 #--------------------------------------------------------------------------
 # Mandatory Software's Installation
@@ -69,7 +76,7 @@ RUN if [ ${INSTALL_SOAP} = true ]; then \
 
 USER root
 
-ARG INSTALL_IMAGE_OPTIMIZERS=false
+ARG INSTALL_IMAGE_OPTIMIZERS=true
 
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
     apt-get install -y jpegoptim optipng pngquant gifsicle \
@@ -81,7 +88,7 @@ RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
 
 USER root
 
-ARG INSTALL_IMAGEMAGICK=false
+ARG INSTALL_IMAGEMAGICK=true
 
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
     apt-get install -y libmagickwand-dev imagemagick && \
@@ -114,7 +121,18 @@ RUN apt-get clean && \
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www
-COPY src /var/www
+COPY dist/src /var/www
+
+# install composer
+RUN chmod -R 777 /var/www/storage
+RUN chmod -R 777 /var/www/bootstrap/cache
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer install --optimize-autoloader
+RUN composer dump-autoload
+
+RUN php artisan cache:clear
+RUN php artisan config:clear
 
 CMD ["php-fpm"]
 
