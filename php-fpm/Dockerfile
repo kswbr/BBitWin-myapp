@@ -61,7 +61,7 @@ RUN apt-get install curl gnupg cmake -y &&\
 # SOAP:
 ###########################################################################
 
-ARG INSTALL_SOAP=false
+ARG INSTALL_SOAP=true
 
 RUN if [ ${INSTALL_SOAP} = true ]; then \
     # Install the soap extension
@@ -76,7 +76,7 @@ RUN if [ ${INSTALL_SOAP} = true ]; then \
 
 USER root
 
-ARG INSTALL_IMAGE_OPTIMIZERS=true
+ARG INSTALL_IMAGE_OPTIMIZERS=false
 
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
     apt-get install -y jpegoptim optipng pngquant gifsicle \
@@ -88,7 +88,7 @@ RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
 
 USER root
 
-ARG INSTALL_IMAGEMAGICK=true
+ARG INSTALL_IMAGEMAGICK=false
 
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
     apt-get install -y libmagickwand-dev imagemagick && \
@@ -124,6 +124,7 @@ WORKDIR /var/www
 COPY dist/src /var/www
 
 # install composer
+RUN rm -rf /var/www/storage/logs/*
 RUN chmod -R 777 /var/www/storage
 RUN chmod -R 777 /var/www/bootstrap/cache
 
