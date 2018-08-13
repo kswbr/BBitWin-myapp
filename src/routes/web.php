@@ -15,8 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/{any}', 'AdminController@index')->where('any','.*');
 
