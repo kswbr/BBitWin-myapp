@@ -47,6 +47,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('allow_create_and_delete');
         $project = $this->projectService->getCode();
         $validatedData = $request->validate([
             'name' => 'required|max:255',
@@ -109,6 +110,7 @@ class UserController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        $this->authorize('allow_create_and_delete');
         $user = $this->model->find($id);
         $user->delete();
         return response(['destroy' => true], 201);

@@ -46,6 +46,7 @@ class VoteController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('allow_create_and_delete');
 
         $validatedData = $request->validate([
             'name' => 'required|max:255',
@@ -109,6 +110,7 @@ class VoteController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        $this->authorize('allow_create_and_delete');
         $this->voteService->destroy($id);
         return response(['destroy' => true], 201);
     }

@@ -47,6 +47,7 @@ class LotteryController extends Controller
     public function store($campaign_id, Request $request)
     {
 
+        $this->authorize('allow_create_and_delete');
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'rate' => 'required|numeric|max:100|min:0',
@@ -120,6 +121,7 @@ class LotteryController extends Controller
      */
     public function destroy(Request $request, $campaign_id, $id)
     {
+        $this->authorize('allow_create_and_delete');
         $this->lotteryService->destroy($id);
         return response(['destroy' => true], 201);
     }
