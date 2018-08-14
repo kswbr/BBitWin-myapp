@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Passport;
 
 use App\Repositories\Eloquent\Models\Campaign;
 use App\Repositories\Eloquent\Models\Lottery;
@@ -45,10 +46,42 @@ class LotteryControllerTest extends TestCase
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries')
                          ->assertStatus(302);
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries')
                          ->assertStatus(200);
     }
+
+   public function testGate()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $user = factory(User::class)->create([
+          "allow_campaign" => false
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->get('/api/campaigns/' . $campaign->id . '/lotteries')
+                         ->assertStatus(403);
+
+        $user = factory(User::class)->create([
+          "allow_campaign" => true,
+          "role" => 0
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->json("POST",'/api/campaigns/' . $campaign->id . '/lotteries',[])
+                         ->assertStatus(403);
+
+        $lottery = factory(Lottery::class)->create();
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id)
+                         ->assertStatus(403);
+    }
+
 
     public function testShow()
     {
@@ -61,6 +94,7 @@ class LotteryControllerTest extends TestCase
         $lottery = $lotteries->first();
 
         $user = factory(User::class)->create();
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id)
                          ->assertStatus(200)
@@ -82,6 +116,7 @@ class LotteryControllerTest extends TestCase
         $lottery = $lotteries->first();
 
         $user = factory(User::class)->create();
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->get('/api/campaigns/' . $wrong_campaign->id .  '/lotteries/' . $lottery->id)
                          ->assertStatus(403)
@@ -101,6 +136,7 @@ class LotteryControllerTest extends TestCase
         $input["name"] =  "CREATED_NAME" ;
         $input["code"] =  "CREATED_CODE" ;
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("POST",'/api/campaigns/' . $campaign->id . '/lotteries',$input)
                          ->assertStatus(201);
@@ -114,6 +150,7 @@ class LotteryControllerTest extends TestCase
         $input["name"] =  "CREATED_NAME" ;
         $input["code"] =  "CREATED_CODE" ;
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("POST",'/api/campaigns/' . $campaign->id . '/lotteries',$input)
                          ->assertStatus(422);
@@ -133,6 +170,7 @@ class LotteryControllerTest extends TestCase
 
         $user = factory(User::class)->create();
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("DELETE",'/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id)
                          ->assertStatus(201);
@@ -156,6 +194,7 @@ class LotteryControllerTest extends TestCase
         $input["name"] =  "UPDATED_NAME" ;
         $input["code"] =  "UPDATED_CODE" ;
 
+        Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
                          ->json("PATCH",'/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id,$input)
                          ->assertStatus(201);

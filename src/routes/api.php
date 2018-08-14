@@ -13,29 +13,31 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::get('user/info','Admin\UserController@info')->middleware('auth:api','scopes:check-admin');
+Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
+    Route::get('user/info','Admin\UserController@info');
 
-Route::group(['middleware' => ['can:allow_user']], function () {
-    Route::patch('users/{user}/change_password', 'Admin\UserController@change_password')->middleware('auth:api','scopes:check-admin');
-    Route::get('users/role_list', 'Admin\UserController@role_list')->middleware('auth:api','scopes:check-admin');
-    Route::resource('users', 'Admin\UserController')->middleware('auth:api','scopes:check-admin');
-});
+    Route::group(['middleware' => ['can:allow_user']], function () {
+        Route::patch('users/{user}/change_password', 'Admin\UserController@change_password');
+        Route::get('users/role_list', 'Admin\UserController@role_list');
+        Route::resource('users', 'Admin\UserController');
+    });
 
-Route::group(['middleware' => ['can:allow_campaign']], function () {
-    Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/chart','Admin\EntryController@chart')->middleware('auth:api','scopes:check-admin');
-    Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/state_list','Admin\EntryController@state_list')->middleware('auth:api','scopes:check-admin');
-    Route::resource('campaigns', 'Admin\CampaignController')->middleware('auth:api','scopes:check-admin');
-    Route::resource('campaigns.lotteries', 'Admin\LotteryController')->middleware('auth:api','scopes:check-admin');
-    Route::resource('campaigns.lotteries.entries', 'Admin\EntryController')->middleware('auth:api','scopes:check-admin');
-});
+    Route::group(['middleware' => ['can:allow_campaign']], function () {
+        Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/chart','Admin\EntryController@chart');
+        Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/state_list','Admin\EntryController@state_list');
+        Route::resource('campaigns', 'Admin\CampaignController');
+        Route::resource('campaigns.lotteries', 'Admin\LotteryController');
+        Route::resource('campaigns.lotteries.entries', 'Admin\EntryController');
+    });
 
-Route::group(['middleware' => ['can:allow_vote']], function () {
-    Route::get('votes/{vote}/chart','Admin\VoteController@chart')->middleware('auth:api','scopes:check-admin');
-    Route::resource('votes', 'Admin\VoteController')->middleware('auth:api','scopes:check-admin');
+    Route::group(['middleware' => ['can:allow_vote']], function () {
+        Route::get('votes/{vote}/chart','Admin\VoteController@chart');
+        Route::resource('votes', 'Admin\VoteController');
+    });
 });
 
 Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect')->middleware('cors');

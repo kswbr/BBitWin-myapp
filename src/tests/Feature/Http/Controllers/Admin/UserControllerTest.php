@@ -42,6 +42,34 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function testGate()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $user = factory(User::class)->create([
+          "allow_user" => false
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api");
+        $response = $response->get('/api/users');
+        $response->assertStatus(403);
+
+        $user = factory(User::class)->create([
+          "allow_campaign" => true,
+          "role" => 0
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->json("POST",'/api/users',[])
+                         ->assertStatus(403);
+
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/users/' . $user->id)
+                         ->assertStatus(403);
+    }
+
+
     /**
      *
      * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException

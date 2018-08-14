@@ -52,6 +52,35 @@ class EntryControllerTest extends TestCase
                          ->assertStatus(200);
     }
 
+   public function testGate()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code]);
+        $user = factory(User::class)->create([
+          "allow_campaign" => false
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->get('/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . "/entries")
+                         ->assertStatus(403);
+
+        $user = factory(User::class)->create([
+          "allow_campaign" => true,
+          "role" => 0
+        ]);
+
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/campaigns/' . $campaign->id . '/lotteries/' . $lottery->id . "/entries/" . $entry->id)
+                         ->assertStatus(201);
+    }
+
+
     public function testShow()
     {
         $project = env("PROJECT_NAME", config('app.name'));

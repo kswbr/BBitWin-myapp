@@ -50,6 +50,35 @@ class CampaignControllerTest extends TestCase
                          ->assertStatus(200);
     }
 
+   public function testGate()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+
+        $user = factory(User::class)->create([
+          "allow_campaign" => false
+        ]);
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->get('/api/campaigns')
+                         ->assertStatus(403);
+
+        $user = factory(User::class)->create([
+          "allow_campaign" => true,
+          "role" => 0
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->json("POST",'/api/campaigns/',[])
+                         ->assertStatus(403);
+
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/campaigns/'.$campaign->id)
+                         ->assertStatus(403);
+    }
+
+
     public function testShow()
     {
         $project = env("PROJECT_NAME", config('app.name'));
