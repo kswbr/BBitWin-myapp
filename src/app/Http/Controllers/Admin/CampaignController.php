@@ -42,6 +42,7 @@ class CampaignController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('allow_create_and_delete');
         $project = $this->projectService->getCode();
 
         $validatedData = $request->validate([
@@ -98,6 +99,7 @@ class CampaignController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        $this->authorize('allow_create_and_delete');
         $this->campaignService->destroy($id);
         return response(['destroy' => true], 201);
     }

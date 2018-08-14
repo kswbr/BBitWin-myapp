@@ -19,6 +19,11 @@ $factory->define(App\User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'project' => 'TESTPROJECT',
+        'allow_campaign' => true,
+        'allow_vote' => true,
+        'allow_user' => true,
+        'allow_over_project' => true,
+        'role' => 1,
         'remember_token' => str_random(10),
     ];
 });

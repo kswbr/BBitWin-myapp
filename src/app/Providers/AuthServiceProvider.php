@@ -5,6 +5,7 @@ namespace App\Providers;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Services\ProjectService;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -33,5 +34,27 @@ class AuthServiceProvider extends ServiceProvider
             'form' => 'instantwin form token',
         ]);
         Passport::routes();
-    }
+
+        $projectService = \App::make(ProjectService::class);
+        $group_in_project = function($user) use ($projectService){
+            return $user->project === $projectService->getCode() || $user->allow_over_project === true;
+        };
+
+        Gate::define('allow_campaign', function ($user) use ($group_in_project){
+            return ($user->allow_campaign === true && $group_in_project($user));
+        });
+
+        Gate::define('allow_vote', function ($user) use ($group_in_project){
+            return ($user->allow_vote === true && $group_in_project($user));
+        });
+
+        Gate::define('allow_user', function ($user) use ($group_in_project){
+            return ($user->allow_user === true && $group_in_project($user));
+        });
+
+        Gate::define('allow_create_and_delete', function ($user) use ($group_in_project){
+            return ($user->role >= 1 && $group_in_project($user));
+        });
+
+     }
 }
