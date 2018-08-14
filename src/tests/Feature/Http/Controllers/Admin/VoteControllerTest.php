@@ -51,6 +51,35 @@ class VoteControllerTest extends TestCase
                          ->assertStatus(200);
     }
 
+    public function testGate()
+    {
+        $project = env("PROJECT_NAME", config('app.name'));
+        $user = factory(User::class)->create([
+          "allow_vote" => false
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api");
+        $response = $response->get('/api/votes');
+        $response->assertStatus(403);
+
+        $user = factory(User::class)->create([
+          "allow_vote" => true,
+          "role" => 0
+        ]);
+
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->json("POST",'/api/votes',[])
+                         ->assertStatus(403);
+
+        $vote = factory(Vote::class)->create(["project" => $project]);
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/votes/' . $vote->id)
+                         ->assertStatus(403);
+    }
+
+
     public function testShow()
     {
         $project = env("PROJECT_NAME", config('app.name'));
