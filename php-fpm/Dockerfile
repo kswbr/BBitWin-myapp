@@ -125,11 +125,12 @@ WORKDIR /var/www
 COPY dist/src /var/www
 
 # install composer
-COPY storage /var/www/storage
 RUN rm -rf /var/www/bootstrap/cache/*
+RUN rm -rf /var/www/storage
 RUN rm -f /var/www/config/passport.php
+COPY storage /var/www/storage
 
- RUN chmod -R 777 /var/www/storage
+RUN chmod -R 777 /var/www/storage
 RUN chmod -R 777 /var/www/bootstrap/cache
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -138,6 +139,7 @@ RUN composer dump-autoload
 
 RUN php artisan cache:clear
 RUN php artisan config:clear
+RUN php artisan passport:keys
 
 CMD ["php-fpm"]
 
