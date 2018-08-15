@@ -19,6 +19,8 @@ import User from '../components/UserArea/User'
 import UserCreate from '../components/UserArea/User/Create'
 import UserEdit from '../components/UserArea/User/Edit'
 import UserChangePassword from '../components/UserArea/User/ChangePassword'
+import MyAccountEdit from '../components/UserArea/MyAccount/Edit'
+import MyAccountChangePassword from '../components/UserArea/MyAccount/ChangePassword'
 
 const router = new Router({
   mode: 'history',
@@ -51,6 +53,8 @@ const router = new Router({
         { path: 'users/create', component: UserCreate },
         { path: 'users/:id', component: UserEdit },
         { path: 'users/:id/change_password', component: UserChangePassword },
+        { path: 'user/:id', component: MyAccountEdit},
+        { path: 'user/:id/change_password', component: MyAccountChangePassword},
       ]
     }
 
