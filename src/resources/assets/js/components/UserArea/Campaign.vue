@@ -29,10 +29,10 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="140">
+              width="210">
               <template slot-scope="scope">
-                <el-button type="text" @click="editRow(scope.row)">編集</el-button>
-                <el-button  type="text" @click="showLottery(scope.row)">賞品<i class="el-icon-arrow-right"></i> </el-button>
+                <el-button  plain @click="editRow(scope.row)">編集</el-button>
+                <el-button  plain  @click="showLottery(scope.row)">賞品<i class="el-icon-arrow-right"></i> </el-button>
               </template>
             </el-table-column>
           </el-table>

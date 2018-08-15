@@ -34,7 +34,7 @@
               label="操作"
               width="130">
               <template slot-scope="scope">
-                <el-button type="text" @click="editRow(scope.row)" >編集</el-button>
+                <el-button plain @click="editRow(scope.row)" >編集</el-button>
               </template>
             </el-table-column>
 

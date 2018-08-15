@@ -25,12 +25,13 @@
         <el-col :offset="2" :span="20">
           <el-table  v-loading="loading"  :data="tableData" >
             <el-table-column prop="name" label="ユーザー名" />
+            <el-table-column prop="email" label="メールアドレス" />
             <el-table-column
               fixed="right"
               label="操作"
               width="140">
               <template slot-scope="scope">
-                <el-button type="text" @click="editRow(scope.row)" >編集</el-button>
+                <el-button plain @click="editRow(scope.row)" >編集</el-button>
               </template>
             </el-table-column>
 

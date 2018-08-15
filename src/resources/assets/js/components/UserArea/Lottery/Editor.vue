@@ -59,7 +59,7 @@
     </el-form-item>
 
     <el-form-item >
-      <el-button type="default" @click="() => (this.$router.push('.'))">戻る</el-button>
+      <el-button plain type="default" @click="() => (this.$router.push('.'))">戻る</el-button>
       <el-button type="primary" @click="submitForm()">保存</el-button>
       <el-button :disabled="!allowDelete" v-if="remove" type="text" @click="removeItem()">削除</el-button>
     </el-form-item>

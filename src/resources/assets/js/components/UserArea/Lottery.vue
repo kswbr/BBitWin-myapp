@@ -26,18 +26,18 @@
         <el-col :offset="2" :span="20">
           <el-table  v-loading="loading"  :data="tableData" >
             <el-table-column prop="code" label="コード" width="140"/>
-            <el-table-column prop="name" label="賞品名称" width="400"/>
-            <el-table-column prop="total" label="賞品総数"/>
-            <el-table-column prop="limit" label="当選制限数"/>
-            <el-table-column prop="start_date" label="応募開始　日時" width="100"/>
-            <el-table-column prop="end_date" label="応募終了　日時" width="100"/>
+            <el-table-column prop="name" label="賞品名称" width="280"/>
+            <el-table-column prop="rate" label="確率(%)"/>
+            <el-table-column prop="entries_count" label="応募数"/>
+            <el-table-column prop="entries_win_completed_count" label="当選数 (応募完了)"/>
+            <el-table-column prop="state.label" label="状態" width="100"/>
             <el-table-column
               fixed="right"
               label="操作"
-              width="140">
+              width="210">
               <template slot-scope="scope">
-                <el-button type="text" @click="editRow(scope.row)" >編集</el-button>
-                <el-button type="text" @click="showEntry(scope.row)">応募<i class="el-icon-arrow-right"></i></el-button>
+                <el-button plain @click="editRow(scope.row)" >編集</el-button>
+                <el-button plain @click="showEntry(scope.row)">応募<i class="el-icon-arrow-right"></i></el-button>
               </template>
             </el-table-column>
 
