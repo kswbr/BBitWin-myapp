@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Lottery extends Model
 {
     protected $fillable = ['name', 'rate', 'total', 'limit', 'start_date', 'end_date', 'active', 'order', 'campaign_code','code', 'daily_increment', 'daily_increment_time'];
-    protected $appends = ['remaining', 'remaining_of_completed', 'state'];
+    protected $appends = ['remaining', 'remaining_of_completed', 'state', 'entries_count', 'entries_win_completed_count'];
 
     public function entries() {
         return $this->hasMany(Entry::class,'lottery_code','code');
@@ -106,6 +106,26 @@ class Lottery extends Model
 
         return config("contents.lottery.state.active");
     }
+
+    public function getEntriesCountAttribute()
+    {
+        return $this->entries()->count();
+    }
+
+    public function getEntriesWinCountAttribute()
+    {
+        $state = config("contents.entry.state");
+        return $this->entries()->state($state["win"])->count() + $this->entries()->state($state["win_special"])->count();
+    }
+
+
+    public function getEntriesWinCompletedCountAttribute()
+    {
+        $state = config("contents.entry.state");
+        return $this->entries()->state($state["win_posting_completed"])->count();
+    }
+
+
 
     // public function campaign() {
     //     return $this->belongsTo(Campaign::class,"campaign_code","code");

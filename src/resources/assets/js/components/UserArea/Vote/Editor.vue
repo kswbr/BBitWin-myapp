@@ -13,7 +13,7 @@ choice_3,選択肢C
 choice_4,選択肢D" v-model="form.choice"></el-input>
     </el-form-item>
     <el-form-item label="公開状態">
-      <el-checkbox v-model="form.active === 1">公開状態にする</el-checkbox>
+      <el-checkbox v-model="form.active">公開状態にする</el-checkbox>
     </el-form-item>
     <el-form-item label="応募開始日時">
       <el-date-picker
@@ -30,7 +30,7 @@ choice_4,選択肢D" v-model="form.choice"></el-input>
       </el-date-picker>
     </el-form-item>
     <el-form-item >
-      <el-button type="default" @click="() => (this.$router.push('.'))">戻る</el-button>
+      <el-button plain type="default" @click="() => (this.$router.push('.'))">戻る</el-button>
       <el-button type="primary" @click="submitForm()">保存</el-button>
       <el-button :disabled="!allowDelete" v-if="remove" type="text" @click="removeItem()">削除</el-button>
     </el-form-item>
@@ -64,7 +64,10 @@ export default {
   },
   watch: {
     input: function (input) {
-      this.form = Object.assign({}, this.input)
+      this.form = Object.assign({}, this.input,{
+        active: Boolean(this.input.active)
+      })
+
     }
   },
   mounted () {
