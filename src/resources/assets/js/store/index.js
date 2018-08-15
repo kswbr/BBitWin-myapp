@@ -16,6 +16,7 @@ const state = {
   route: {},
   requestConfig: {},
   requestResponse: {},
+  user: {},
   errors: {},
   debug,
   devenv
@@ -51,6 +52,11 @@ const mutations = {
     Message.closeAll()
     state.route = Object.assign({}, payload)
   },
+
+  [types.FETCH_USER] (state, payload) {
+    state.user = Object.assign({}, payload)
+  },
+
   [types.FORM_VALIDATION_FAILED] (state, payload) {
     Message.closeAll()
     state.inRequest = false
@@ -73,7 +79,9 @@ const actions = {
 }
 
 const getters = {
-  checkRequest: state => () => state.inRequest
+  checkRequest: state => () => state.inRequest,
+  allowCreate: state => state.user.role >= 1,
+  allowDelete: state => state.user.role >= 1
 }
 
 const store = new Vuex.Store({

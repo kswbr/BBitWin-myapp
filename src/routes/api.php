@@ -18,7 +18,14 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
+
     Route::get('user/info','Admin\UserController@info');
+    Route::get('users/role_list', 'Admin\UserController@role_list');
+
+    Route::group(['middleware' => ['checkIfLoggedInUserData']], function () {
+        Route::patch('user/{user}/change_password', 'Admin\UserController@change_password');
+        Route::resource('user', 'Admin\UserController', ['only' => ['show','update']]);
+    });
 
     Route::group(['middleware' => ['can:allow_user']], function () {
         Route::patch('users/{user}/change_password', 'Admin\UserController@change_password');
