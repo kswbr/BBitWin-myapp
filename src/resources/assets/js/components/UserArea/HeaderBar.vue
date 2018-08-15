@@ -15,20 +15,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import * as types from '../../store/mutation-types.js'
 import Axios from 'axios'
 import _ from 'lodash'
 
 export default {
-  data () {
-    return {
-      user: {}
-    }
+  computed: {
+    ...mapState(['user'])
   },
   mounted () {
-    if (!_.isEmpty(this.user)) { return }
     Axios.get('/api/user/info').then((res) => {
-      this.user = Object.assign({},res.data)
+      this.$store.commit(types.FETCH_USER, res.data)
     })
   },
   methods: {

@@ -47,8 +47,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('allow_create_and_delete');
         $project = $this->projectService->getCode();
+        $this->authorize('allow_create_and_delete');
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -89,6 +89,13 @@ class UserController extends Controller
         ]);
         $input = $request->all();
         unset($input["password"]);
+        if (!$request->is('*/users/*')) {
+            unset($input["allow_campaign"]);
+            unset($input["allow_vote"]);
+            unset($input["allow_user"]);
+            unset($input["allow_over_project"]);
+            unset($input["role"]);
+        }
         $user = $this->model->find($id);
         $user->update($input);
         return response(['update' => true], 201);

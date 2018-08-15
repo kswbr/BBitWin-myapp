@@ -13,7 +13,7 @@
             <h2 class="h2">Lotteries <small >ユーザー一覧 </small></h2>
           </el-col>
           <el-col :offset="20" :span="2">
-            <el-button type="success" @click="() => (this.$router.push('users/create'))">
+            <el-button :disabled="!allowCreate" type="success" @click="() => (this.$router.push('users/create'))">
               新規作成
             </el-button>
           </el-col>
@@ -45,11 +45,15 @@
 <script>
 import Axios from 'axios'
 import Pagination from './Pagination'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'User',
   components: {
     Pagination
+  },
+  computed: {
+    ...mapGetters(['allowCreate'])
   },
   data () {
     return {

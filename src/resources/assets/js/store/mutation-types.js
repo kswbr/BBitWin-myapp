@@ -8,4 +8,4 @@ export const LOGGED_IN = 'LOGGED_IN'
 export const LOGGED_OUT = 'LOGGED_OUT'
 export const ALREADY_LOGGED_IN = 'ALREADY_LOGGED_IN'
 export const CHANGE_ROUTE = 'CHANGE_ROUTE'
-
+export const FETCH_USER = 'FETCH_USER'

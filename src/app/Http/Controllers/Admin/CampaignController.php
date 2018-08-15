@@ -19,8 +19,8 @@ class CampaignController extends Controller
         $this->middleware('checkIfCampaignBelongsToProject',["except" => ["index","store"]]);
         $this->projectService = $projectService;
         $this->campaignService = $campaignService;
-    }
 
+    }
 
     /**
      * Display a listing of the resource.
@@ -29,6 +29,7 @@ class CampaignController extends Controller
      */
     public function index(Request $request)
     {
+        $user = \Auth::user();
         $project = $this->projectService->getCode();
 
         return response($this->campaignService->getPageInProject(config("contents.admin.show_page_count"),$project));

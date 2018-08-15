@@ -53,11 +53,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['loggedIn'])
+    ...mapState(['loggedIn','user'])
   },
   mounted: function () {
     if (this.loggedIn) {
-      Axios.get('/api/campaigns', { page: 0 }).then((res) => {
+      Axios.get('/api/user/info').then((res) => {
+        this.$store.commit(types.FETCH_USER, res.data)
         this.$router.push('/admin/userarea')
       })
     }

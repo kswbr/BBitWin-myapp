@@ -37,23 +37,23 @@ class AuthServiceProvider extends ServiceProvider
 
         $projectService = \App::make(ProjectService::class);
         $group_in_project = function($user) use ($projectService){
-            return $user->project === $projectService->getCode() || $user->allow_over_project === true;
+            return $user->project === $projectService->getCode() || (bool)$user->allow_over_project === true;
         };
 
         Gate::define('allow_campaign', function ($user) use ($group_in_project){
-            return ($user->allow_campaign === true && $group_in_project($user));
+            return ((bool)$user->allow_campaign === true && $group_in_project($user));
         });
 
         Gate::define('allow_vote', function ($user) use ($group_in_project){
-            return ($user->allow_vote === true && $group_in_project($user));
+            return ((bool)$user->allow_vote === true && $group_in_project($user));
         });
 
         Gate::define('allow_user', function ($user) use ($group_in_project){
-            return ($user->allow_user === true && $group_in_project($user));
+            return ((bool)$user->allow_user === true && $group_in_project($user));
         });
 
         Gate::define('allow_create_and_delete', function ($user) use ($group_in_project){
-            return ($user->role >= 1 && $group_in_project($user));
+            return ((int)$user->role >= 1 && $group_in_project($user));
         });
 
      }

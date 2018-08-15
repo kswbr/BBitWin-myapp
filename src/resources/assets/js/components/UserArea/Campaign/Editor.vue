@@ -14,15 +14,20 @@
     <el-form-item >
       <el-button type="default" @click="() => (this.$router.push('.'))">戻る</el-button>
       <el-button type="primary" @click="submitForm()">保存</el-button>
-      <el-button v-if="remove" type="text" @click="removeItem()">削除</el-button>
+      <el-button :disabled="!allowDelete" v-if="remove" type="text" @click="removeItem()">削除</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'CampaignEditor',
+  computed: {
+    ...mapGetters(['allowDelete'])
+  },
   props: {
     input: Object,
     save: Function,

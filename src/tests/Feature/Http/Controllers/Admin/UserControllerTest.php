@@ -135,6 +135,29 @@ class UserControllerTest extends TestCase
         $this->assertEquals($data->name,"TESTNAME2");
         $this->assertNotEquals($data->password,"secret2");
 
+        $user2 = factory(User::class)->create(["allow_user" => false]);
+        Passport::actingAs( $user2, ['check-admin']);
+        $response = $this->actingAs($user2,"api")
+                         ->json("PATCH",'/api/user/' . $user2->id,[
+                            'name' => 'TESTNAME2',
+                            'email' => $user2->email,
+                            'password' => 'secret2',
+                            'allow_campaign' => false,
+                            'allow_vote' => false,
+                            'allow_user' => true,
+                            'allow_over_project' => false,
+                            'role' => 10,
+                         ]);
+        $response->assertStatus(201);
+        $data = $this->model->find($user2->id);
+        $this->assertEquals($data->name,"TESTNAME2");
+        $this->assertNotEquals($data->password,"secret2");
+        //下記データは編集不可
+        $this->assertEquals($data->allow_vote,true);
+        $this->assertEquals($data->allow_campaign,true);
+        $this->assertEquals($data->allow_user,false);
+        $this->assertEquals($data->allow_over_project,true);
+        $this->assertEquals($data->role,1);
     }
 
     public function testChangePassword()
@@ -153,6 +176,18 @@ class UserControllerTest extends TestCase
         $data = $this->model->find($user->id);
         $this->assertTrue(\Hash::check("secret2",$data->password));
 
+        $user2 = factory(User::class)->create(["allow_user" => false]);
+
+        Passport::actingAs( $user2, ['check-admin']);
+        $response = $this->actingAs($user2,"api")
+                         ->json("PATCH",'/api/user/' . $user2->id . '/change_password',[
+                            'old_password' => 'secret',
+                            'password' => 'secret2',
+                            'password_confirmation' => 'secret2',
+                         ]);
+        $response->assertStatus(201);
+        $data = $this->model->find($user2->id);
+        $this->assertTrue(\Hash::check("secret2",$data->password));
     }
 
 }

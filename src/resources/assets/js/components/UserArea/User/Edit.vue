@@ -26,6 +26,8 @@
 
 <script>
 
+import { mapState } from 'vuex'
+import * as types from '../../../store/mutation-types.js'
 import Axios from 'axios'
 import Editor from './Editor.vue'
 
@@ -51,6 +53,9 @@ export default {
   mounted () {
     this.fetch()
   },
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
     fetch () {
       Axios.get('/api/users/' + this.$route.params.id).then((res) => {
@@ -59,14 +64,19 @@ export default {
     },
     save (form) {
       Axios.patch('/api/users/' + this.$route.params.id, form).then((res) => {
-        this.$router.push('.')
-        console.log(res)
+        Axios.get('/api/user/info').then((res) => {
+          this.$store.commit(types.FETCH_USER, res.data)
+          this.$router.push('.')
+        })
       }).catch((e) => (console.error(e)))
     },
     remove () {
       Axios.delete('/api/users/' + this.$route.params.id).then((res) => {
-        this.$router.push('.')
-        console.log(res)
+        if (this.$route.params.id == this.user.id) {
+          this.$store.commit(types.LOGGED_OUT)
+        } else {
+          this.$router.push('.')
+        }
       }).catch((e) => (console.error(e)))
     }
   }
