@@ -14,7 +14,10 @@
          <el-col :offset="1" :span="21">
             <h2 class="h2">Entries <small >応募状況一覧 </small></h2>
           </el-col>
-          <el-col :offset="20" :span="2">
+          <el-col :offset="17" :span="2">
+            <InfoModal :campaignId="this.$route.params.campaignId" :lotteryId="this.$route.params.lotteryId"/>
+          </el-col>
+          <el-col :offset="1" :span="1">
             <el-button type="primary" @click="() => (this.$router.push('entries/chart'))">
               グラフ表示
             </el-button>
@@ -59,11 +62,13 @@
 <script>
 import Axios from 'axios'
 import Pagination from './Pagination'
+import InfoModal from './Lottery/InfoModal.vue'
 
 export default {
   name: 'Entry',
   components: {
-    Pagination
+    Pagination,
+    InfoModal
   },
   data () {
     return {

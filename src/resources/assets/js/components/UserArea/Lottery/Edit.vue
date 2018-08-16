@@ -1,5 +1,5 @@
 <template>
-  <el-container id="campaignCreate" >
+  <el-container id="lotteryEdit" >
     <el-main>
       <el-row>
         <el-breadcrumb separator="/">
@@ -13,6 +13,9 @@
         <el-header >
          <el-col :offset="1" :span="21">
             <h2 class="h2">Edit Lottery <small >抽選賞品編集 </small></h2>
+          </el-col>
+          <el-col :offset="20" :span="1">
+            <InfoModal :campaignId="this.$route.params.campaignId" :lotteryId="this.$route.params.id"/>
           </el-col>
         </el-header >
       </el-row>
@@ -29,11 +32,13 @@
 
 import Axios from 'axios'
 import Editor from './Editor.vue'
+import InfoModal from './InfoModal.vue'
 
 export default {
-  name: 'CampaignEdit',
+  name: 'LotteryEdit',
   components: {
-    Editor
+    Editor,
+    InfoModal
   },
   data () {
     return {

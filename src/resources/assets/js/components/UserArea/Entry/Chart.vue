@@ -15,14 +15,17 @@
          <el-col :offset="1" :span="21">
             <h2 class="h2">Entry Chart <small >グラフ表示 </small></h2>
           </el-col>
+          <el-col :offset="20" :span="1">
+            <InfoModal :campaignId="this.$route.params.campaignId" :lotteryId="this.$route.params.lotteryId"/>
+          </el-col>
         </el-header >
       </el-row>
-      <el-row>
+      <el-row v-loading="loading">
         <el-col :offset="1" :span="21">
           <canvas id="canvas"></canvas>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row >
         <el-col :offset="1" :span="21">
           <canvas id="canvas2"></canvas>
         </el-col>
@@ -36,11 +39,16 @@
 import Axios from 'axios'
 import _ from 'lodash'
 import Chart from 'Chart.js'
+import InfoModal from '../Lottery/InfoModal.vue'
 
 export default {
   name: 'EntryChart',
+  components: {
+    InfoModal
+  },
   data () {
     return {
+        loading: true,
         datasets: {
             all: null
         },
@@ -85,9 +93,11 @@ export default {
   },
   methods: {
     fetch () {
+      this.loading = true
       Axios.get('/api/campaigns/' + this.$route.params.campaignId + '/lotteries/' + this.$route.params.lotteryId + '/entries/chart').then((res) => {
         this.datasets.all = Object.assign({}, this.datasets.all, res.data)
         this.createDatasets()
+        this.loading = false
       }).catch((e) => (console.error(e)))
     },
     createDatasets () {

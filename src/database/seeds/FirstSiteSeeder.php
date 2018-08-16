@@ -51,6 +51,16 @@ class FirstSiteSeeder extends Seeder
             'run_time' => null,
         ]);
 
+        $entry = factory(Entry::class,1000)->create([
+            'lottery_code' => $lottery->code,
+            "state" => 1,
+        ]);
+
+        $entry = factory(Entry::class,20)->create([
+            'lottery_code' => $lottery->code,
+            "state" => 2,
+        ]);
+
         $campaign = factory(Campaign::class)->create([
             "name" => 'インスタントウィンキャンペーン 複数商品選択',
             'code' => 'campaign_select_course',
