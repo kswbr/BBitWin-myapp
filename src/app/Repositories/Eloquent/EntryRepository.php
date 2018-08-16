@@ -41,9 +41,9 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {
-            return $search_query->paginate($n);
+            return $search_query->orderBy("id","desc")->paginate($n);
         } else {
-            return $this->model->paginate($n);
+            return $this->model->orderBy("id","desc")->paginate($n);
         }
     }
 

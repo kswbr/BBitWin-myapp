@@ -53,6 +53,7 @@ const router = new Router({
         { path: 'users/create', component: UserCreate },
         { path: 'users/:id', component: UserEdit },
         { path: 'users/:id/change_password', component: UserChangePassword },
+        { path: 'user', redirect: '/admin/userarea'},
         { path: 'user/:id', component: MyAccountEdit},
         { path: 'user/:id/change_password', component: MyAccountChangePassword},
       ]
