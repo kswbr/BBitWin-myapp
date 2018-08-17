@@ -55,24 +55,24 @@ class User extends Authenticatable
         });
     }
 
-    public function getInstantWinTokenAttribute()
+    public function getPlayableTokenAttribute()
     {
-        return $this->createToken('InstantWinToken', ['instant-win'])->accessToken;
+        return $this->createToken('PlayableToken', ['instant-win','vote-event'])->accessToken;
     }
 
     public function getRetryTokenAttribute()
     {
-        return $this->createToken('RetryToken', ['instant-win','retry'])->accessToken;
+        return $this->createToken('RetryToken', ['instant-win','vote-event','retry'])->accessToken;
     }
 
     public function getWinnerTokenAttribute()
     {
-        return $this->createToken('WinnerToken', ['instant-win','winner'])->accessToken;
+        return $this->createToken('WinnerToken', ['instant-win','vote-event','winner'])->accessToken;
     }
 
     public function getFormTokenAttribute()
     {
-        return $this->createToken('FormToken', ['instant-win','form'])->accessToken;
+        return $this->createToken('FormToken', ['instant-win','vote-event','form'])->accessToken;
     }
 
 

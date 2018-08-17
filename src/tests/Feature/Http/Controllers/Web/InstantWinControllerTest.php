@@ -63,7 +63,7 @@ class InstantWinControllerTest extends TestCase
         // $mock->shouldReceive("createToken")->andReturn($obj);
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("OK");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("OK");
         $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -98,7 +98,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("OK");
         $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("OK");
 
@@ -133,7 +133,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("OK");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -168,7 +168,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("OK");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("OK");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -204,7 +204,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -240,7 +240,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -275,7 +275,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
         $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -310,7 +310,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -345,7 +345,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
@@ -382,7 +382,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
         $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("OK");
 
@@ -419,7 +419,7 @@ class InstantWinControllerTest extends TestCase
         $mock = \Mockery::mock(\App\User::class)->makePartial();
         $mock->player = $player;
 
-        $mock->shouldReceive("getInstantWinTokenAttribute")->andReturn("LOSE");
+        $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
         // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("OK");
 

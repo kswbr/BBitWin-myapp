@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'check-admin' => 'check admin',
             'instant-win' => 'instant win',
+            'vote-event' => 'vote event',
             'retry' => 'instant win retry challenge',
             'winner' => 'instant win winner',
             'form' => 'instantwin form token',
