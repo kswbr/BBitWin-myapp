@@ -45,7 +45,7 @@ class VoteController extends Controller
         $user = \Auth::user();
         $player = $user->player;
         $last_vote = \Cookie::get("last_vote",0);
-        if ($last_vote >= Carbon::today()) {
+        if ((string)$last_vote >= (string)Carbon::today()) {
             return response(["voted" => false]);
         }
 
@@ -53,8 +53,8 @@ class VoteController extends Controller
             'choice' => 'required',
         ]);
 
-        $this->voteService->choice($project, $vote_code,$choice);
-        return response(["voted" => true])->cookie( 'last_vote', \Carbon::now(), 24 * 60);
+        $this->voteService->choice($project, $vote,$request->input("choice"));
+        return response(["voted" => true])->cookie( 'last_vote', Carbon::now(), 24 * 60);
     }
 
 
