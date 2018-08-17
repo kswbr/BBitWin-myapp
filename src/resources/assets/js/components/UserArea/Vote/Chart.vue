@@ -18,6 +18,11 @@
       </el-row>
       <el-row>
         <el-col :offset="1" :span="21">
+          <canvas id="canvasPie"></canvas>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :offset="1" :span="21">
           <canvas id="canvas"></canvas>
         </el-col>
       </el-row>
@@ -40,8 +45,6 @@ export default {
   name: 'VoteChart',
   data () {
     return {
-        datasets: {
-        },
         configBase: {
             type: 'line',
             options: {
@@ -109,15 +112,22 @@ export default {
             "#4a3bcd",
             "#febcd2",
         ]
-        console.log(this.datasets)
         let firstKey = null
+        this.dataSetsPie = { datasets: [ {data: [], backgroundColor: []} ], labels: [] }
 
         _.each(this.datasets, (dataset, key) => {
             if (!firstKey) {
                 firstKey = key
             }
-            datasetListTotal.push(this.createDataset(dataset, key, colorList[index]))
-            datasetListSpot.push(this.createDataset(dataset, key, colorList[index],false))
+            const dataSetTotal = this.createDataset(dataset, key, colorList[index])
+            datasetListTotal.push(dataSetTotal)
+
+            this.dataSetsPie.datasets[0].data.push(dataSetTotal.allCount)
+            this.dataSetsPie.datasets[0].backgroundColor.push(dataSetTotal.backgroundColor)
+            this.dataSetsPie.labels.push(dataSetTotal.label)
+
+            const dataSetSpot = this.createDataset(dataset, key, colorList[index],false)
+            datasetListSpot.push(dataSetSpot)
             index++
         })
 
@@ -129,6 +139,14 @@ export default {
             })
         }
 
+        const configPie = {
+            type: 'pie',
+            options: {
+                responsive: true
+            }
+        };
+
+        configPie.data = this.dataSetsPie
 
         const configTotal = _.assign({},this.configBase,{
             data: {
@@ -154,6 +172,8 @@ export default {
                 }
             }
         })
+        const ctxPie = document.getElementById("canvasPie").getContext("2d");
+        window.myPieTotal = new Chart(ctxPie, configPie);
 
         const ctx = document.getElementById("canvas").getContext("2d");
         window.myLineTotal = new Chart(ctx, configTotal);
@@ -190,7 +210,8 @@ export default {
            fill: false,
            pointRadius: pointList,
            borderWidth:2,
-           pointHitRadius:5
+           pointHitRadius:5,
+           allCount: allCount
        }
     }
   }
