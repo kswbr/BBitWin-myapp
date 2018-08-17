@@ -64,3 +64,5 @@ Route::get('instantwin/winner/regist','Web\InstantWinController@winner_regist')-
 
 Route::get('instantwin/form/init','Web\InstantWin\FormController@init')->middleware(['cors','auth:api','scopes:instant-win,form']);
 
+Route::post('vote/run','Web\VoteController@run')->middleware(['cors','auth:api','scopes:vote-event']);
+
