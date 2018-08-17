@@ -21,6 +21,11 @@ class VoteService
         return $this->repository->getPaginate($page,$query);
     }
 
+    public function getFirstInProject($project)
+    {
+        return $this->repository->getFirstInProject($project);
+    }
+
     public function getDataSet($project, $vote)
     {
         $data = $this->repository->getCounts($project, $vote->code);
@@ -40,12 +45,18 @@ class VoteService
         return $grouped;
     }
 
+    public function getChoiceCount($project, $vote, $choice)
+    {
+        return $this->repository->getChoiceCount($project, $vote->code, $choice);
+    }
+
     public function choice($project, $vote, $choice)
     {
         return $this->repository->choice($project, $vote->code, $choice);
     }
 
-     /**
+
+    /**
      * FindOrFail Model and return the instance.
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException

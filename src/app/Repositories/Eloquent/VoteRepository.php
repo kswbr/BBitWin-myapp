@@ -38,6 +38,12 @@ class VoteRepository implements VoteRepositoryInterface, BaseRepositoryInterface
         return $this->model->project($project);
     }
 
+    public function getFirstInProject($project)
+    {
+        $query = $this->getProjectQuery($project);
+        return $query->first();
+    }
+
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {

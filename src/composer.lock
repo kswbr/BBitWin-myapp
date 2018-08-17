@@ -441,16 +441,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.4",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "8790f594151ca6a2010c6218e09d96df67173ad3"
+                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/8790f594151ca6a2010c6218e09d96df67173ad3",
-                "reference": "8790f594151ca6a2010c6218e09d96df67173ad3",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/54859fabea8b3beecbb1a282888d5c990036b9e3",
+                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3",
                 "shasum": ""
             },
             "require": {
@@ -494,7 +494,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-04-10T10:11:19+00:00"
+            "time": "2018-08-16T20:49:45+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -1218,16 +1218,16 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v3.1.0",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "eeb666a5ca0dac7fa5a59b67841bc203fcd5c901"
+                "reference": "65f771ff4f266ebae23de1a3f18efd80a1da2f8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/eeb666a5ca0dac7fa5a59b67841bc203fcd5c901",
-                "reference": "eeb666a5ca0dac7fa5a59b67841bc203fcd5c901",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/65f771ff4f266ebae23de1a3f18efd80a1da2f8d",
+                "reference": "65f771ff4f266ebae23de1a3f18efd80a1da2f8d",
                 "shasum": ""
             },
             "require": {
@@ -1277,7 +1277,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2018-08-15T13:21:36+00:00"
+            "time": "2018-08-16T12:51:21+00:00"
         },
         {
             "name": "laravel/tinker",

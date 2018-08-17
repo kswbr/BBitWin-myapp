@@ -67,8 +67,8 @@ class InstantWinMultiController extends Controller
         $state_list = config("contents.entry.state");
         $results = $this->lotteryService->performInCampaign($campaign);
 
-        $user->append('instant_win_token');
-        $token = $user->instant_win_token;
+        $user->append('playable_token');
+        $token = $user->playable_token;
 
 
         if ($prev_entry_state_code === "win_posting_completed") {
