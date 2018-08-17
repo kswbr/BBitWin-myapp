@@ -37,6 +37,17 @@ class FirstSiteSeeder extends Seeder
             $entry->delete();
         }
 
+        $votes = Vote::all();
+        foreach($votes as $vote) {
+            $vote->delete();
+        }
+
+        $vote_counts = Count::all();
+        foreach($vote_counts as $count) {
+            $count->delete();
+        }
+
+
         $campaign = factory(Campaign::class)->create([
             "name" => 'インスタントウィンキャンペーン 単一商品',
             'code' => uniqid(rand()),
@@ -112,6 +123,11 @@ class FirstSiteSeeder extends Seeder
             'rate' => 50,
             'run_time' => null,
         ]);
+
+        $vote = factory(Vote::class)->create(["project" => env("PROJECT_NAME", config('app.name'))]);
+        factory(Count::class,100)->create(["choice" => "sample_1", "vote_code" => $vote->code]);
+        factory(Count::class,90)->create(["choice" => "sample_2", "vote_code" => $vote->code]);
+        factory(Count::class,80)->create(["choice" => "sample_3", "vote_code" => $vote->code]);
 
     }
 }
