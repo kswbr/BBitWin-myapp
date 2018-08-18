@@ -33,6 +33,8 @@ class AuthServiceProvider extends ServiceProvider
             'retry' => 'instant win retry challenge',
             'winner' => 'instant win winner',
             'form' => 'instantwin form token',
+            'post' => 'instantwin postable token',
+            'thanks' => 'instantwin finished token',
         ]);
         Passport::routes();
 

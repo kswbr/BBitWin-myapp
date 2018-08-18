@@ -65,6 +65,17 @@ class User extends Authenticatable
         return $this->createToken('RetryToken', ['instant-win','vote-event','retry'])->accessToken;
     }
 
+    public function getPostableTokenAttribute()
+    {
+        return $this->createToken('PostableToken', ['instant-win','vote-event','form','post'])->accessToken;
+    }
+
+    public function getThanksTokenAttribute()
+    {
+        return $this->createToken('ThanksToken', ['thanks'])->accessToken;
+    }
+
+
     public function getWinnerTokenAttribute()
     {
         return $this->createToken('WinnerToken', ['instant-win','vote-event','winner'])->accessToken;
