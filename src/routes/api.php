@@ -47,22 +47,28 @@ Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
     });
 });
 
-Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect')->middleware('cors');
-Route::get('oauth/instantwin/login/twitter','Web\SnsController@twitter_register')->middleware('cors');
-Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
-Route::get('instantwin/run/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
+Route::group(['middleware' => ['cors']], function () {
 
-Route::get('instantwin/run/{campaign_code}/{lottery_code}','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
-Route::get('instantwin/run/{campaign_code}/{lottery_code}/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
-Route::get('instantwin/multi/run','Web\InstantWinMultiController@run')->middleware(['cors','auth:api','scopes:instant-win']);
-Route::get('instantwin/multi/run/retry','Web\InstantWinMultiController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
+    Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect');
+    Route::get('oauth/instantwin/login/twitter','Web\SnsController@twitter_register');
 
-Route::get('instantwin/run/{campaign_code}','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win']);
-Route::get('instantwin/run/{campaign_code}/retry','Web\InstantWinController@run')->middleware(['cors','auth:api','scopes:instant-win,retry']);
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['scopes:instant-win']);
+        Route::get('instantwin/run/retry','Web\InstantWinController@run')->middleware(['scopes:instant-win,retry']);
 
-Route::get('instantwin/winner/regist','Web\InstantWinController@winner_regist')->middleware(['cors','auth:api','scopes:instant-win,winner']);
+        Route::get('instantwin/run/{campaign_code}/{lottery_code}','Web\InstantWinController@run')->middleware(['scopes:instant-win']);
+        Route::get('instantwin/run/{campaign_code}/{lottery_code}/retry','Web\InstantWinController@run')->middleware(['scopes:instant-win,retry']);
+        Route::get('instantwin/multi/run','Web\InstantWinMultiController@run')->middleware(['scopes:instant-win']);
+        Route::get('instantwin/multi/run/retry','Web\InstantWinMultiController@run')->middleware(['scopes:instant-win,retry']);
 
-Route::get('instantwin/form/init','Web\InstantWin\FormController@init')->middleware(['cors','auth:api','scopes:instant-win,form']);
+        Route::get('instantwin/run/{campaign_code}','Web\InstantWinController@run')->middleware(['scopes:instant-win']);
+        Route::get('instantwin/run/{campaign_code}/retry','Web\InstantWinController@run')->middleware(['scopes:instant-win,retry']);
 
-Route::post('vote/run','Web\VoteController@run')->middleware(['cors','auth:api','scopes:vote-event']);
+        Route::get('instantwin/winner/regist','Web\InstantWinController@winner_regist')->middleware(['scopes:instant-win,winner']);
+        Route::get('instantwin/form/init','Web\InstantWin\FormController@init')->middleware(['scopes:instant-win,form']);
+
+        Route::post('vote/run','Web\VoteController@run')->middleware(['scopes:vote-event']);
+    });
+});
+
 
