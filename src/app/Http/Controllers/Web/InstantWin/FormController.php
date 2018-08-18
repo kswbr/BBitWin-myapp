@@ -116,7 +116,7 @@ class FormController extends Controller
         $user->append('thanks_token');
         $token = $user->thanks_token;
         $thanks_url = "/thanks.html";
-
+        $this->entryService->updateState($entry_id,"win_posting_completed");
         return response(["token" => $token, "thanks_url" => $thanks_url]);
     }
 
@@ -124,7 +124,7 @@ class FormController extends Controller
     {
         $entry_id = decrypt(\Cookie::get("entry_code"));
         $entry = $this->entryService->getById($entry_id);
-        if ($entry->state_code !== "win" && $entry->state_code !== "win_special") {
+        if ($entry->state_code !== "win_posting_completed") {
             abort(403, 'Unauthorized action.');
         }
 
