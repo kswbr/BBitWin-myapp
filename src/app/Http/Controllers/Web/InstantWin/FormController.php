@@ -44,6 +44,7 @@ class FormController extends Controller
     public function init(Request $request )
     {
         $project = $this->projectService->getCode();
+        // $user = \Auth::user();
         $entry_id = decrypt(\Cookie::get("entry_code"));
         $entry = $this->entryService->getById($entry_id);
         if ($entry->state_code !== "win" && $entry->state_code !== "win_special") {
@@ -54,7 +55,81 @@ class FormController extends Controller
         if (!$lottery) {
             abort(500, 'Lottery Not Found InSession');
         }
-        return response(["lottery" => $lottery]);
+        // $user->append('form_token');
+        return response([
+          "lottery" => $lottery
+        ]);
     }
+
+    public function confirm(Request $request )
+    {
+
+        $entry_id = decrypt(\Cookie::get("entry_code"));
+        $entry = $this->entryService->getById($entry_id);
+        if ($entry->state_code !== "win" && $entry->state_code !== "win_special") {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $validatedData = $request->validate([
+            'name_1' => 'required|max:100',
+            'name_2' => 'required|max:100',
+            'kana_1' => 'required|katakana|max:100',
+            'kana_2' => 'required|katakana|max:100',
+            'email' => 'required|email|max:100',
+            'zip_1' => 'required|numeric|digits:3',
+            'zip_2' => 'required|numeric|digits:4',
+            'prefecture' => 'required|prefecture_name',
+            'address_1' => 'required|max:100',
+            'address_2' => 'required|max:100',
+        ]);
+
+        $user = \Auth::user();
+        $user->append('postable_token');
+        $token = $user->postable_token;
+
+        return response(["token" => $token, "check" => true]);
+    }
+
+    public function post(Request $request )
+    {
+
+        $entry_id = decrypt(\Cookie::get("entry_code"));
+        $entry = $this->entryService->getById($entry_id);
+        if ($entry->state_code !== "win" && $entry->state_code !== "win_special") {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $validatedData = $request->validate([
+            'name_1' => 'required|max:100',
+            'name_2' => 'required|max:100',
+            'kana_1' => 'required|katakana|max:100',
+            'kana_2' => 'required|katakana|max:100',
+            'email' => 'required|email|max:100',
+            'zip_1' => 'required|numeric|digits:3',
+            'zip_2' => 'required|numeric|digits:4',
+            'prefecture' => 'required|prefecture_name',
+            'address_1' => 'required|max:100',
+            'address_2' => 'required|max:100',
+        ]);
+
+        $user = \Auth::user();
+        $user->append('thanks_token');
+        $token = $user->thanks_token;
+        $thanks_url = "/thanks.html";
+
+        return response(["token" => $token, "thanks_url" => $thanks_url]);
+    }
+
+    public function thanks(Request $request )
+    {
+        $entry_id = decrypt(\Cookie::get("entry_code"));
+        $entry = $this->entryService->getById($entry_id);
+        if ($entry->state_code !== "win" && $entry->state_code !== "win_special") {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return response(["entry_id" => $entry_id]);
+    }
+
 
 }
