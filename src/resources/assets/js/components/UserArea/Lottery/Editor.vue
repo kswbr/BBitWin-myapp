@@ -7,7 +7,7 @@
       <el-input placeholder="サンプル賞品プレゼント" v-model="form.name"/>
     </el-form-item>
     <el-form-item label="当選確率">
-      <el-input placeholder="10.0" v-model="form.total">
+      <el-input placeholder="10.0" v-model="form.rate">
         <template slot="append">%</template>
       </el-input>
     </el-form-item>
