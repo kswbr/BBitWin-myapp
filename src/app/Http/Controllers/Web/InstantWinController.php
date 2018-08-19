@@ -76,11 +76,34 @@ class InstantWinController extends Controller
 
         $user->append('playable_token');
         $token = $user->playable_token;
+        $wrong_lottery_choice = false;
 
-        if ($prev_entry_state_code === "win_posting_completed" || $lottery->remaining <= 0) {
+        if ($is_winner) {
+
+            // 前回当選して未応募の場合必ず当選
+            // 前回当選(管理画面にて特別当選扱い)して未応募の場合必ず当選
+            $user->append('winner_token');
+            $token = $user->winner_token;
+            $winning_lottery = $this->lotteryService->getByCodeForWinner($prev_entry->lottery_code);
+
+            //賞品選択パターンで異なる賞品を選んだ場合は状態を変えずに必ず落選させる
+            if ($lottery_code !== null && $prev_entry->lottery_code !== $lottery_code) {
+                $wrong_lottery_choice = true;
+            } else {
+                return response([
+                    "result" => true,
+                    "finish" => true,
+                    "token" => $token,
+                    "winning_lottery" => $winning_lottery,
+                    "winning_entry_code" => encrypt($prev_entry->id)
+                ]);
+            }
+        }
+
+        if ($prev_entry_state_code === "win_posting_completed" || $lottery->remaining <= 0 || $wrong_lottery_choice === true) {
 
             //本日初挑戦の場合
-            if (!$challenged_today && !$is_retry_challenge) {
+            if ( (!$challenged_today || $wrong_lottery_choice) && !$is_retry_challenge) {
                 $user->append('retry_token');
                 $token = $user->retry_token;
             }
@@ -93,15 +116,6 @@ class InstantWinController extends Controller
             return response(["result" => false, "finish" => $is_retry_challenge ,"token" => $token,"winning_lottery" => null, "winning_entry_code" => null]);
         }
 
-        if ($is_winner) {
-            // 前回当選して未応募の場合必ず当選
-            // 前回当選(管理画面にて特別当選扱い)して未応募の場合必ず当選
-            $user->append('winner_token');
-            $token = $user->winner_token;
-            $winning_lottery = $this->lotteryService->getByCodeForWinner($prev_entry->lottery_code);
-
-            return response(["result" => true, "finish" => true,"token" => $token, "winning_lottery" => $winning_lottery, "winning_entry_code" => encrypt($prev_entry->id)]);
-        }
 
         if ($challenged_today && $is_looser) {
             if ($is_retry_challenge) {
