@@ -68,8 +68,11 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('instantwin/form/init','Web\InstantWin\FormController@init')->middleware(['scopes:instant-win,form']);
 
         Route::post('vote/run','Web\VoteController@run')->middleware(['scopes:vote-event']);
+        Route::post('vote/run/{vote_code}','Web\VoteController@run')->middleware(['scopes:vote-event']);
         Route::post('instantwin/form/confirm','Web\InstantWin\FormController@confirm')->middleware(['scopes:instant-win,form']);
         Route::post('instantwin/form/post','Web\InstantWin\FormController@post')->middleware(['scopes:instant-win,post']);
         Route::get('instantwin/form/thanks','Web\InstantWin\FormController@thanks')->middleware(['scopes:thanks']);
     });
+
+    Route::get('vote/pie/{vote_code}','Web\VoteController@pie');
 });

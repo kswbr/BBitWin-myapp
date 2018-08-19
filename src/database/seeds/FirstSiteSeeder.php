@@ -140,6 +140,7 @@ class FirstSiteSeeder extends Seeder
         ]);
 
         $vote = factory(Vote::class)->create([
+          "code" => "samples",
           "project" => env("PROJECT_NAME", config('app.name')),
           "choice" => "sample_a,Aコース\nsample_b,Bコース\nsample_c,Cコース\n\n",
         ]);
