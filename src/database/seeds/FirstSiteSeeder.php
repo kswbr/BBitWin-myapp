@@ -74,25 +74,40 @@ class FirstSiteSeeder extends Seeder
 
         $campaign = factory(Campaign::class)->create([
             "name" => 'インスタントウィンキャンペーン 複数商品選択',
-            'code' => 'campaign_select_course',
+            'code' => 'samples',
             "project" => env("PROJECT_NAME", config('app.name'))
         ]);
 
         $lottery = factory(Lottery::class)->create([
             "name" => 'インスタントウィンサンプル賞品 Aコース',
             'campaign_code' => $campaign->code,
-            'code' => 'lottery_select_a',
-            'rate' => 50,
+            'code' => 'sample_a',
+            'rate' => 99,
+            'total' => 10000,
+            'limit' => 1000,
             'run_time' => null,
         ]);
 
         $lottery = factory(Lottery::class)->create([
             "name" => 'インスタントウィンサンプル賞品 Bコース',
             'campaign_code' => $campaign->code,
-            'code' => 'lottery_select_b',
+            'code' => 'sample_b',
             'rate' => 50,
+            'total' => 10000,
+            'limit' => 1000,
             'run_time' => null,
         ]);
+
+        $lottery = factory(Lottery::class)->create([
+            "name" => 'インスタントウィンサンプル賞品 Cコース',
+            'campaign_code' => $campaign->code,
+            'code' => 'sample_c',
+            'rate' => 10.5,
+            'total' => 10000,
+            'limit' => 1000,
+            'run_time' => null,
+        ]);
+
 
         $campaign = factory(Campaign::class)->create([
             "name" => 'インスタントウィンキャンペーン 複数商品同時抽選',
@@ -124,10 +139,13 @@ class FirstSiteSeeder extends Seeder
             'run_time' => null,
         ]);
 
-        $vote = factory(Vote::class)->create(["project" => env("PROJECT_NAME", config('app.name'))]);
-        factory(Count::class,100)->create(["choice" => "sample_1", "vote_code" => $vote->code]);
-        factory(Count::class,90)->create(["choice" => "sample_2", "vote_code" => $vote->code]);
-        factory(Count::class,80)->create(["choice" => "sample_3", "vote_code" => $vote->code]);
+        $vote = factory(Vote::class)->create([
+          "project" => env("PROJECT_NAME", config('app.name')),
+          "choice" => "sample_a,Aコース\nsample_b,Bコース\nsample_c,Cコース\n\n",
+        ]);
+        factory(Count::class,100)->create(["choice" => "sample_a", "vote_code" => $vote->code]);
+        factory(Count::class,90)->create(["choice" => "sample_b", "vote_code" => $vote->code]);
+        factory(Count::class,80)->create(["choice" => "sample_c", "vote_code" => $vote->code]);
 
     }
 }
