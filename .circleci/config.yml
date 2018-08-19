@@ -8,19 +8,19 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/php:7.2-apache-node-browsers
-        environment:
-        - DB_HOST=127.0.0.1
-        - DB_PORT=3306
-        - DB_DATABASE=circle_test
-        - DB_USERNAME=root
-        - DB_PASSWORD=
-        - APP_DEBUG= true
-        - APP_ENV= testing
-        - PROJECT_NAME= 'TESTPROJECT'
-      - image: circleci/mysql:5.7
-        environment:
-        - DB_CONNECTION: circle_test
-        - MYSQL_ALLOW_EMPTY_PASSWORD: true
+        # environment:
+        # - DB_HOST=127.0.0.1
+        # - DB_PORT=3306
+        # - DB_DATABASE=circle_test
+        # - DB_USERNAME=root
+        # - DB_PASSWORD=
+        # - APP_DEBUG= true
+        # - APP_ENV= testing
+        # - PROJECT_NAME= 'TESTPROJECT'
+      # - image: circleci/mysql:5.7
+      #   environment:
+      #   - DB_CONNECTION: circle_test
+      #   - MYSQL_ALLOW_EMPTY_PASSWORD: true
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout
 
-      - run: sudo docker-php-ext-install pdo_mysql
+      # - run: sudo docker-php-ext-install pdo_mysql
 
       # Download and cache dependencies
       - restore_cache:
@@ -48,14 +48,13 @@ jobs:
           paths:
             - ./vendor
           key: v1-dependencies-{{ checksum "src/composer.json" }}
-      - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:3306 -timeout 1m
-      - run: cd src && php artisan migrate
-      - run: cd src && php artisan passport:install
-
+      # - run:
+      #     name: Wait for db
+      #     command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      # - run: cd src && php artisan migrate
+      # - run: cd src && php artisan passport:install
       # run tests!
-      - run: cd src && vendor/bin/phpunit
+      # - run: cd src && vendor/bin/phpunit
 
       - run: cd src && npm install
       - run: ./app_build.sh
