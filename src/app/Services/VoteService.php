@@ -26,6 +26,11 @@ class VoteService
         return $this->repository->getFirstInProject($project);
     }
 
+    public function getByProjectAndCode($project,$code)
+    {
+        return $this->repository->getByProjectAndCode($project,$code);
+    }
+
     public function getDataSet($project, $vote)
     {
         $data = $this->repository->getCounts($project, $vote->code);
@@ -44,6 +49,24 @@ class VoteService
 
         return $grouped;
     }
+
+    public function getDataSetForPie($project, $vote)
+    {
+        $data = $this->repository->getCounts($project, $vote->code);
+        $choice_list = $this->repository->getParsedChoiceList($project, $vote->code);
+
+        $groupByChoice = $data->groupBy(function($item, $key){
+            return $item["choice"];
+        });
+
+        $dataset = [];
+        foreach($groupByChoice as $key => $group) {
+          $dataset[] = ["data" => count($group), "label" => $choice_list[$key]];
+        }
+
+        return $dataset;
+    }
+
 
     public function getChoiceCount($project, $vote, $choice)
     {

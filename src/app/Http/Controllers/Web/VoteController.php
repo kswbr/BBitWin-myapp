@@ -57,5 +57,18 @@ class VoteController extends Controller
         return response(["voted" => true])->cookie( 'last_vote', Carbon::now(), 24 * 60);
     }
 
+    public function pie(Request $request, $vote_code = null){
+        $project = $this->projectService->getCode();
+        if (!$vote_code) {
+            $vote = $this->voteService->getFirstInProject($project);
+        } else {
+            $vote = $this->voteService->getByProjectAndCode($project,$vote_code);
+        }
+
+        $counts = $this->voteService->getDataSetForPie($project,$vote);
+
+        return response(["counts" => $counts]);
+
+    }
 
 }
