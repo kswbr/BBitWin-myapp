@@ -21,7 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
-        'project' => 'TESTPROJECT',
+        'project' => 'InstantWin',
         'remember_token' => str_random(10),
     ];
 });
@@ -35,7 +35,7 @@ $factory->define(App\Repositories\Eloquent\Models\Player::class, function (Faker
         'etc_data' => ["test" => 1],
         'provider' => 'twitter',
         'type' => 1,
-        'project' => 'TESTPROJECT'
+        'project' => 'InstantWin'
     ];
 });
 
