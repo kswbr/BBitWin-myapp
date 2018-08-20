@@ -38,7 +38,7 @@
 
 import Axios from 'axios'
 import _ from 'lodash'
-import Chart from 'Chart.js'
+import Chart from 'chart.js'
 import InfoModal from '../Lottery/InfoModal.vue'
 
 export default {
