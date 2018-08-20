@@ -7,31 +7,50 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.2-apache-node-browsers
+        environment:
+          - DB_HOST=127.0.0.1
+          - DB_PORT=3306
+          - DB_DATABASE=circle_test
+          - DB_USERNAME=root
+          - DB_PASSWORD=
+          - APP_DEBUG=true
+          - APP_ENV=testing
+      - image: circleci/mysql:5.7
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD: true
+
     working_directory: ~/myapp
     steps:
       - checkout
       - setup_remote_docker
+      - run: sudo docker-php-ext-install pdo_mysql
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "src/composer.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v2-dependencies-{{ checksum "src/composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v2-dependencies-
           paths:
-              - ./src/vendor
-
+            - ./src/vendor
       - run: cd src && composer install -n --prefer-dist
       - save_cache:
           paths:
             - ./src/vendor
-          key: v1-dependencies-{{ checksum "src/composer.json" }}
+          key: v2-dependencies-{{ checksum "src/composer.json" }}
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run: cd src && php artisan migrate
+      - run: cd src && php artisan passport:install
+      # run tests!
+      - run: cd src && vendor/bin/phpunit
       - run: sudo apt-get update
       - run: sudo apt-get install libpng-dev
       - restore_cache:
           keys:
-          - v1-node_modules-{{ checksum "src/package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-node_modules-
+            - v1-node_modules-{{ checksum "src/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-node_modules-
           paths:
             - ./src/node_modules
       - run: cd src && npm install
@@ -40,9 +59,6 @@ jobs:
             - ./src/node_modules
           key: v1-node_modules-{{ checksum "src/package.json" }}
       - run: cd src && npm run prod
-      - run:
-          command: |
-            mkdir -p ~/caches
       - persist_to_workspace:
           root: ~/myapp
           paths:
