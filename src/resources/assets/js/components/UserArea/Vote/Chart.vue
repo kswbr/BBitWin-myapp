@@ -39,7 +39,7 @@
 
 import Axios from 'axios'
 import _ from 'lodash'
-import Chart from 'Chart.js'
+import Chart from 'chart.js'
 
 export default {
   name: 'VoteChart',
