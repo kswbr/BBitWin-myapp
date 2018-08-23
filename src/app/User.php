@@ -48,6 +48,12 @@ class User extends Authenticatable
         return $query->whereNotNull("email")->whereNotNull("password");
     }
 
+    public function scopeGetById($query,$id)
+    {
+        return $query->where("id",$id)->first();
+    }
+
+
     public function scopeProjectMembers($query,$project)
     {
         return $query->where(function($query) use ($project){

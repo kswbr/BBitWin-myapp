@@ -50,7 +50,7 @@ Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
 Route::group(['middleware' => ['cors']], function () {
 
     Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect');
-    Route::get('oauth/instantwin/login/twitter','Web\SnsController@twitter_register');
+    Route::get('oauth/twitter/login/{service}','Web\SnsController@twitter_register');
 
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['scopes:instant-win']);

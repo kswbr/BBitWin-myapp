@@ -7,12 +7,14 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Services\PlayerService;
 use App\Services\ProjectService;
+use App\Services\UserService;
 use App\User;
 
 class SnsController extends Controller
 {
     protected $playerService;
     protected $projectService;
+    protected $userService;
 
     /**
      * Create a new controller instance.
@@ -21,11 +23,13 @@ class SnsController extends Controller
      */
     public function __construct(
         PlayerService $playerService,
-        ProjectService $projectService
+        ProjectService $projectService,
+        UserService $userService
     )
     {
         $this->playerService = $playerService;
         $this->projectService = $projectService;
+        $this->userService = $userService;
     }
 
     public function twitter_redirect(Request $request)
@@ -40,23 +44,19 @@ class SnsController extends Controller
         $project = $this->projectService->getCode();
 
         if ($player = $this->playerService->findByPlayerInfo($project, "twitter" ,$twitter_user->getId())) {
-            $user = User::find($player->user_id);
+            $user = $this->userService->getById($player->user_id);
         } else {
-            $user = User::create([
-                'name'         => $twitter_user->getName(),
-                'email'        => null,
-                'password'     => null,
-                'project'      => $project
-            ]);
+            $user = $this->userService->create($project, $twitter_user->getName());
             $player = $this->playerService->create($project, "twitter", $twitter_user->getId(), [], $user);
         }
-        $instantwin_url = "instantwin.html#" . $player->id;
+
+        $service_url = "instantwin.html#" . $player->id;
 
         $user->append('playable_token');
 
         return response([
             "token" => $user->playable_token,
-            "instantwin_url" => $instantwin_url,
+            "service_url" => $service_url,
         ]);
     }
 
