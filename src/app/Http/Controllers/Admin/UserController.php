@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\ProjectService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -11,14 +12,14 @@ class UserController extends Controller
 {
 
     protected $projectService;
-    protected $model;
+    protected $userService;
 
     public function __construct(
-        User $model,
+        UserService $userService,
         ProjectService $projectService
     ) {
         $this->projectService = $projectService;
-        $this->model = $model;
+        $this->userService = $userService;
     }
 
     /**
@@ -41,8 +42,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $project = $this->projectService->getCode();
-        $users = $this->model->projectMembers($project)->adminMembers()->paginate(config("contents.admin.show_page_count"));
-        return response($users->toArray());
+        return response($this->userService->getPageInProject(config("contents.admin.show_page_count"),$project));
     }
 
     public function store(Request $request)
@@ -60,16 +60,24 @@ class UserController extends Controller
             'role' => 'required|integer',
         ]);
 
-        $params = array_merge($request->all(),["project" => $project, "password" => bcrypt($request->input("password"))]);
-
-        $user = $this->model->create($params);
+        $user = $this->userService->createAdmin(
+            $request->input("name"),
+            $request->input("email"),
+            $request->input("password"),
+            $project,
+            $request->input("role"),
+            $request->input("allow_over_project"),
+            $request->input("allow_campaign"),
+            $request->input("allow_vote"),
+            $request->input("allow_user")
+        );
 
         return response(['created_id' => $user->id], 201);
     }
 
     public function show(Request $request, $id)
     {
-        $data = User::find($id);
+        $data = $this->userService->getById($id);
         return response($data->toArray(), 200);
     }
 
@@ -87,17 +95,7 @@ class UserController extends Controller
             'allow_over_project' => 'boolean',
             'role' => 'required|integer',
         ]);
-        $input = $request->all();
-        unset($input["password"]);
-        if (!$request->is('*/users/*')) {
-            unset($input["allow_campaign"]);
-            unset($input["allow_vote"]);
-            unset($input["allow_user"]);
-            unset($input["allow_over_project"]);
-            unset($input["role"]);
-        }
-        $user = $this->model->find($id);
-        $user->update($input);
+        $this->userService->update($id,$request->all(),$request->is('*/users/*'));
         return response(['update' => true], 201);
     }
 
@@ -108,9 +106,7 @@ class UserController extends Controller
             'old_password' => "required|old_password:$password",
             'password' => 'required|string|min:6|confirmed',
         ]);
-        $user = $this->model->find($id);
-        $user->password = bcrypt($request->input("password"));
-        $ret = $user->save();
+        $this->userService->changePassword($id, $request->input("password"));
         return response(['update' => true], 201);
     }
 
@@ -118,8 +114,7 @@ class UserController extends Controller
     public function destroy(Request $request, $id)
     {
         $this->authorize('allow_create_and_delete');
-        $user = $this->model->find($id);
-        $user->delete();
+        $this->userService->destroy($id);
         return response(['destroy' => true], 201);
     }
 

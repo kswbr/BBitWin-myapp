@@ -39,7 +39,7 @@ class UserRepository implements UserRepositoryInterface, BaseRepositoryInterface
 
     public function getAdminInProjectQuery($project)
     {
-        return $this->model->adminMenbers()->projectMembers($project);
+        return $this->model->adminMembers()->projectMembers($project);
     }
 
     public function getInstatWinPlayersQuery($project)

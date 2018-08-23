@@ -17,7 +17,7 @@ class UserService
 
     public function getPageInProject($page,$project)
     {
-        $query = $this->repository->getAdminInProjectQuer($project);
+        $query = $this->repository->getAdminInProjectQuery($project);
         return $this->repository->getPaginate($page,$query);
     }
 
@@ -37,10 +37,24 @@ class UserService
         return $this->repository->getModelName();
     }
 
-    public function update($id, array $inputs)
+    public function update($id, array $inputs, $allow_admin_data = true)
     {
+        unset($inputs["password"]);
+        if (!$allow_admin_data) {
+            unset($inputs["allow_campaign"]);
+            unset($inputs["allow_vote"]);
+            unset($inputs["allow_user"]);
+            unset($inputs["allow_over_project"]);
+            unset($inputs["role"]);
+        }
         $this->repository->update($id,$inputs);
     }
+
+    public function changePassword($id, $password)
+    {
+        $this->repository->update($id,["password" => bcrypt($password)]);
+    }
+
 
     public function createAdmin($name, $email, $password, $project, $role, $allow_over_project, $allow_campaign, $allow_vote, $allow_user )
     {
