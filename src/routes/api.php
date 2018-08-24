@@ -64,7 +64,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('instantwin/run/{campaign_code}','Web\InstantWinController@run')->middleware(['scopes:instant-win']);
         Route::get('instantwin/run/{campaign_code}/retry','Web\InstantWinController@run')->middleware(['scopes:instant-win,retry']);
 
-        Route::get('instantwin/winner/regist','Web\InstantWinController@winner_regist')->middleware(['scopes:instant-win,winner']);
+        Route::post('instantwin/winner/regist','Web\InstantWinController@winner_regist')->middleware(['scopes:instant-win,winner']);
         Route::get('instantwin/form/init','Web\InstantWin\FormController@init')->middleware(['scopes:instant-win,form']);
 
         Route::post('vote/run','Web\VoteController@run')->middleware(['scopes:vote-event']);

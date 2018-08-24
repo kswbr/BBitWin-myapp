@@ -441,4 +441,30 @@ class InstantWinControllerTest extends TestCase
         ]);
     }
 
+    public function testRegister()
+    {
+        $user = factory(User::class)->create();
+        $player = factory(Player::class)->create(["user_id" => $user->id]);
+        $project = $this->projectService->getCode();
+        $campaign = factory(Campaign::class)->create(["project" => $project]);
+        $lottery = factory(Lottery::class)->create(["campaign_code" => $campaign->code, "rate" => 100, "limit" => 1]);
+        $entry = factory(Entry::class)->create(["lottery_code" => $lottery->code, "player_id" => $player->id, "player_type" => $player->type, "state" => 2]);
+
+        $mock = \Mockery::mock(\App\User::class)->makePartial();
+        $mock->player = $player;
+        $mock->shouldReceive("getFormTokenAttribute")->andReturn("OKFORMTOKEN");
+
+        Passport::actingAs( $user, ['instant-win','winner']);
+        $response = $this->actingAs($user,"api");
+
+        \Auth::shouldReceive("user")->once()->andReturn($mock);;
+        \Auth::makePartial();
+        \Crypt::shouldReceive("decrypt")->with("WINNERCODE",true)->andReturn($entry->id);
+
+        $response = $response->post('/api/instantwin/winner/regist',[
+          "winning_entry_code" => "WINNERCODE"
+        ]);
+        $response->assertStatus(200);
+    }
+
 }

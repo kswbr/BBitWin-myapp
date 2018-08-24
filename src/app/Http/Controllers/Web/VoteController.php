@@ -42,8 +42,6 @@ class VoteController extends Controller
             $vote = $this->voteService->getByProjectAndCode($project,$vote_code);
         }
 
-        $user = \Auth::user();
-        $player = $user->player;
         $last_vote = \Cookie::get("last_vote",0);
         if ((string)$last_vote >= (string)Carbon::today()) {
             return response(["voted" => false]);

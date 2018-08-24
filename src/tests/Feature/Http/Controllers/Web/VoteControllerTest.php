@@ -66,5 +66,29 @@ class VoteControllerTest extends TestCase
         $this->assertEquals($count,1);
 
     }
+    public function testPie()
+    {
+        $project = $this->projectService->getCode();
+        $vote = factory(Vote::class)->create(["project" => $project]);
+
+        for($i = 0; $i < 10; $i++) {
+            $this->voteService->choice($project,$vote,"sample_1");
+            $this->voteService->choice($project,$vote,"sample_2");
+            $this->voteService->choice($project,$vote,"sample_2");
+            $this->voteService->choice($project,$vote,"sample_3");
+            $this->voteService->choice($project,$vote,"sample_3");
+            $this->voteService->choice($project,$vote,"sample_3");
+        }
+        $response = $this->call('GET', '/api/vote/pie/' . $vote->code);
+        $response->assertStatus(200);
+        $response->assertJson([
+          "counts" => [
+            ["data" => 10, "label" => "TEST"],
+            ["data" => 20, "label" => "TEST2"],
+            ["data" => 30, "label" => "TEST3"],
+          ]
+        ]);
+
+    }
 
 }
