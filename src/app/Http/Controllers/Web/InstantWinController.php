@@ -67,6 +67,10 @@ class InstantWinController extends Controller
             $prev_entry_state_code = "init";
         }
 
+        if (!$lottery) {
+            abort(404, 'キャンペーンはすでに終了いたしました');
+        }
+
         $challenged_today = (string)Carbon::today() <= (string)$prev_entry_created_at;
         $is_retry_challenge = $request->is('*/retry');
         $is_looser = $prev_entry_state_code === "lose" || $prev_entry_state_code === "win_posting_expired";
