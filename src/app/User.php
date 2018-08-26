@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function scopeAdminMembers($query)
     {
-        return $query->whereNotNull("email")->whereNotNull("password");
+        return $query->whereNotNull("email")->whereNotNull("password")->has("player", "=", 0);
     }
 
     public function scopeGetById($query,$id)
