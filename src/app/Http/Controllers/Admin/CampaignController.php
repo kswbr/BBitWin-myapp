@@ -47,7 +47,7 @@ class CampaignController extends Controller
         $project = $this->projectService->getCode();
 
         $validatedData = $request->validate([
-            'name' => 'required|unique:campaigns|max:255',
+            'name' => 'required|max:255',
             'code' => 'required|unique:campaigns|max:100',
             'limited_days' => 'required|numeric|max:100',
         ]);
@@ -84,7 +84,7 @@ class CampaignController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'required|unique:campaigns|max:255',
+            'name' => 'required|max:255',
             'limited_days' => 'required|numeric|max:100',
         ]);
 

@@ -18,6 +18,7 @@ const state = {
   requestResponse: {},
   user: {},
   errors: {},
+  success: {},
   debug,
   devenv
 }
@@ -61,6 +62,12 @@ const mutations = {
     Message.closeAll()
     state.inRequest = false
     state.errors = Object.assign({}, payload)
+  },
+
+  [types.FORM_VALIDATION_SUCCESS] (state, payload) {
+    Message.closeAll()
+    state.inRequest = false
+    state.success = Object.assign({}, payload)
   }
 
 }

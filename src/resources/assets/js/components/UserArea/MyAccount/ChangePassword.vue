@@ -41,6 +41,7 @@
 <script>
 
 import Axios from 'axios'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'UserEdit',
@@ -63,6 +64,9 @@ export default {
       Axios.patch('/api/user/' + this.$route.params.id + '/change_password', this.form).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: 'あなたのパスワードが変更されました'
+        })
       }).catch((e) => (console.error(e)))
     },
   }

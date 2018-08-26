@@ -28,6 +28,7 @@
 
 import Axios from 'axios'
 import Editor from './Editor.vue'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'voteEdit',
@@ -59,12 +60,18 @@ export default {
       Axios.patch('/api/votes/' + this.$route.params.id, form).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '投票イベントが変更されました'
+        })
       }).catch((e) => (console.error(e)))
     },
     remove () {
       Axios.delete('/api/votes/' + this.$route.params.id).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '投票イベントが削除されました'
+        })
       }).catch((e) => (console.error(e)))
     }
   }

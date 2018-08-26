@@ -67,6 +67,9 @@ export default {
         Axios.get('/api/user/info').then((res) => {
           this.$store.commit(types.FETCH_USER, res.data)
           this.$router.push('.')
+          this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+            message: 'ユーザーが更新されました'
+          })
         })
       }).catch((e) => (console.error(e)))
     },
@@ -74,8 +77,14 @@ export default {
       Axios.delete('/api/users/' + this.$route.params.id).then((res) => {
         if (this.$route.params.id == this.user.id) {
           this.$store.commit(types.LOGGED_OUT)
+          this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+            message: 'あなたのユーザーが削除されたのでログアウトします'
+          })
         } else {
           this.$router.push('.')
+          this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+            message: 'ユーザーが削除されました'
+          })
         }
       }).catch((e) => (console.error(e)))
     }

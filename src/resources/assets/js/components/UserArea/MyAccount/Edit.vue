@@ -66,7 +66,10 @@ export default {
         Axios.get('/api/user/info').then((res) => {
           this.$store.commit(types.FETCH_USER, res.data)
           this.$router.push('.')
-        })
+          this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+            message: 'あなたのアカウント情報が変更されました'
+          })
+       })
       }).catch((e) => (console.error(e)))
     }
   }

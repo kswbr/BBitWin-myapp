@@ -30,6 +30,7 @@
 
 import Axios from 'axios'
 import Editor from './Editor.vue'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'EntryEdit',
@@ -60,12 +61,18 @@ export default {
       Axios.patch(this.apiPath + '/' + this.$route.params.id, form).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '応募が更新されました'
+        })
       }).catch((e) => (console.error(e)))
     },
     remove () {
       Axios.delete(this.apiPath + '/' + this.$route.params.id).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '応募が削除されました'
+        })
       }).catch((e) => (console.error(e)))
     }
   },

@@ -28,6 +28,7 @@
 
 import Axios from 'axios'
 import Editor from './Editor.vue'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'CampaignCreate',
@@ -51,6 +52,9 @@ export default {
       Axios.post('/api/campaigns', form).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: 'キャンペーンが作成されました'
+        })
       }).catch((e) => (console.error(e)))
     }
   }

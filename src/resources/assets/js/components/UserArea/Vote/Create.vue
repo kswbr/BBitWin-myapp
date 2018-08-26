@@ -28,6 +28,7 @@
 
 import Axios from 'axios'
 import Editor from './Editor.vue'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'voteCreate',
@@ -54,6 +55,9 @@ export default {
       Axios.post('/api/votes', form).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '投票イベントが作成されました'
+        })
       }).catch((e) => (console.error(e)))
     }
   }

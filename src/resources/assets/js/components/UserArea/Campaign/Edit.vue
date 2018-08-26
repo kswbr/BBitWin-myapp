@@ -28,6 +28,7 @@
 
 import Axios from 'axios'
 import Editor from './Editor.vue'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'CampaignEdit',
@@ -56,12 +57,18 @@ export default {
       Axios.patch('/api/campaigns/' + this.$route.params.id, form).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: 'キャンペーンが更新されました'
+        })
       }).catch((e) => (console.error(e)))
     },
     remove () {
       Axios.delete('/api/campaigns/' + this.$route.params.id).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: 'キャンペーンが削除されました'
+        })
       }).catch((e) => (console.error(e)))
     }
   }

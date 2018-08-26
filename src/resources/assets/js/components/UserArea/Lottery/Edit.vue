@@ -33,6 +33,7 @@
 import Axios from 'axios'
 import Editor from './Editor.vue'
 import InfoModal from './InfoModal.vue'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'LotteryEdit',
@@ -68,14 +69,20 @@ export default {
     },
     save (form) {
       Axios.patch('/api/campaigns/' + this.$route.params.campaignId + '/lotteries/' + this.$route.params.id, form).then((res) => {
-        this.$router.push('.')
         console.log(res)
+        this.$router.push('.')
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '賞品が更新されました'
+        })
       }).catch((e) => (console.error(e)))
     },
     remove () {
       Axios.delete('/api/campaigns/' + this.$route.params.campaignId + '/lotteries/' + this.$route.params.id).then((res) => {
         this.$router.push('.')
         console.log(res)
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '賞品が削除されました'
+        })
       }).catch((e) => (console.error(e)))
     }
   }

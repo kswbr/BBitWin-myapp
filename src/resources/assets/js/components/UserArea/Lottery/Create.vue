@@ -29,6 +29,7 @@
 
 import Axios from 'axios'
 import Editor from './Editor.vue'
+import * as types from '../../../store/mutation-types.js'
 
 export default {
   name: 'LotteryCreate',
@@ -58,8 +59,11 @@ export default {
   methods: {
     save (form) {
       Axios.post('/api/campaigns/' + this.$route.params.campaignId + '/lotteries', form).then((res) => {
-        this.$router.push('.')
         console.log(res)
+        this.$router.push('.')
+        this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
+          message: '賞品が作成されました'
+        })
       }).catch((e) => (console.error(e)))
     }
   }

@@ -11,7 +11,7 @@ import _ from 'lodash'
 
 export default {
   computed: {
-    ...mapState(['inRequest','errors'])
+    ...mapState(['inRequest','errors','success'])
   },
   mounted () {
   },
@@ -31,11 +31,22 @@ export default {
                 duration: 0,
                 showClose: true
             });
-        } else {
-            Message.closeAll()
         }
       },
       deep: true
+    },
+    success: {
+      handler: function () {
+        if (!_.isEmpty(this.success)) {
+            let messageLabel = this.success.message
+            this.$message.success({
+                dangerouslyUseHTMLString: true,
+                message: messageLabel,
+                duration: 0,
+                showClose: true
+            });
+        }
+      }
     }
   }
 }
