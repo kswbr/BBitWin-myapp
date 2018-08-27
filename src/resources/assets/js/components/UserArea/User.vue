@@ -10,7 +10,7 @@
       <el-row>
         <el-header >
          <el-col :offset="1" :span="21">
-            <h2 class="h2">Lotteries <small >ユーザー一覧 </small></h2>
+            <h2 class="h2">Users <small >ユーザー一覧 </small></h2>
           </el-col>
           <el-col :offset="20" :span="2">
             <el-button :disabled="!allowCreate" type="success" @click="() => (this.$router.push('users/create'))">
