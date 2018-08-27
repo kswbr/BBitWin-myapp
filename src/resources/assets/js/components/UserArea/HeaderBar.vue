@@ -7,7 +7,7 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
-      <el-menu-item index="1"><span style="font-size:18px;">BbmInstantWin</span></el-menu-item>
+      <el-menu-item index="1"><span @click="() => this.$router.push('/admin/userarea')" style="font-size:18px;">BbmInstantWin</span></el-menu-item>
       <el-menu-item class="right" index="100" ><a @click="editMyAccount">{{user.name}}</a></el-menu-item>
       <el-menu-item class="right" index="99" ><a id="logoutLink" @click="logout">Logout</a></el-menu-item>
     </el-menu>
