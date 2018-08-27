@@ -32,29 +32,23 @@ class SnsController extends Controller
         $this->userService = $userService;
     }
 
-    public function twitter_redirect(Request $request)
+    public function redirect(Request $request)
     {
-        $redirect_url = Socialite::driver('twitter')->redirect()->getTargetUrl();
+        $redirect_url = Socialite::driver($request->route('provider'))->redirect()->getTargetUrl();
         return response(["redirect_url" => $redirect_url]);
     }
 
-    public function line_redirect(Request $request)
+    public function register(Request $request)
     {
-        $redirect_url = Socialite::driver('line')->redirect()->getTargetUrl();
-        return response(["redirect_url" => $redirect_url]);
-    }
-
-
-    public function twitter_register(Request $request)
-    {
-        $twitter_user = Socialite::driver('twitter')->user();
+        $provider = $request->route('provider');
+        $sns_user = Socialite::driver($provider)->user();
         $project = $this->projectService->getCode();
 
-        if ($player = $this->playerService->findByPlayerInfo($project, "twitter" ,$twitter_user->getId())) {
+        if ($player = $this->playerService->findByPlayerInfo($project, $provider ,$sns_user->getId())) {
             $user = $this->userService->getById($player->user_id);
         } else {
-            $user = $this->userService->createPlayer($project, $twitter_user->getName());
-            $player = $this->playerService->create($project, "twitter", $twitter_user->getId(), [], $user);
+            $user = $this->userService->createPlayer($project, $sns_user->getName());
+            $player = $this->playerService->create($project, $provider, $sns_user->getId(), [], $user);
         }
 
         $service_url = $request->route("service") . ".html#" . $player->id;
@@ -66,27 +60,4 @@ class SnsController extends Controller
             "service_url" => $service_url,
         ]);
     }
-
-    public function line_register(Request $request)
-    {
-        $line_user = Socialite::driver('line')->user();
-        $project = $this->projectService->getCode();
-
-        if ($player = $this->playerService->findByPlayerInfo($project, "line" ,$line_user->getId())) {
-            $user = $this->userService->getById($player->user_id);
-        } else {
-            $user = $this->userService->createPlayer($project, $line_user->getName());
-            $player = $this->playerService->create($project, "line", $line_user->getId(), [], $user);
-        }
-
-        $service_url = $request->route("service") . ".html#" . $player->id;
-
-        $user->append('playable_token');
-
-        return response([
-            "token" => $user->playable_token,
-            "service_url" => $service_url,
-        ]);
-    }
-
 }

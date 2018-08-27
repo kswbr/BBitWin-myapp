@@ -72,7 +72,7 @@ class SnsControllerTest extends TestCase
             return $player_service_mock;
         });
 
-        $response = $this->call('GET', '/api/oauth/twitter/login/instantwin');
+        $response = $this->call('GET', '/api/oauth/twitter/register/instantwin');
         $response->assertStatus(200);
         $response->assertJson([
           "token" => "PLAYABLETOKEN",
@@ -112,7 +112,7 @@ class SnsControllerTest extends TestCase
             return $player_service_mock;
         });
 
-        $response = $this->call('GET', '/api/oauth/twitter/login/instantwin');
+        $response = $this->call('GET', '/api/oauth/twitter/register/instantwin');
         $response->assertStatus(200);
         $response->assertJson([
           "token" => "PLAYABLETOKEN",

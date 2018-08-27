@@ -49,11 +49,8 @@ Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
 
 Route::group(['middleware' => ['cors']], function () {
 
-    Route::get('oauth/twitter/redirect','Web\SnsController@twitter_redirect');
-    Route::get('oauth/twitter/login/{service}','Web\SnsController@twitter_register')->middleware(['checkIfPlayableService']);
-
-    Route::get('oauth/line/redirect','Web\SnsController@line_redirect');
-    Route::get('oauth/line/login/{service}','Web\SnsController@line_register')->middleware(['checkIfPlayableService']);
+    Route::get('oauth/{provider}/redirect','Web\SnsController@redirect')->middleware(['checkIfPlayableProvider']);
+    Route::get('oauth/{provider}/register/{service}','Web\SnsController@register')->middleware(['checkIfPlayableService','checkIfPlayableProvider']);
 
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['scopes:instant-win']);
