@@ -95,7 +95,7 @@ class SnsControllerTest extends TestCase
         $user_mock->shouldReceive("getPlayableTokenAttribute")->andReturn("PLAYABLETOKEN");
 
         $user_service_mock = \Mockery::mock(UserService::class)->shouldAllowMockingProtectedMethods();
-        $user_service_mock->shouldReceive("create")->with($project,"TWITTERNAME")->andReturn($user_mock);
+        $user_service_mock->shouldReceive("createPlayer")->with($project,"TWITTERNAME")->andReturn($user_mock);
         \App::singleton(UserService::class, function () use ($user_service_mock) {
             return $user_service_mock;
         });

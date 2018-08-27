@@ -38,6 +38,13 @@ class SnsController extends Controller
         return response(["redirect_url" => $redirect_url]);
     }
 
+    public function line_redirect(Request $request)
+    {
+        $redirect_url = Socialite::driver('line')->redirect()->getTargetUrl();
+        return response(["redirect_url" => $redirect_url]);
+    }
+
+
     public function twitter_register(Request $request)
     {
         $twitter_user = Socialite::driver('twitter')->user();
@@ -46,11 +53,11 @@ class SnsController extends Controller
         if ($player = $this->playerService->findByPlayerInfo($project, "twitter" ,$twitter_user->getId())) {
             $user = $this->userService->getById($player->user_id);
         } else {
-            $user = $this->userService->create($project, $twitter_user->getName());
+            $user = $this->userService->createPlayer($project, $twitter_user->getName());
             $player = $this->playerService->create($project, "twitter", $twitter_user->getId(), [], $user);
         }
 
-        $service_url = "instantwin.html#" . $player->id;
+        $service_url = $request->route("service") . ".html#" . $player->id;
 
         $user->append('playable_token');
 
@@ -60,5 +67,26 @@ class SnsController extends Controller
         ]);
     }
 
+    public function line_register(Request $request)
+    {
+        $line_user = Socialite::driver('line')->user();
+        $project = $this->projectService->getCode();
+
+        if ($player = $this->playerService->findByPlayerInfo($project, "line" ,$line_user->getId())) {
+            $user = $this->userService->getById($player->user_id);
+        } else {
+            $user = $this->userService->createPlayer($project, $line_user->getName());
+            $player = $this->playerService->create($project, "line", $line_user->getId(), [], $user);
+        }
+
+        $service_url = $request->route("service") . ".html#" . $player->id;
+
+        $user->append('playable_token');
+
+        return response([
+            "token" => $user->playable_token,
+            "service_url" => $service_url,
+        ]);
+    }
 
 }
