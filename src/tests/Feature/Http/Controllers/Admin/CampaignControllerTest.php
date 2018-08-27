@@ -45,9 +45,9 @@ class CampaignControllerTest extends TestCase
                          ->assertStatus(302);
 
         Passport::actingAs( $user, ['check-admin']);
-        $response = $this->actingAs($user,"api")
-                         ->get('/api/campaigns')
-                         ->assertStatus(200);
+        $response = $this->actingAs($user,"api");
+        $response = $response->get('/api/campaigns');
+        $response->assertStatus(200);
     }
 
    public function testGate()
