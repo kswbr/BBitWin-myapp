@@ -36,6 +36,28 @@ $factory->define(App\Repositories\Eloquent\Models\Campaign::class, function (Fak
     ];
 });
 
+$factory->define(App\Repositories\Eloquent\Models\Campaign\Serial::class, function (Faker\Generator $faker) {
+    return [
+        'campaign_code' => function () {
+            return factory(App\Repositories\Eloquent\Models\Campaign::class)->create()->code;
+        },
+        'total' => 100
+    ];
+});
+
+$factory->define(App\Repositories\Eloquent\Models\Campaign\Serial\Number::class, function (Faker\Generator $faker) {
+    return [
+        'serial_id' => function () {
+            return factory(App\Repositories\Eloquent\Models\Campaign\Serial::class)->create()->id;
+        },
+        'player_id' => function () {
+            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
+        },
+        'number' => rand ( 1 , 99999999)
+    ];
+});
+
+
 $factory->define(App\Repositories\Eloquent\Models\Lottery::class, function (Faker\Generator $faker) {
     $dt = Carbon::parse();
     return [
