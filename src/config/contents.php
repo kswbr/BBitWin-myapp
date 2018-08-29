@@ -50,4 +50,10 @@ return [
       ["label" =>  "特別当選（未応募）", "css_style" => "success"]
     ]
   ],
+  "serial" => [
+    "number" => [
+      "min" => 11111111,
+      "max" => 99999999,
+    ]
+  ]
 ];

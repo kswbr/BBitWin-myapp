@@ -20,11 +20,9 @@ LABEL maintainer="Bugwabara"
 
 ARG LARADOCK_PHP_VERSION=7.2
 
-# Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
 ENV APP_ENV production
 
-# always run apt update when start and after add new source list, then clean up at end.
 RUN apt-get update -yqq && \
     apt-get install -y apt-utils && \
     pecl channel-update pecl.php.net
@@ -65,7 +63,6 @@ RUN apt-get install curl gnupg cmake -y &&\
 ARG INSTALL_SOAP=true
 
 RUN if [ ${INSTALL_SOAP} = true ]; then \
-    # Install the soap extension
     rm /etc/apt/preferences.d/no-debian-php && \
     apt-get -y install libxml2-dev php-soap && \
     docker-php-ext-install soap \
@@ -114,7 +111,6 @@ COPY php-fpm/xlaravel.pool.conf /usr/local/etc/php-fpm.d/
 
 USER root
 
-# Clean up
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm /var/log/lastlog /var/log/faillog
@@ -124,7 +120,6 @@ RUN usermod -u 1000 www-data
 WORKDIR /var/www
 COPY dist/src /var/www
 
-# install composer
 RUN rm -rf /var/www/bootstrap/cache/*
 RUN rm -rf /var/www/storage
 RUN rm -f /var/www/config/passport.php
