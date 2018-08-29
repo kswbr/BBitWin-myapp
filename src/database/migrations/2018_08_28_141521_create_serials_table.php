@@ -15,7 +15,7 @@ class CreateSerialsTable extends Migration
     {
         Schema::create('campaign_serials', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('campaign_code',100)->nullable();
+            $table->char('campaign_code',100)->unique()->nullable();
             $table->integer('total');
             $table->timestamps();
 
