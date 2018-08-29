@@ -57,6 +57,7 @@ class UserController extends Controller
             'allow_vote' => 'boolean',
             'allow_user' => 'boolean',
             'allow_over_project' => 'boolean',
+            'allow_serial_campaign' => 'boolean',
             'role' => 'required|integer',
         ]);
 
@@ -69,7 +70,8 @@ class UserController extends Controller
             $request->input("allow_over_project"),
             $request->input("allow_campaign"),
             $request->input("allow_vote"),
-            $request->input("allow_user")
+            $request->input("allow_user"),
+            $request->input("allow_serial_campaign")
         );
 
         return response(['created_id' => $user->id], 201);
@@ -93,6 +95,7 @@ class UserController extends Controller
             'allow_vote' => 'boolean',
             'allow_user' => 'boolean',
             'allow_over_project' => 'boolean',
+            'allow_serial_campaign' => 'boolean',
             'role' => 'required|integer',
         ]);
         $this->userService->update($id,$request->all(),$request->is('*/users/*'));

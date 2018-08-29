@@ -59,5 +59,9 @@ class AuthServiceProvider extends ServiceProvider
             return ((int)$user->role >= 1 && $group_in_project($user));
         });
 
+        Gate::define('allow_serial_campaign', function ($user) use ($group_in_project){
+            return ((bool)$user->allow_serial_campaign === true && $group_in_project($user));
+        });
+
      }
 }

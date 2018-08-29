@@ -45,6 +45,7 @@ class UserService
             unset($inputs["allow_vote"]);
             unset($inputs["allow_user"]);
             unset($inputs["allow_over_project"]);
+            unset($inputs["allow_serial_campaign"]);
             unset($inputs["role"]);
         }
         $this->repository->update($id,$inputs);
@@ -56,7 +57,7 @@ class UserService
     }
 
 
-    public function createAdmin($name, $email, $password, $project, $role, $allow_over_project, $allow_campaign, $allow_vote, $allow_user )
+    public function createAdmin($name, $email, $password, $project, $role, $allow_over_project, $allow_campaign, $allow_vote, $allow_user , $allow_serial_campaign)
     {
         return $this->repository->store([
             "name" => $name,
@@ -68,6 +69,7 @@ class UserService
             "allow_campaign" => $allow_campaign,
             "allow_vote" => $allow_vote,
             "allow_user" => $allow_user,
+            "allow_serial_campaign" => $allow_serial_campaign
         ]);
     }
 
