@@ -1,4 +1,4 @@
-FROM nginx:1.15.2
+FROM nginx:latest
 MAINTAINER bugwabara
 
 ADD nginx/server.conf /etc/nginx/conf.d/server.conf
