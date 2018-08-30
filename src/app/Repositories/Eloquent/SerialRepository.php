@@ -32,12 +32,17 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         return gettype($this->model);
     }
 
+    public function getProjectQuery($project)
+    {
+        return $this->model->project($project);
+    }
+
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {
-            return $search_query->paginate($n);
+            return $search_query->with('parentCampaign')->withCount('numbers')->paginate($n);
         } else {
-            return $this->model->paginate($n);
+            return $this->model->with('parentCampaign')->withCount('numbers')->paginate($n);
         }
     }
 
@@ -50,12 +55,7 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
 
     public function getById($id)
     {
-        return $this->model->findOrFail($id);
-    }
-
-    public function getByIdWithNumbers($id)
-    {
-        return $this->model->with('numbers')->findOrFail($id);
+        return $this->model->with('parentCampaign')->withCount('numbers')->findOrFail($id);
     }
 
     /**
@@ -76,18 +76,13 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
 
     public function getByCampaign($campaign_code)
     {
-        return $this->model->campaign($campaign_code)->get();
+        return $this->model->campaign($campaign_code)->first();
     }
 
     public function getNumbersCountInCampaign($campaign_code)
     {
         $serial = $this->model->campaign($campaign_code)->first();
         return $serial->numbers()->count();
-    }
-
-    public function getByCampaignWithNumbers($campaign_code)
-    {
-        return $this->model->campaign($campaign_code)->with('numbers')->first();
     }
 
     public function hasNumberInCampaign($campaign_code,$number)
@@ -97,10 +92,17 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         })->count() === 1;
     }
 
+    public function createNumberInCampaign($campaign_code,$number)
+    {
+        return $this->model->campaign($campaign_code)->first()->numbers()->create(['number' => $number]);
+    }
+
+
     public function connectNumbersToPlayerInCampaign($campaign_code, $player_id, $number)
     {
         $serial = $this->model->campaign($campaign_code)->first();
-        return $serial->numbers()->create(["player_id" => $player_id, "number" => $number]);
+        $number = $serial->numbers()->where("number", $number)->first();
+        return $number->update(["player_id" => $player_id]);
     }
 
 

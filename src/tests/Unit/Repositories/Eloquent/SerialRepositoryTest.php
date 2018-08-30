@@ -49,38 +49,6 @@ class SerialRepositoryTest extends TestCase
         $mock->shouldReceive('getById')->passthru();
     }
 
-    public function testGetByIdWithNumbers()
-    {
-        $campaign = factory(Campaign::class)->create(["code" => "hoge"]);
-        $serial = factory(Serial::class)->create([
-           'campaign_code' => $campaign->code
-        ]);
-
-        $numbers = factory(Number::class)->create([
-           'serial_id' => $serial->id
-        ]);
-
-        $repository = new SerialRepository($this->model);
-        $data = $repository->getByIdWithNumbers($serial->id)->toArray();
-        $this->assertEquals(1, count($data["numbers"]));
-    }
-
-    public function testGetByCampaignWithNumbers()
-    {
-        $campaign = factory(Campaign::class)->create(["code" => "hoge"]);
-        $serial = factory(Serial::class)->create([
-           'campaign_code' => $campaign->code
-        ]);
-
-        $numbers = factory(Number::class)->create([
-           'serial_id' => $serial->id
-        ]);
-
-        $repository = new SerialRepository($this->model);
-        $data = $repository->getByCampaignWithNumbers($campaign->code)->toArray();
-        $this->assertEquals(1, count($data["numbers"]));
-    }
-
     public function testHasNumberInCampaign()
     {
         $campaign = factory(Campaign::class)->create(["code" => "hoge"]);
@@ -103,6 +71,11 @@ class SerialRepositoryTest extends TestCase
         $serial = factory(Serial::class)->create([
            'campaign_code' => $campaign->code
         ]);
+        $number = factory(Number::class)->create([
+           'serial_id' => $serial->id,
+           'number' => 9999,
+        ]);
+
         $player = factory(Player::class)->create();
 
         $repository = new SerialRepository($this->model);

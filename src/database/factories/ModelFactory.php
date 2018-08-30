@@ -38,6 +38,8 @@ $factory->define(App\Repositories\Eloquent\Models\Campaign::class, function (Fak
 
 $factory->define(App\Repositories\Eloquent\Models\Campaign\Serial::class, function (Faker\Generator $faker) {
     return [
+        'name' => $faker->name,
+        'project' => $faker->word,
         'campaign_code' => function () {
             return factory(App\Repositories\Eloquent\Models\Campaign::class)->create()->code;
         },

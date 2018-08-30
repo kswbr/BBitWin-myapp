@@ -51,6 +51,18 @@ class SerialRepositoryTest extends TestCase
         $this->assertEquals($serial->id,$data->id);
     }
 
+    public function testFindProject()
+    {
+        $campaign = factory(Campaign::class)->create();
+        $serial = factory(Serial::class)->create([
+            "campaign_code" => $campaign->code,
+            "project" => $campaign->project,
+        ]);
+        $data = Serial::project($campaign->project)->first();
+        $this->assertEquals($serial->id,$data->id);
+    }
+
+
     public function testFindNumbers()
     {
         $serial = factory(Serial::class)->create();

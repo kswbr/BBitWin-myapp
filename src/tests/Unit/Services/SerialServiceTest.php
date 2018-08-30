@@ -43,12 +43,14 @@ class SerialServiceTest extends TestCase
 
         $this->mockRepository->shouldReceive('store')
             ->with([
+                "name" => "testserial",
                 "total" => 1000,
                 "campaign_code" => $campaign->code,
+                "project" => "TESTPROJECT",
             ])
             ->andReturn(true);
 
-        $data = $this->service->create( 1000, $campaign);
+        $data = $this->service->create("testserial", 1000, $campaign, "TESTPROJECT");
         $this->assertTrue($data);
 
         $this->mockRepository->shouldReceive('destroy')
@@ -63,10 +65,10 @@ class SerialServiceTest extends TestCase
     public function testUpdate()
     {
         $this->mockRepository->shouldReceive('update')
-             ->with(999,[ "total" => 1000, ])
+             ->with(999,[ "name" => "TESTNAME", "total" => 1000, ])
              ->andReturn(true);
 
-        $ret = $this->service->update(999, ["total" => 1000, "test" => 9999]);
+        $ret = $this->service->update(999, ["name" => "TESTNAME","total" => 1000, "test" => 9999]);
         $this->assertTrue($ret);
 
 
@@ -94,18 +96,6 @@ class SerialServiceTest extends TestCase
              ->andReturn(true);
 
         $ret = $this->service->getNumbersCountInCampaign($campaign);
-        $this->assertTrue($ret);
-    }
-
-    public function testGetByCampaignWithNumbers()
-    {
-        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
-
-        $this->mockRepository->shouldReceive('getByCampaignWithNumbers')
-             ->with($campaign->code)
-             ->andReturn(true);
-
-        $ret = $this->service->getByCampaignWithNumbers($campaign);
         $this->assertTrue($ret);
     }
 
@@ -137,17 +127,22 @@ class SerialServiceTest extends TestCase
     public function testCreateUniqueNumberInCampaign()
     {
         $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
+        $serial = factory(Serial::class)->create(["campaign_code" => $campaign->code, "project" => $campaign->project]);
         $player = factory(Player::class)->create();
 
-        $this->mockRepository->shouldReceive('hasNumberInCampaign')->passthru();
+        $this->mockRepository->shouldReceive('hasNumberInCampaign')->once()->andReturn(true);
+        $this->mockRepository->shouldReceive('hasNumberInCampaign')->once()->andReturn(false);
+        $this->mockRepository->shouldReceive('createNumberInCampaign')->passthru();
         $ret = $this->service->createUniqueNumberInCampaign($campaign);
         $min = config("contents.serial.number.min");
         $max = config("contents.serial.number.max");
 
-
         $this->assertTrue($ret >= $min);
         $this->assertTrue($ret <= $max);
         $this->assertTrue(is_numeric($ret));
+
+        $number = Number::first();
+        $this->assertEquals($number->number, $ret);
     }
 
 

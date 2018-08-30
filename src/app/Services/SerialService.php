@@ -15,6 +15,12 @@ class SerialService
         $this->repository = $repository;
     }
 
+    public function getPageInProject($page,$project)
+    {
+        $query = $this->repository->getProjectQuery($project);
+        return $this->repository->getPaginate($page,$query);
+    }
+
      /**
      * FindOrFail Model and return the instance.
      *
@@ -22,7 +28,7 @@ class SerialService
      */
     public function getById($id)
     {
-        $serial = $this->repository->getByIdWithNumbers($id);
+        $serial = $this->repository->getById($id);
         return $serial;
     }
 
@@ -34,16 +40,19 @@ class SerialService
     public function update($id, array $inputs)
     {
         return $this->repository->update($id,[
+            "name" => $inputs["name"],
             "total" => $inputs["total"]
         ]);
     }
 
 
-    public function create($total, $campaign)
+    public function create($name, $total, $campaign, $project)
     {
         return $this->repository->store([
+            "name" => $name,
             "total" => $total,
-            "campaign_code" => $campaign->code
+            "campaign_code" => $campaign->code,
+            "project" => $project,
         ]);
     }
 
@@ -68,11 +77,6 @@ class SerialService
         return $this->repository->getNumbersCountInCampaign($campaign->code);
     }
 
-    public function getByCampaignWithNumbers($campaign)
-    {
-        return $this->repository->getByCampaignWithNumbers($campaign->code);
-    }
-
     public function hasNumberInCampaign($campaign, int $number)
     {
         return $this->repository->hasNumberInCampaign($campaign->code,$number);
@@ -93,6 +97,8 @@ class SerialService
             $number = rand($min,$max);
             $ret = $this->repository->hasNumberInCampaign($campaign->code,$number);
         } while($ret);
+
+        $this->repository->createNumberInCampaign($campaign->code, $number);
 
         return $number;
     }
