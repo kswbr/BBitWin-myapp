@@ -21,6 +21,9 @@ import UserEdit from '../components/UserArea/User/Edit'
 import UserChangePassword from '../components/UserArea/User/ChangePassword'
 import MyAccountEdit from '../components/UserArea/MyAccount/Edit'
 import MyAccountChangePassword from '../components/UserArea/MyAccount/ChangePassword'
+import Serial from '../components/UserArea/Serial'
+import SerialCreate from '../components/UserArea/Serial/Create'
+import SerialEdit from '../components/UserArea/Serial/Edit'
 
 const router = new Router({
   mode: 'history',
@@ -56,6 +59,9 @@ const router = new Router({
         { path: 'user', redirect: '/admin/userarea'},
         { path: 'user/:id', component: MyAccountEdit},
         { path: 'user/:id/change_password', component: MyAccountChangePassword},
+        { path: 'serials', component: Serial },
+        { path: 'serials/create', component: SerialCreate },
+        { path: 'serials/:id', component: SerialEdit },
       ]
     }
 

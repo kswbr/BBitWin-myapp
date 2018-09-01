@@ -40,6 +40,11 @@ class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryI
         }
     }
 
+    public function getListsHasNotSerialInProject($project)
+    {
+        return $this->model->project($project)->hasNotSerial()->get();
+    }
+
     public function store(array $inputs)
     {
         $model = $this->model->newInstance();

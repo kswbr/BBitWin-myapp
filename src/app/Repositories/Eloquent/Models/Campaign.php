@@ -3,10 +3,15 @@
 namespace App\Repositories\Eloquent\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Repositories\Eloquent\Models\Campaign\Serial;
 
 class Campaign extends Model
 {
   protected $fillable = ['name', 'limited_days','project'];
+
+  public function serial(){
+      return $this->hasOne(Serial::class,"campaign_code","code");
+  }
 
   public function scopeProject($query, string $project){
       return $query->where("project",$project);
@@ -15,5 +20,11 @@ class Campaign extends Model
   public function scopeCode($query, string $code){
       return $query->where("code",$code);
   }
+
+  public function scopeHasNotSerial($query)
+  {
+      return $query->has("serial", "=", 0);
+  }
+
 
 }

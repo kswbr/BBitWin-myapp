@@ -25,6 +25,11 @@ class CampaignService
         return $this->repository->getFirstInProject($project);
     }
 
+    public function getListsHasNotSerialInProject($project)
+    {
+        return $this->repository->getListsHasNotSerialInProject($project);
+    }
+
     public function getByProjectAndCode($project,$code)
     {
         return $this->repository->getByProjectAndCode($project,$code);

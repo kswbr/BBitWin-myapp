@@ -16,7 +16,7 @@ class CampaignController extends Controller
         CampaignService $campaignService,
         ProjectService $projectService
     ) {
-        $this->middleware('checkIfCampaignBelongsToProject',["except" => ["index","store"]]);
+        $this->middleware('checkIfCampaignBelongsToProject',["except" => ["index","store","has_not_serial"]]);
         $this->projectService = $projectService;
         $this->campaignService = $campaignService;
 
@@ -33,6 +33,12 @@ class CampaignController extends Controller
         $project = $this->projectService->getCode();
 
         return response($this->campaignService->getPageInProject(config("contents.admin.show_page_count"),$project));
+    }
+
+    public function has_not_serial(Request $request)
+    {
+        $project = $this->projectService->getCode();
+        return response($this->campaignService->getListsHasNotSerialInProject($project));
     }
 
     /**

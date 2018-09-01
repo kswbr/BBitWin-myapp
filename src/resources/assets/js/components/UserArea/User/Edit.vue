@@ -46,6 +46,7 @@ export default {
         allow_vote: false,
         allow_user: false,
         allow_over_project: false,
+        allow_serial_campaign: false,
         role: 0
       }
     }

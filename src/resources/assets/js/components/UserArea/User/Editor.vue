@@ -18,6 +18,9 @@
     <el-form-item label="投票機能">
       <el-checkbox v-model="form.allow_vote">許可する</el-checkbox>
     </el-form-item>
+    <el-form-item label="シリアルナンバー抽選機能">
+      <el-checkbox v-model="form.allow_serial_campaign">許可する</el-checkbox>
+    </el-form-item>
     <el-form-item label="ユーザー管理">
       <el-checkbox v-model="form.allow_user">許可する</el-checkbox>
     </el-form-item>
@@ -70,6 +73,7 @@ export default {
         allow_campaign: false,
         allow_vote: false,
         allow_user: false,
+        allow_serial_campaign: false,
         allow_over_project: false,
         role: 0
       }
@@ -81,6 +85,7 @@ export default {
         allow_campaign: Boolean(this.input.allow_campaign),
         allow_vote: Boolean(this.input.allow_vote),
         allow_user: Boolean(this.input.allow_user),
+        allow_serial_campaign: Boolean(this.input.allow_serial_campaign),
         allow_over_project: Boolean(this.input.allow_over_project),
       })
     }
@@ -95,6 +100,7 @@ export default {
       if (!window.confirm('データを保存しますか？')) {
         return
       }
+      console.log(this.form)
       this.save(this.form)
     },
     removeItem () {

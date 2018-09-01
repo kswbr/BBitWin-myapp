@@ -142,13 +142,14 @@ return [
     */
 
     'attributes' => [
-      'name' => '名称',
+      'name' => '名前',
       'code' => 'コード',
       'limited_days' => '有効期限日数',
       'start_date' => '開始日時',
       'end_date' => '終了日時',
       'rate' => '当選確率',
-      'total' => '賞品総数',
+      'total' => '総数',
+      'campaign_code' => 'キャンペーン名',
       'daily_increment' => '一日ごとの制限緩和数',
       'order' => '優先度',
       'name_1' => '姓',
