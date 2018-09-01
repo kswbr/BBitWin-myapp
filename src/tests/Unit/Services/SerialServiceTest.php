@@ -50,7 +50,7 @@ class SerialServiceTest extends TestCase
             ])
             ->andReturn(true);
 
-        $data = $this->service->create("testserial", 1000, $campaign, "TESTPROJECT");
+        $data = $this->service->create("testserial", 1000, $campaign->code, "TESTPROJECT");
         $this->assertTrue($data);
 
         $this->mockRepository->shouldReceive('destroy')

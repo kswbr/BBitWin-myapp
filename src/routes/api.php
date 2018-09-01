@@ -45,6 +45,12 @@ Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
         Route::get('votes/{vote}/chart','Admin\VoteController@chart');
         Route::resource('votes', 'Admin\VoteController');
     });
+
+    Route::group(['middleware' => ['can:allow_serial_campaign']], function () {
+        Route::post('serials/{serial}/migrate','Admin\SerialController@migrate');
+        Route::resource('serials', 'Admin\SerialController');
+    });
+
 });
 
 Route::group(['middleware' => ['cors']], function () {

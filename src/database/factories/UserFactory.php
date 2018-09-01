@@ -22,6 +22,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'allow_campaign' => true,
         'allow_vote' => true,
         'allow_user' => true,
+        'allow_serial_campaign' => true,
         'allow_over_project' => true,
         'role' => 1,
         'remember_token' => str_random(10),

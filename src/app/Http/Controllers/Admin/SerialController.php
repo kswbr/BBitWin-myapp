@@ -29,7 +29,6 @@ class SerialController extends Controller
      */
     public function index(Request $request)
     {
-        $user = \Auth::user();
         $project = $this->projectService->getCode();
 
         return response($this->serialService->getPageInProject(config("contents.admin.show_page_count"),$project));
@@ -50,7 +49,7 @@ class SerialController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'campaign_code' => 'required|unique:serials|max:100',
+            'campaign_code' => 'required|unique:campaign_serials|max:100',
             'total' => 'required|numeric|min:'.$min.'|max:'.$max,
         ]);
 

@@ -46,12 +46,12 @@ class SerialService
     }
 
 
-    public function create($name, $total, $campaign, $project)
+    public function create($name, $total, $campaign_code, $project)
     {
         return $this->repository->store([
             "name" => $name,
             "total" => $total,
-            "campaign_code" => $campaign->code,
+            "campaign_code" => $campaign_code,
             "project" => $project,
         ]);
     }
