@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Repositories\Eloquent\Models\Campaign\Serial;
+namespace App\Repositories\Eloquent\Models\Serial;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Eloquent\Models\Player;
-use App\Repositories\Eloquent\Models\Campaign\Serial;
+use App\Repositories\Eloquent\Models\Serial;
 
 class Number extends Model
 {
-    protected $fillable = ['serial_id', 'number','player_id'];
+    protected $fillable = ['serial_code', 'number','is_winner','player_id'];
     protected $table = 'serial_numbers';
 
     public function player()
@@ -18,7 +18,7 @@ class Number extends Model
 
     public function serial()
     {
-       return $this->belongsTo(Serial::class);
+       return $this->belongsTo(Serial::class,"serial_code","code");
     }
 
     public function scopeNumber($query, int $number)

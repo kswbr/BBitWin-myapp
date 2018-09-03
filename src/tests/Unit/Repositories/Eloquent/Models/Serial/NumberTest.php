@@ -1,15 +1,14 @@
 <?php
 
-namespace Tests\Unit\Repositories\Eloquent\Campaign\Serial;
+namespace Tests\Unit\Repositories\Eloquent\Models\Serial;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use App\Repositories\Eloquent\Models\Campaign;
 use App\Repositories\Eloquent\Models\Player;
-use App\Repositories\Eloquent\Models\Campaign\Serial\Number;
-use App\Repositories\Eloquent\Models\Campaign\Serial;
+use App\Repositories\Eloquent\Models\Serial\Number;
+use App\Repositories\Eloquent\Models\Serial;
 
 class NumberRepositoryTest extends TestCase
 {
@@ -18,7 +17,7 @@ class NumberRepositoryTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->model = \App::make(Campaign::class);
+        $this->model = \App::make(Number::class);
     }
 
     /**

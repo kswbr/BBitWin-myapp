@@ -7,10 +7,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use App\Repositories\Eloquent\SerialRepository;
-use App\Repositories\Eloquent\Models\Campaign\Serial;
-use App\Repositories\Eloquent\Models\Campaign\Serial\Number;
+use App\Repositories\Eloquent\Models\Serial;
+use App\Repositories\Eloquent\Models\Serial\Number;
 use App\Repositories\Eloquent\Models\Player;
-use App\Repositories\Eloquent\Models\Campaign;
 use Carbon\Carbon;
 
 class SerialRepositoryTest extends TestCase
@@ -49,42 +48,49 @@ class SerialRepositoryTest extends TestCase
         $mock->shouldReceive('getById')->passthru();
     }
 
-    public function testHasNumberInCampaign()
+    public function testHasNumberByCode()
     {
-        $campaign = factory(Campaign::class)->create(["code" => "hoge"]);
         $serial = factory(Serial::class)->create([
-           'campaign_code' => $campaign->code
         ]);
-
         $number = factory(Number::class)->create([
-           'serial_id' => $serial->id
+           'serial_code' => $serial->code
         ]);
 
         $repository = new SerialRepository($this->model);
-        $data = $repository->hasNumberInCampaign($campaign->code,$number->number);
+        $data = $repository->hasNumberByCode($serial->code,$number->number);
         $this->assertTrue($data);
     }
 
-    public function testConnectNumbersToPlayerInCampaign()
+    public function testConnectNumbersToPlayerByCOde()
     {
-        $campaign = factory(Campaign::class)->create(["code" => "hoge"]);
-        $serial = factory(Serial::class)->create([
-           'campaign_code' => $campaign->code
-        ]);
-        $number = factory(Number::class)->create([
-           'serial_id' => $serial->id,
-           'number' => 9999,
-        ]);
+        $serial = factory(Serial::class)->create();
 
         $player = factory(Player::class)->create();
 
         $repository = new SerialRepository($this->model);
-        $repository->connectNumbersToPlayerInCampaign($campaign->code,$player->id,9999);
+        $repository->createNumberByCode($serial->code,9999);
+        $repository->connectNumbersToPlayerByCode($serial->code,$player->id,9999);
         $number = Number::first();
         $this->assertEquals($number->number,9999);
 
-        $count = $repository->getNumbersCountInCampaign($campaign->code);
-        $this->assertEquals($count,1);
+        $serial = $repository->getById($serial->id);
+        $this->assertEquals($serial->numbers_count,1);
+    }
+
+    public function testUpdateRandomWinnerNumbersByCode()
+    {
+        $serial = factory(Serial::class)->create();
+        $player = factory(Player::class)->create();
+
+        $repository = new SerialRepository($this->model);
+        $repository->createNumberByCode($serial->code,9999);
+        $repository->updateRandomWinnerNumbersByCode($serial->code,1);
+        $number = Number::first();
+        $this->assertEquals($number->number,9999);
+        $this->assertEquals($number->is_winner,true);
+
+        $serial = $repository->getById($serial->id);
+        $this->assertEquals($serial->winner_numbers_count,1);
     }
 
 }

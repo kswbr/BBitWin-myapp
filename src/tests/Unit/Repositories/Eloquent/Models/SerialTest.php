@@ -1,15 +1,14 @@
 <?php
 
-namespace Tests\Unit\Repositories\Eloquent\Campaign\Serial;
+namespace Tests\Unit\Repositories\Eloquent\Models;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use App\Repositories\Eloquent\Models\Campaign;
 use App\Repositories\Eloquent\Models\Player;
-use App\Repositories\Eloquent\Models\Campaign\Serial\Number;
-use App\Repositories\Eloquent\Models\Campaign\Serial;
+use App\Repositories\Eloquent\Models\Serial\Number;
+use App\Repositories\Eloquent\Models\Serial;
 
 class SerialRepositoryTest extends TestCase
 {
@@ -18,7 +17,7 @@ class SerialRepositoryTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->model = \App::make(Campaign::class);
+        $this->model = \App::make(Serial::class);
     }
 
     /**
@@ -43,22 +42,19 @@ class SerialRepositoryTest extends TestCase
         $this->assertEquals($serial->id,$data->id);
     }
 
-    public function testFindCampaign()
+    public function testFindCode()
     {
         $serial = factory(Serial::class)->create();
-        $campaign = Campaign::first();
-        $data = Serial::campaign($campaign->code)->first();
+        $data = Serial::code($serial->code)->first();
         $this->assertEquals($serial->id,$data->id);
     }
 
     public function testFindProject()
     {
-        $campaign = factory(Campaign::class)->create();
         $serial = factory(Serial::class)->create([
-            "campaign_code" => $campaign->code,
-            "project" => $campaign->project,
+            "project" => "TESTPROJECT",
         ]);
-        $data = Serial::project($campaign->project)->first();
+        $data = Serial::project("TESTPROJECT")->first();
         $this->assertEquals($serial->id,$data->id);
     }
 
@@ -67,7 +63,7 @@ class SerialRepositoryTest extends TestCase
     {
         $serial = factory(Serial::class)->create();
         $number = factory(Number::class)->create([
-          "serial_id" => $serial->id
+          "serial_code" => $serial->code
         ]);
         $data = Serial::first();
         $number = $data->numbers->first();

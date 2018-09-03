@@ -32,6 +32,12 @@ class SerialService
         return $serial;
     }
 
+    public function getByCode($serial_code)
+    {
+        $serial = $this->repository->getByCode($serial_code);
+        return $serial;
+    }
+
     public function getModelName()
     {
         return $this->repository->getModelName();
@@ -41,17 +47,19 @@ class SerialService
     {
         return $this->repository->update($id,[
             "name" => $inputs["name"],
-            "total" => $inputs["total"]
+            "total" => $inputs["total"],
+            "winner_total" => $inputs["winner_total"],
         ]);
     }
 
 
-    public function create($name, $total, $campaign_code, $project)
+    public function create($name, $total, $winner_total, $code, $project)
     {
         return $this->repository->store([
             "name" => $name,
             "total" => $total,
-            "campaign_code" => $campaign_code,
+            "winner_total" => $winner_total,
+            "code" => $code,
             "project" => $project,
         ]);
     }
@@ -68,26 +76,17 @@ class SerialService
         return $this->repository->destroy($id);
     }
 
-    public function getByCampaign($campaign)
+    public function hasNumber($serial, int $number)
     {
-        return $this->repository->getByCampaign($campaign->code);
-    }
-    public function getNumbersCountInCampaign($campaign)
-    {
-        return $this->repository->getNumbersCountInCampaign($campaign->code);
+        return $this->repository->hasNumber($serial->code,$number);
     }
 
-    public function hasNumberInCampaign($campaign, int $number)
+    public function connectNumbersToPlayer($serial, $player, int $number)
     {
-        return $this->repository->hasNumberInCampaign($campaign->code,$number);
+        return $this->repository->connectNumbersToPlayerByCode($serial->code, $player->id, $number);
     }
 
-    public function connectNumbersToPlayerInCampaign($campaign, $player, int $number)
-    {
-        return $this->repository->connectNumbersToPlayerInCampaign($campaign->code, $player->id, $number);
-    }
-
-    public function createUniqueNumberInCampaign($campaign)
+    public function createUniqueNumber($serial)
     {
         $min = config("contents.serial.number.min");
         $max = config("contents.serial.number.max");
@@ -95,13 +94,20 @@ class SerialService
         $ret = false;
         do {
             $number = rand($min,$max);
-            $ret = $this->repository->hasNumberInCampaign($campaign->code,$number);
+            $ret = $this->repository->hasNumberByCode($serial->code,$number);
         } while($ret);
 
-        $this->repository->createNumberInCampaign($campaign->code, $number);
+        $this->repository->createNumberByCode($serial->code, $number);
 
         return $number;
     }
+
+    public function createWinnerNumber($serial)
+    {
+        $take_count = $serial->winner_total - $serial->winner_numbers_count;
+        return $this->repository->updateRandomWinnerNumbersByCode($serial->code, $take_count);
+    }
+
 
 
 }

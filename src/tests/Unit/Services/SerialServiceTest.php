@@ -8,9 +8,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\SerialService;
 use App\Repositories\Eloquent\SerialRepository;
 use App\Repositories\Eloquent\Models\Player;
-use App\Repositories\Eloquent\Models\Campaign;
-use App\Repositories\Eloquent\Models\Campaign\Serial;
-use App\Repositories\Eloquent\Models\Campaign\Serial\Number;
+use App\Repositories\Eloquent\Models\Serial;
+use App\Repositories\Eloquent\Models\Serial\Number;
 use Carbon\Carbon;
 
 class SerialServiceTest extends TestCase
@@ -39,18 +38,17 @@ class SerialServiceTest extends TestCase
 
     public function testSaveAndDestroy()
     {
-        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
-
         $this->mockRepository->shouldReceive('store')
             ->with([
                 "name" => "testserial",
                 "total" => 1000,
-                "campaign_code" => $campaign->code,
+                "winner_total" => 100,
+                "code" => "TESTCODE",
                 "project" => "TESTPROJECT",
             ])
             ->andReturn(true);
 
-        $data = $this->service->create("testserial", 1000, $campaign->code, "TESTPROJECT");
+        $data = $this->service->create("testserial", 1000, 100, "TESTCODE", "TESTPROJECT");
         $this->assertTrue($data);
 
         $this->mockRepository->shouldReceive('destroy')
@@ -65,75 +63,59 @@ class SerialServiceTest extends TestCase
     public function testUpdate()
     {
         $this->mockRepository->shouldReceive('update')
-             ->with(999,[ "name" => "TESTNAME", "total" => 1000, ])
+             ->with(999,[ "name" => "TESTNAME", "total" => 1000, "winner_total" => 100])
              ->andReturn(true);
 
-        $ret = $this->service->update(999, ["name" => "TESTNAME","total" => 1000, "test" => 9999]);
+        $ret = $this->service->update(999, ["name" => "TESTNAME","total" => 1000,"winner_total" => 100, "test" => 9999]);
         $this->assertTrue($ret);
 
 
     }
 
-    public function testGetByCampaign()
+    public function testGetByCode()
     {
-        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
-
-        $this->mockRepository->shouldReceive('getByCampaign')
-             ->with($campaign->code)
+        $this->mockRepository->shouldReceive('getByCode')
+             ->with("TESTCODE")
              ->andReturn(true);
 
-        $ret = $this->service->getByCampaign($campaign);
+        $ret = $this->service->getByCode("TESTCODE");
         $this->assertTrue($ret);
 
     }
 
-    public function testGetNumbersCountInCampaign()
+    public function testHasNumber()
     {
-        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
-
-        $this->mockRepository->shouldReceive('getNumbersCountInCampaign')
-             ->with($campaign->code)
+        $serial = factory(Serial::class)->create(["code" => "TESTCODE"]);
+        $this->mockRepository->shouldReceive('hasNumber')
+             ->with("TESTCODE", 9999)
              ->andReturn(true);
 
-        $ret = $this->service->getNumbersCountInCampaign($campaign);
+        $ret = $this->service->hasNumber($serial,9999);
         $this->assertTrue($ret);
     }
 
-    public function testHasNumberInCampaign()
+    public function testConnectNumbersToPlayer()
     {
-        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
-
-        $this->mockRepository->shouldReceive('hasNumberInCampaign')
-             ->with($campaign->code, 9999)
-             ->andReturn(true);
-
-        $ret = $this->service->hasNumberInCampaign($campaign,9999);
-        $this->assertTrue($ret);
-    }
-
-    public function testConnectNumbersToPlayerInCampaign()
-    {
-        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
         $player = factory(Player::class)->create();
 
-        $this->mockRepository->shouldReceive('connectNumbersToPlayerInCampaign')
-             ->with($campaign->code,$player->id, 9999)
+        $serial = factory(Serial::class)->create(["code" => "TESTCODE"]);
+        $this->mockRepository->shouldReceive('connectNumbersToPlayerByCode')
+             ->with("TESTCODE",$player->id, 9999)
              ->andReturn(true);
 
-        $ret = $this->service->connectNumbersToPlayerInCampaign($campaign,$player,9999);
+        $ret = $this->service->connectNumbersToPlayer($serial,$player,9999);
         $this->assertTrue($ret);
     }
 
-    public function testCreateUniqueNumberInCampaign()
+    public function testCreateUniqueNumber()
     {
-        $campaign = factory(Campaign::class)->create(["name" => "test","code" => "TESTCODE", "project" => "TESTPROJECT"]);
-        $serial = factory(Serial::class)->create(["campaign_code" => $campaign->code, "project" => $campaign->project]);
+        $serial = factory(Serial::class)->create(["project" => "TESTPROJECT"]);
         $player = factory(Player::class)->create();
 
-        $this->mockRepository->shouldReceive('hasNumberInCampaign')->once()->andReturn(true);
-        $this->mockRepository->shouldReceive('hasNumberInCampaign')->once()->andReturn(false);
-        $this->mockRepository->shouldReceive('createNumberInCampaign')->passthru();
-        $ret = $this->service->createUniqueNumberInCampaign($campaign);
+        $this->mockRepository->shouldReceive('hasNumberByCode')->once()->andReturn(true);
+        $this->mockRepository->shouldReceive('hasNumberByCode')->once()->andReturn(false);
+        $this->mockRepository->shouldReceive('createNumberByCode')->passthru();
+        $ret = $this->service->createUniqueNumber($serial);
         $min = config("contents.serial.number.min");
         $max = config("contents.serial.number.max");
 

@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\SerialRepositoryInterface;
 use App\Repositories\BaseRepositoryInterface;
-use App\Repositories\Eloquent\Models\Campaign\Serial;
+use App\Repositories\Eloquent\Models\Serial;
 use Carbon\Carbon;
 
 class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInterface
@@ -40,9 +40,9 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {
-            return $search_query->with('parentCampaign')->withCount('numbers')->paginate($n);
+            return $search_query->numbersCount()->paginate($n);
         } else {
-            return $this->model->with('parentCampaign')->withCount('numbers')->paginate($n);
+            return $this->model->numbersCount()->paginate($n);
         }
     }
 
@@ -55,8 +55,13 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
 
     public function getById($id)
     {
-        return $this->model->with('parentCampaign')->withCount('numbers')->findOrFail($id);
+        return $this->model->numbersCount()->findOrFail($id);
     }
+    public function getByCode($code)
+    {
+        return $this->model->code($code)->numbersCount()->first();
+    }
+
 
     /**
      * Update the model in the database.
@@ -74,37 +79,37 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         $this->getById($id)->delete();
     }
 
-    public function getByCampaign($campaign_code)
+    public function hasNumberByCode($code,$number)
     {
-        return $this->model->campaign($campaign_code)->first();
-    }
-
-    public function getNumbersCountInCampaign($campaign_code)
-    {
-        $serial = $this->model->campaign($campaign_code)->first();
-        return $serial->numbers()->count();
-    }
-
-    public function hasNumberInCampaign($campaign_code,$number)
-    {
-        return $this->model->campaign($campaign_code)->whereHas('numbers', function($query) use ($number){
+        return $this->model->code($code)->whereHas('numbers', function($query) use ($number){
             $query->number($number);
         })->count() === 1;
     }
 
-    public function createNumberInCampaign($campaign_code,$number)
+    public function createNumberByCode($code,$number)
     {
-        return $this->model->campaign($campaign_code)->first()->numbers()->create(['number' => $number]);
+        return $this->model->code($code)->first()->numbers()->create(['number' => $number]);
     }
 
 
-    public function connectNumbersToPlayerInCampaign($campaign_code, $player_id, $number)
+    public function connectNumbersToPlayerByCode($code,$player_id, $number)
     {
-        $serial = $this->model->campaign($campaign_code)->first();
-        $number = $serial->numbers()->where("number", $number)->first();
+        $number = $this->model->code($code)->first()->numbers()->where("number", $number)->first();
         return $number->update(["player_id" => $player_id]);
     }
 
-
-
+    public function updateRandomWinnerNumbersByCode($code,$take_count)
+    {
+        $numbers = $this->model->code($code)->first()
+                      ->numbers()
+                      ->where("is_winner", false)
+                      ->whereNull("player_id")
+                      ->inRandomOrder()
+                      ->take($take_count)
+                      ->get();
+        foreach($numbers as $number) {
+            $number->is_winner = true;
+            $number->save();
+        }
+    }
 }

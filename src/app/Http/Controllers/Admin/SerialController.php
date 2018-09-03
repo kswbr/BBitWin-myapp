@@ -49,14 +49,16 @@ class SerialController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'campaign_code' => 'required|unique:campaign_serials|max:100',
+            'code' => 'required|unique:serials|max:100',
             'total' => 'required|numeric|min:'.$min.'|max:'.$max,
+            'winner_total' => 'required|numeric|min:'.$min.'|max:'.$max,
         ]);
 
         $serial = $this->serialService->create(
             $request->input("name"),
             $request->input("total"),
-            $request->input("campaign_code"),
+            $request->input("winner_total"),
+            $request->input("code"),
             $project
         );
         return response(['created_id' => $serial->id], 201);
@@ -79,17 +81,20 @@ class SerialController extends Controller
     {
         $serial = $this->serialService->getById($id);
 
-        if (!$serial->parentCampaign) {
-            abort(400, 'parent campaign not found');
-        }
-
-        if ($serial->numbers_count >= $serial->total) {
+        if ($serial->numbers_count > $serial->total) {
             abort(400, 'aleady exists numbers');
         }
 
-        for($i = 0; $i < ($serial->total - $serial->numbers_count); $i++) {
-            $this->serialService->createUniqueNumberInCampaign($serial->parentCampaign);
+        if ($serial->winner_numbers_count > $serial->winner_total) {
+            abort(400, 'aleady exists winner_numbers');
         }
+
+        for($i = 0; $i < ($serial->total - $serial->numbers_count); $i++) {
+            $this->serialService->createUniqueNumber($serial);
+        }
+
+        $this->serialService->createWinnerNumber($serial);
+
         return response(['migrate' => true], 201);
     }
 
@@ -109,6 +114,7 @@ class SerialController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'total' => 'required|numeric|min:'.$serial->total.'|max:'.$max,
+            'winner_total' => 'required|numeric|min:'.$serial->winner_total.'|max:'.$serial->total,
         ]);
 
         $this->serialService->update($id,$request->all());

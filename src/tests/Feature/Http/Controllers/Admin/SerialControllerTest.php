@@ -7,8 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\Passport;
 
-use App\Repositories\Eloquent\Models\Campaign;
-use App\Repositories\Eloquent\Models\Campaign\Serial;
+use App\Repositories\Eloquent\Models\Serial;
+use App\Repositories\Eloquent\Models\Serial\Number;
 use App\Services\SerialService;
 use App\User;
 
@@ -36,8 +36,7 @@ class SerialControllerTest extends TestCase
     public function testGetList()
     {
         $project = env("PROJECT_NAME", config('app.name'));
-        $campaign = factory(Campaign::class)->create(["project" => $project]);
-        factory(Serial::class)->create(["campaign_code" => $campaign->code]);
+        factory(Serial::class)->create();
 
         $serials = $this->service->getPageInProject(0,$project);
 
@@ -56,7 +55,6 @@ class SerialControllerTest extends TestCase
     {
         $project = env("PROJECT_NAME", config('app.name'));
 
-        $campaign = factory(Campaign::class)->create(["project" => $project]);
         $user = factory(User::class)->create([
           "allow_serial_campaign" => false
         ]);
@@ -71,23 +69,22 @@ class SerialControllerTest extends TestCase
           "role" => 0
         ]);
 
-        // Passport::actingAs( $user, ['check-admin']);
-        // $response = $this->actingAs($user,"api")
-        //                  ->json("POST",'/api/serials',[])
-        //                  ->assertStatus(403);
-        //
-        // $serial = factory(Serial::class)->create();
-        // $response = $this->actingAs($user,"api")
-        //                  ->json("DELETE",'/api/serials/' . $serial->id)
-        //                  ->assertStatus(403);
+        Passport::actingAs( $user, ['check-admin']);
+        $response = $this->actingAs($user,"api")
+                         ->json("POST",'/api/serials',[])
+                         ->assertStatus(403);
+
+        $serial = factory(Serial::class)->create();
+        $response = $this->actingAs($user,"api")
+                         ->json("DELETE",'/api/serials/' . $serial->id)
+                         ->assertStatus(403);
     }
 
 
     public function testShow()
     {
         $project = env("PROJECT_NAME", config('app.name'));
-        $campaign = factory(Campaign::class)->create(["project" => $project]);
-        $serial = factory(Serial::class)->create(["campaign_code" => $campaign->code, "project" => $campaign->project]);
+        $serial = factory(Serial::class)->create(["project" => $project]);
 
         $user = factory(User::class)->create();
         Passport::actingAs( $user, ['check-admin']);
@@ -100,16 +97,13 @@ class SerialControllerTest extends TestCase
 
     public function testCreate()
     {
-        $project = env("PROJECT_NAME", config('app.name'));
-        $campaign = factory(Campaign::class)->create(["project" => $project]);
-        $serial = factory(Serial::class)->make(["campaign_code" => $campaign->code]);
-
         $user = factory(User::class)->create();
 
-        $input = $serial->toArray();
+        $input = [];
         $input["name"] =  "CREATED_NAME" ;
-        $input["campaign_code"] =  $campaign->code;
+        $input["code"] =  "TEST_CODE";
         $input["total"] =  100;
+        $input["winner_total"] =  10;
 
         Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api");
@@ -117,13 +111,13 @@ class SerialControllerTest extends TestCase
         $response->assertStatus(201);
 
         $find = $this->service->getById($response->getOriginalContent()["created_id"]);
-        $this->assertEquals($find->campaign_code,$input["campaign_code"]);
+        $this->assertEquals($find->code,$input["code"]);
 
         //重複チェック
-        $serial = factory(Serial::class)->make(["campaign_code" => $campaign->code]);
+        $serial = factory(Serial::class)->make(["code" => "TEST_CODE"]);
         $input = $serial->toArray();
         $input["name"] =  "CREATED_NAME" ;
-        $input["campaign_code"] =  $campaign->code ;
+        $input["code"] =  "TEST_CODE" ;
 
         Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api");
@@ -140,8 +134,7 @@ class SerialControllerTest extends TestCase
     public function testDestroy()
     {
         $project = env("PROJECT_NAME", config('app.name'));
-        $campaign = factory(Campaign::class)->create(["project" => $project]);
-        $serial = factory(Serial::class)->create(["project" => $project,"campaign_code" => $campaign->code]);
+        $serial = factory(Serial::class)->create(["project" => $project]);
 
         $user = factory(User::class)->create();
 
@@ -158,14 +151,13 @@ class SerialControllerTest extends TestCase
     public function testUpdate()
     {
         $project = env("PROJECT_NAME", config('app.name'));
-        $campaign = factory(Campaign::class)->create(["project" => $project]);
-        $serial = factory(Serial::class)->create(["project" => $project,"campaign_code" => $campaign->code]);
+        $serial = factory(Serial::class)->create(["project" => $project]);
 
         $user = factory(User::class)->create();
 
         $input = $serial->toArray();
         $input["name"] =  "UPDATED_NAME" ;
-        $input["campaign_code"] =  "UPDATED_CODE" ;
+        $input["code"] =  "UPDATED_CODE" ;
 
         Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api")
@@ -173,8 +165,8 @@ class SerialControllerTest extends TestCase
                          ->assertStatus(201);
 
         $find = $this->service->getById($serial->id);
-        $this->assertEquals($find->campaign_code,$serial->campaign_code);
-        $this->assertNotEquals($find->campaign_code,$input["campaign_code"]);
+        $this->assertEquals($find->code,$serial->code);
+        $this->assertNotEquals($find->code,$input["code"]);
         $this->assertEquals($find->name,$input["name"]);
 
     }
@@ -182,23 +174,30 @@ class SerialControllerTest extends TestCase
     public function testMigrate()
     {
         $project = env("PROJECT_NAME", config('app.name'));
-        $campaign = factory(Campaign::class)->create(["project" => $project]);
-        $serial = factory(Serial::class)->create(["project" => $project,"campaign_code" => $campaign->code, "total" => 10]);
+        $serial = factory(Serial::class)->create(["project" => $project, "total" => 10, "winner_total" => 5]);
 
         $user = factory(User::class)->create();
 
         Passport::actingAs( $user, ['check-admin']);
-        $response = $this->actingAs($user,"api")
-                         ->json("POST",'/api/serials/' . $serial->id . '/migrate')
-                         ->assertStatus(201);
+        $response = $this->actingAs($user,"api");
+        $response = $response->json("POST",'/api/serials/' . $serial->id . '/migrate');
+        $response->assertStatus(201);
 
         $find = $this->service->getById($serial->id);
         $this->assertEquals($find->numbers_count,10);
 
         $response = $this->actingAs($user,"api")
                          ->json("POST",'/api/serials/' . $serial->id . '/migrate')
-                         ->assertStatus(400);
+                         ->assertStatus(201);
 
+        $find = $this->service->getById($serial->id);
+        $this->assertEquals($find->numbers_count,10);
+        $this->assertEquals($find->winner_numbers_count,5);
+
+        $numbers = Number::where("is_winner",true)->get();
+        // foreach($numbers as $number) {
+        //   var_dump($number->id);
+        // }
 
     }
 

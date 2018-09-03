@@ -36,26 +36,26 @@ $factory->define(App\Repositories\Eloquent\Models\Campaign::class, function (Fak
     ];
 });
 
-$factory->define(App\Repositories\Eloquent\Models\Campaign\Serial::class, function (Faker\Generator $faker) {
+$factory->define(App\Repositories\Eloquent\Models\Serial::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'project' => $faker->word,
-        'campaign_code' => function () {
-            return factory(App\Repositories\Eloquent\Models\Campaign::class)->create()->code;
-        },
-        'total' => 100
+        'code' => uniqid(rand()),
+        'total' => 100,
+        'winner_total' => 10
     ];
 });
 
-$factory->define(App\Repositories\Eloquent\Models\Campaign\Serial\Number::class, function (Faker\Generator $faker) {
+$factory->define(App\Repositories\Eloquent\Models\Serial\Number::class, function (Faker\Generator $faker) {
     return [
-        'serial_id' => function () {
-            return factory(App\Repositories\Eloquent\Models\Campaign\Serial::class)->create()->id;
+        'serial_code' => function () {
+            return factory(App\Repositories\Eloquent\Models\Serial::class)->create()->code;
         },
         'player_id' => function () {
             return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
         },
-        'number' => rand ( 1 , 99999999)
+        'number' => rand ( 1 , 99999999),
+        'is_winner' => false
     ];
 });
 

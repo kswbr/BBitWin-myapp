@@ -105,6 +105,7 @@ class UserControllerTest extends TestCase
                             'allow_campaign' => true,
                             'allow_vote' => true,
                             'allow_user' => true,
+                            'allow_serial_campaign' => true,
                             'allow_over_project' => true,
                             'role' => 2,
                          ]);
