@@ -82,7 +82,7 @@ class SerialController extends Controller
         $stmt = $this->serialService->getByIdWithNumbersPDO($id);
         $response = new \Symfony\Component\HttpFoundation\StreamedResponse();
 
-        $header = ['シリアルナンバー','当選','ユーザーID'];
+        $header = ['シリアルナンバー','当選','応募完了','ユーザーID'];
         $response->setCallback(function () use ($header,$stmt) {
             $file = new \SplFileObject('php://output', 'w');
 

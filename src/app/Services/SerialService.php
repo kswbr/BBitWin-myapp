@@ -99,6 +99,12 @@ class SerialService
         return $this->repository->connectNumbersToPlayerByCode($serial->code, $player->id, $number);
     }
 
+    public function postCompleteInNumbers($serial, int $number)
+    {
+        return $this->repository->postCompleteInNumbers($serial->code, $number);
+    }
+
+
     public function createUniqueNumber($serial)
     {
         $min = config("contents.serial.number.min");

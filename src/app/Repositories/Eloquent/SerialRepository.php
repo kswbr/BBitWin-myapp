@@ -85,7 +85,7 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         $data = $this->model->numbersCount()->findOrFail($id);
         $numbers = [];
         $dbh = \DB::connection()->getPdo();
-        $stmt = $dbh->prepare("select number,is_winner,player_id from serial_numbers where serial_code = :serial_code");
+        $stmt = $dbh->prepare("select number,is_winner,post_complete ,player_id from serial_numbers where serial_code = :serial_code");
         $code = (string)$data->code ;
         $stmt->bindParam(':serial_code', $code);
         $stmt->execute();
@@ -133,6 +133,13 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         $number = $this->model->code($code)->first()->numbers()->where("number", $number)->first();
         return $number->update(["player_id" => $player_id]);
     }
+
+    public function postCompleteInNumbers($code,$number)
+    {
+        $number = $this->model->code($code)->first()->numbers()->where("number", $number)->first();
+        return $number->update(["post_complete" => true]);
+    }
+
 
     public function updateRandomWinnerNumbersByCode($code,$take_count)
     {

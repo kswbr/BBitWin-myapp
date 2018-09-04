@@ -8,7 +8,7 @@ use App\Repositories\Eloquent\Models\Serial;
 
 class Number extends Model
 {
-    protected $fillable = ['serial_code', 'number','is_winner','player_id'];
+    protected $fillable = ['serial_code', 'number','is_winner','player_id','post_complete'];
     protected $table = 'serial_numbers';
 
     public function player()
