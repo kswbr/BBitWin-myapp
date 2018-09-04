@@ -8,7 +8,10 @@ use App\Repositories\Eloquent\Models\Campaign;
 use App\Repositories\Eloquent\Models\Entry;
 use App\Repositories\Eloquent\Models\Vote;
 use App\Repositories\Eloquent\Models\Vote\Count;
+use App\Repositories\Eloquent\Models\Serial;
+use App\Repositories\Eloquent\Models\Serial\Number;
 
+use App\Services\SerialService;
 use Carbon\Carbon;
 
 
@@ -21,6 +24,11 @@ class FirstSiteSeeder extends Seeder
      */
     public function run()
     {
+
+        $players = Player::all();
+        foreach($players as $player) {
+            $player->delete();
+        }
 
         $campaigns = Campaign::all();
         foreach($campaigns as $campaign) {
@@ -45,6 +53,16 @@ class FirstSiteSeeder extends Seeder
         $vote_counts = Count::all();
         foreach($vote_counts as $count) {
             $count->delete();
+        }
+
+        $serials = Serial::all();
+        foreach($serials as $serial) {
+            $serial->delete();
+        }
+
+        $numbers = Number::all();
+        foreach($numbers as $number) {
+            $number->delete();
         }
 
 
@@ -147,6 +165,19 @@ class FirstSiteSeeder extends Seeder
         factory(Count::class,100)->create(["choice" => "sample_a", "vote_code" => $vote->code]);
         factory(Count::class,90)->create(["choice" => "sample_b", "vote_code" => $vote->code]);
         factory(Count::class,80)->create(["choice" => "sample_c", "vote_code" => $vote->code]);
+
+        $serial = factory(Serial::class)->create([
+          "code" => "samples",
+          "name" => "サンプルシリアルナンバー抽選",
+          "project" => env("PROJECT_NAME", config('app.name')),
+          "total" => 1000,
+          "winner_total" => 500,
+        ]);
+
+        $service = \App::make(SerialService::class);
+        for($i = 0; $i < $serial->total; $i++) {
+            $service->createUniqueNumber($serial);
+        }
 
     }
 }
