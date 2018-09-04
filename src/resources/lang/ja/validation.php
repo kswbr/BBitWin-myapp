@@ -162,6 +162,7 @@ return [
       'prefecture' => '都道府県',
       'address_1' => '住所1',
       'address_2' => '住所2',
+      'winner_total' => '当選数',
     ],
 
 ];

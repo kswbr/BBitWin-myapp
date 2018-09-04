@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Repositories\SerialRepositoryInterface;
 use App\Repositories\BaseRepositoryInterface;
 use App\Repositories\Eloquent\Models\Serial;
+use App\Repositories\Eloquent\Models\Serial\Number;
 use Carbon\Carbon;
 
 class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInterface
@@ -16,15 +17,17 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
      * @var \Illuminate\Database\Eloquent\Model;
      */
     protected $model;
+    protected $numbers_model;
 
     /**
      * Injection Model
      *
      * @return void;
      */
-    public function __construct(Serial $model)
+    public function __construct(Serial $model, Number $numbers_model)
     {
         $this->model = $model;
+        $this->numbers_model = $numbers_model;
     }
 
     public function getModelName()
@@ -57,6 +60,42 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
     {
         return $this->model->numbersCount()->findOrFail($id);
     }
+
+    public function getByIdWithNumbers($id)
+    {
+        $data = $this->model->numbersCount()->findOrFail($id);
+        // $data->numbers = \DB::table('serial_numbers')->select(["is_winner","player_id","number"])->where('serial_code',$data->code)->get();
+
+        $numbers = [];
+        $dbh = \DB::connection()->getPdo();
+
+        $stmt = $dbh->prepare("select id,is_winner,player_id,number from serial_numbers where serial_code = :serial_code");
+        $code = (string)$data->code ;
+        $stmt->bindParam(':serial_code', $code);
+        $stmt->execute();
+
+        foreach($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row)
+        {
+            $numbers[] = $row;
+        }
+        $data->numbers = $numbers;
+
+        return $data;
+    }
+
+    public function getByIdWithNumbersPDO($id)
+    {
+        $data = $this->model->numbersCount()->findOrFail($id);
+        $numbers = [];
+        $dbh = \DB::connection()->getPdo();
+        $stmt = $dbh->prepare("select number,is_winner,player_id from serial_numbers where serial_code = :serial_code");
+        $code = (string)$data->code ;
+        $stmt->bindParam(':serial_code', $code);
+        $stmt->execute();
+        return $stmt;
+    }
+
+
     public function getByCode($code)
     {
         return $this->model->code($code)->numbersCount()->first();

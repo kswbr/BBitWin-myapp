@@ -33,7 +33,6 @@ Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
         Route::resource('users', 'Admin\UserController');
     });
 
-    Route::get('campaigns/has_not_serial','Admin\CampaignController@has_not_serial');
     Route::group(['middleware' => ['can:allow_campaign']], function () {
         Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/chart','Admin\EntryController@chart');
         Route::get('campaigns/{campaign}/lotteries/{lottery}/entries/state_list','Admin\EntryController@state_list');
@@ -48,6 +47,7 @@ Route::group(['middleware' => ['auth:api','scopes:check-admin']], function () {
     });
 
     Route::group(['middleware' => ['can:allow_serial_campaign']], function () {
+        Route::get('serials/{serial}/csv','Admin\SerialController@getNumbersCsv');
         Route::post('serials/{serial}/migrate','Admin\SerialController@migrate');
         Route::resource('serials', 'Admin\SerialController');
     });

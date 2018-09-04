@@ -16,8 +16,8 @@
         </el-header >
       </el-row>
       <el-row>
-        <el-col :offset="1" :span="21">
-          <Editor :input="form" :save="save" :remove="remove" />
+        <el-col :offset="1" :span="21" v-loading="loading">
+          <Editor :input="form" :csv="getCSV" :save="save" :remove="remove" />
         </el-col>
       </el-row>
     </el-main>
@@ -29,6 +29,7 @@
 import Axios from 'axios'
 import Editor from './Editor.vue'
 import * as types from '../../../store/mutation-types.js'
+import FileDownload from 'js-file-download'
 
 export default {
   name: 'SerialEdit',
@@ -38,7 +39,12 @@ export default {
   data () {
     return {
       form: {
-      }
+        code: '',
+        name: '',
+        total: '',
+        winner_total: ''
+      },
+      loading: true
     }
   },
   mounted () {
@@ -46,18 +52,35 @@ export default {
   },
   methods: {
     fetch () {
-      Axios.get('/api/serials/' + this.$route.params.id).then((res) => {
+      this.loading = true
+      return Axios.get('/api/serials/' + this.$route.params.id).then((res) => {
+        console.log(res)
         this.form = Object.assign({}, res.data)
+        this.loading = false
+        return res
       }).catch((e) => (console.error(e)))
     },
     save (form) {
+      this.loading = true
       Axios.patch('/api/serials/' + this.$route.params.id, form).then((res) => {
-        this.$router.push('.')
+        return Axios.post('/api/serials/' + this.$route.params.id + '/migrate')
+      }).then((res) => {
+        return this.fetch()
+      }).then((res) => {
         console.log(res)
         this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
           message: 'シリアルナンバー抽選が更新されました'
         })
-      }).catch((e) => (console.error(e)))
+        this.loading = false
+      }).catch((e) => {
+        this.loading = false
+        console.error(e)
+      })
+    },
+    getCSV (form) {
+      Axios.get('/api/serials/' + this.$route.params.id + '/csv').then((res) => {
+        FileDownload(res.data, 'serial_numver_' + this.$route.params.id + '.csv');
+      });
     },
     remove () {
       Axios.delete('/api/serials/' + this.$route.params.id).then((res) => {

@@ -3,23 +3,20 @@
     <el-form-item label="抽選名">
       <el-input placeholder="シリアルナンバーキャンペーン" v-model="form.name"/>
     </el-form-item>
-    <el-form-item label="親キャンペーン名">
-      <el-select v-model="form.campaign_code" >
-        <el-option
-          v-for="item in campaigns"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
+    <el-form-item label="コード">
+      <el-input :disabled="input.code !== ''" placeholder="example_campaign_code" v-model="form.code"/>
     </el-form-item>
-    <el-form-item label="シリアルナンバー総数">
-      <el-input v-model="form.total">
+    <el-form-item label="発行ナンバー総数">
+      <el-input placeholder="0" v-model="form.total"/>
+    </el-form-item>
+    <el-form-item label="当選数">
+      <el-input :disabled="input.code === ''" placeholder="0" v-model="form.winner_total">
       </el-input>
     </el-form-item>
     <el-form-item >
       <el-button type="default" plain @click="() => (this.$router.push('.'))">戻る</el-button>
       <el-button type="primary" @click="submitForm()">保存</el-button>
+      <el-button type="success" v-if="csv" @click="getCSV()">CSVダウンロード</el-button>
       <el-button :disabled="!allowDelete" v-if="remove" type="text" @click="removeItem()">削除</el-button>
     </el-form-item>
   </el-form>
@@ -39,15 +36,17 @@ export default {
   props: {
     input: Object,
     save: Function,
+    csv: Function,
     remove: Function
   },
   data () {
     return {
       campaigns: [],
       form: {
-        campaign_code: '',
+        code: '',
         name: '',
-        total: ''
+        total: '',
+        winner_total: ''
       }
     }
   },
@@ -57,9 +56,6 @@ export default {
     }
   },
   mounted () {
-    Axios.get('/api/campaigns/has_not_serial').then((res) => {
-      this.campaigns = _.map(res.data, (data,i) => { return {label: data.name, value: data.code} })
-    })
   },
   methods: {
     submitForm () {
@@ -67,6 +63,12 @@ export default {
         return
       }
       this.save(this.form)
+    },
+    getCSV () {
+      if (!window.confirm('データをダウンロードしますか？')) {
+        return
+      }
+      this.csv()
     },
     removeItem () {
       if (!window.confirm('データを削除しますか？')) {

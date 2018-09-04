@@ -31,6 +31,19 @@ class SerialService
         $serial = $this->repository->getById($id);
         return $serial;
     }
+    public function getByIdWithNumbers($id)
+    {
+        $serial = $this->repository->getByIdWithNumbers($id);
+        return $serial;
+    }
+
+    public function getByIdWithNumbersPDO($id)
+    {
+        $pdo = $this->repository->getByIdWithNumbersPDO($id);
+        return $pdo;
+    }
+
+
 
     public function getByCode($serial_code)
     {

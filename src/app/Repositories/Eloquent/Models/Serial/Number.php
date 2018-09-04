@@ -26,4 +26,10 @@ class Number extends Model
         return $query->where("number",$number);
     }
 
+    public function scopeCode($query, string $code)
+    {
+        return $query->where("serial_code",$code);
+    }
+
+
 }

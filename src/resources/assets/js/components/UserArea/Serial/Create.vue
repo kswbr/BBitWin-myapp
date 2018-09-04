@@ -10,13 +10,13 @@
       </el-row>
       <el-row>
         <el-header >
-         <el-col :offset="1" :span="21">
+          <el-col :offset="1" :span="21">
             <h2 class="h2">Create Serial Number Campaign <small >シリアルナンバー抽選 新規作成 </small></h2>
           </el-col>
         </el-header >
       </el-row>
       <el-row>
-        <el-col :offset="1" :span="21">
+        <el-col :offset="1" :span="21"  v-loading="loading">
           <Editor :input="form" :save="save" />
         </el-col>
       </el-row>
@@ -40,8 +40,10 @@ export default {
       form: {
         code: '',
         name: '',
-        limited_days: 1
-      }
+        total: '',
+        winner_total: ''
+      },
+      loading: false
     }
   },
   mouted () {
@@ -49,12 +51,18 @@ export default {
   },
   methods: {
     save (form) {
+      let createdId = null
+      this.loading = true
       Axios.post('/api/serials', form).then((res) => {
-        this.$router.push('.')
+        createdId = res.data.created_id
+        return Axios.post('/api/serials/' + res.data.created_id + '/migrate')
+      }).then((res) => {
+        this.$router.push('./' + createdId)
         console.log(res)
         this.$store.commit(types.FORM_VALIDATION_SUCCESS, {
-          message: 'キャンペーンが作成されました'
+          message: '抽選が作成されました、次に当選ナンバー数を設定してください'
         })
+        this.loading = false
       }).catch((e) => (console.error(e)))
     }
   }

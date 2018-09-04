@@ -51,13 +51,12 @@ class SerialController extends Controller
             'name' => 'required|max:255',
             'code' => 'required|unique:serials|max:100',
             'total' => 'required|numeric|min:'.$min.'|max:'.$max,
-            'winner_total' => 'required|numeric|min:'.$min.'|max:'.$max,
         ]);
 
         $serial = $this->serialService->create(
             $request->input("name"),
             $request->input("total"),
-            $request->input("winner_total"),
+            0,
             $request->input("code"),
             $project
         );
@@ -73,9 +72,39 @@ class SerialController extends Controller
      */
     public function show(Request $request, $id)
     {
+        // $data = $this->serialService->getByIdWithNumbers($id);
         $data = $this->serialService->getById($id);
         return response($data->toArray(), 200);
     }
+
+    public function getNumbersCsv(Request $request, $id)
+    {
+        $stmt = $this->serialService->getByIdWithNumbersPDO($id);
+        $response = new \Symfony\Component\HttpFoundation\StreamedResponse();
+
+        $header = ['シリアルナンバー','当選','ユーザーID'];
+        $response->setCallback(function () use ($header,$stmt) {
+            $file = new \SplFileObject('php://output', 'w');
+
+            // BOMを書き込み
+            $file->fwrite(pack('C*',0xEF,0xBB,0xBF));
+
+            $file->fputcsv(array_values($header));
+            flush();
+
+            // カーソルをOpenにして1行読み込んでCSV書き込み
+            foreach($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+                $file->fputcsv($row);
+                flush();
+            }
+        });
+
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename=serial_numbers_'. $id . '.csv');
+
+        return $response;
+    }
+
 
     public function migrate(Request $request, $id)
     {

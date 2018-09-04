@@ -23,9 +23,9 @@
       <el-row>
         <el-col :offset="2" :span="20">
           <el-table v-loading="loading" :data="tableData" >
-            <el-table-column prop="name" label="抽選名称" width="300"/>
-            <el-table-column prop="parent_campaign.name" label="親キャンペーン名" width="450"/>
-            <el-table-column prop="total" label="ナンバー数" width="140"/>
+            <el-table-column prop="name" label="抽選名称" width="500"/>
+            <el-table-column prop="total" label="総数" width="100"/>
+            <el-table-column prop="winner_total" label="当選数" width="100"/>
             <el-table-column
               fixed="right"
               label="操作"
