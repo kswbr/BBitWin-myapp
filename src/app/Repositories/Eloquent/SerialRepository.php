@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Repositories\SerialRepositoryInterface;
 use App\Repositories\BaseRepositoryInterface;
 use App\Repositories\Eloquent\Models\Serial;
-use App\Repositories\Eloquent\Models\Serial\Number;
 use Carbon\Carbon;
 
 class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInterface
@@ -17,17 +16,15 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
      * @var \Illuminate\Database\Eloquent\Model;
      */
     protected $model;
-    protected $numbers_model;
 
     /**
      * Injection Model
      *
      * @return void;
      */
-    public function __construct(Serial $model, Number $numbers_model)
+    public function __construct(Serial $model)
     {
         $this->model = $model;
-        $this->numbers_model = $numbers_model;
     }
 
     public function getModelName()
