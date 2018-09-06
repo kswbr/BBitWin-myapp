@@ -21,7 +21,17 @@ class SerialService
         return $this->repository->getPaginate($page,$query);
     }
 
-     /**
+    public function getFirstInProject($project)
+    {
+        return $this->repository->getFirstInProject($project);
+    }
+
+    public function getByProjectAndCode($project,$code)
+    {
+        return $this->repository->getByProjectAndCode($project,$code);
+    }
+
+    /**
      * FindOrFail Model and return the instance.
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
@@ -89,9 +99,9 @@ class SerialService
         return $this->repository->destroy($id);
     }
 
-    public function hasNumber($serial, int $number)
+    public function getNumber($serial, int $number)
     {
-        return $this->repository->hasNumber($serial->code,$number);
+        return $this->repository->getNumber($serial->code,$number);
     }
 
     public function connectNumbersToPlayer($serial, $player, int $number)

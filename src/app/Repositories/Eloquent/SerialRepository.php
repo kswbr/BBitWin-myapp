@@ -46,6 +46,16 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         }
     }
 
+    public function getFirstInProject($project)
+    {
+        $query = $this->getProjectQuery($project);
+        return $query->first();
+    }
+
+    public function getByProjectAndCode($project,$code)
+    {
+        return $this->model->project($project)->code($code)->firstOrFail();
+    }
 
     public function store(array $inputs)
     {
@@ -122,6 +132,12 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         })->count() === 1;
     }
 
+    public function getNumber($code,$number)
+    {
+        return $this->model->code($code)->first()->numbers()->where(['number' => $number])->first();
+    }
+
+
     public function createNumberByCode($code,$number)
     {
         return $this->model->code($code)->first()->numbers()->create(['number' => $number]);
@@ -131,15 +147,16 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
     public function connectNumbersToPlayerByCode($code,$player_id, $number)
     {
         $number = $this->model->code($code)->first()->numbers()->where("number", $number)->first();
-        return $number->update(["player_id" => $player_id]);
+        $number->update(["player_id" => $player_id]);
+        return $number;
     }
 
     public function postCompleteInNumbers($code,$number)
     {
         $number = $this->model->code($code)->first()->numbers()->where("number", $number)->first();
-        return $number->update(["post_complete" => true]);
+        $number->update(["post_complete" => true]);
+        return $number;
     }
-
 
     public function updateRandomWinnerNumbersByCode($code,$take_count)
     {

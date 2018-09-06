@@ -83,14 +83,14 @@ class SerialServiceTest extends TestCase
 
     }
 
-    public function testHasNumber()
+    public function testGetNumber()
     {
         $serial = factory(Serial::class)->create(["code" => "TESTCODE"]);
-        $this->mockRepository->shouldReceive('hasNumber')
+        $this->mockRepository->shouldReceive('getNumber')
              ->with("TESTCODE", 9999)
              ->andReturn(true);
 
-        $ret = $this->service->hasNumber($serial,9999);
+        $ret = $this->service->getNumber($serial,9999);
         $this->assertTrue($ret);
     }
 
