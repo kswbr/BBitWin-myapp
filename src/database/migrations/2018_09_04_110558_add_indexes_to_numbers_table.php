@@ -29,7 +29,7 @@ class AddIndexesToNumbersTable extends Migration
     {
         //
         Schema::table('serial_numbers', function (Blueprint $table) {
-            $table->dropIndex('serial_code');
+            //$table->dropIndex('serial_code');
         });
     }
 }
