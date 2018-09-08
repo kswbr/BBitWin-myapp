@@ -96,7 +96,8 @@ class SerialService
      */
     public function destroy($id)
     {
-        return $this->repository->destroy($id);
+        $ret = $this->repository->destroy($id);
+        return $ret;
     }
 
     public function getNumber($serial, int $number)

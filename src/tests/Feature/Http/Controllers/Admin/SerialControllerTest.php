@@ -135,6 +135,7 @@ class SerialControllerTest extends TestCase
     {
         $project = env("PROJECT_NAME", config('app.name'));
         $serial = factory(Serial::class)->create(["project" => $project]);
+        factory(Number::class,10)->create(["serial_code" => $serial->code]);
 
         $user = factory(User::class)->create();
 
@@ -145,6 +146,7 @@ class SerialControllerTest extends TestCase
 
         $ret = $this->service->getById($serial->id);
 
+        $this->assertEquals(Number::count(),0);
     }
 
 

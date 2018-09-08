@@ -68,6 +68,7 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
         return $this->model->numbersCount()->findOrFail($id);
     }
 
+
     public function getByIdWithNumbers($id)
     {
         $data = $this->model->numbersCount()->findOrFail($id);
@@ -122,7 +123,12 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
 
     public function destroy($id)
     {
-        $this->getById($id)->delete();
+        $data = $this->getById($id);
+        foreach($data->numbers() as $number) {
+            $number->delete();
+        }
+        $data->delete();
+
     }
 
     public function hasNumberByCode($code,$number)
@@ -142,7 +148,6 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
     {
         return $this->model->code($code)->first()->numbers()->create(['number' => $number]);
     }
-
 
     public function connectNumbersToPlayerByCode($code,$player_id, $number)
     {
