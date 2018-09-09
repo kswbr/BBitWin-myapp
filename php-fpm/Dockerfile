@@ -122,8 +122,11 @@ COPY dist/src /var/www
 
 RUN rm -rf /var/www/bootstrap/cache/*
 RUN rm -rf /var/www/storage
+RUN rm -rf /var/www/public
 RUN rm -f /var/www/config/passport.php
 COPY storage /var/www/storage
+COPY dist/src/public/index.php /var/www/public/index.php
+COPY dist/src/public/mix-manifest.json /var/www/public/mix-manifest.json
 
 RUN chmod -R 777 /var/www/storage
 RUN chmod -R 777 /var/www/bootstrap/cache
