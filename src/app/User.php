@@ -86,6 +86,11 @@ class User extends Authenticatable
     {
         return $this->createToken('WinnerToken', ['instant-win','vote-event','winner'])->accessToken;
     }
+    public function getSerialNumberWinnerTokenAttribute()
+    {
+        return $this->createToken('SerialNumberWinnerToken', ['serial-number','winner'])->accessToken;
+    }
+
 
     public function getFormTokenAttribute()
     {

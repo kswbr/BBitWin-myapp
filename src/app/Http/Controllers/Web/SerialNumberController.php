@@ -62,9 +62,9 @@ class SerialNumberController extends Controller
           ]);
         }
 
-        $user = $this->userService->createPlayer($project, $serial->code . "_" . $number);
-        $player = $this->playerService->create($project, "serialnumber", $serial->code . "_" . $number, [], $user);
-        $this->serialService->connectNumbersToPlayerByCode($serial, $player, $number);
+        $user = $this->userService->createPlayer($project, $serial->code . "_" . $number->number);
+        $player = $this->playerService->create($project, "serialnumber", $serial->code . "_" . $number->number, [], $user);
+        $this->serialService->connectNumbersToPlayer($serial, $player, $number->number);
 
         if ($number->is_winner) {
             $user->append('serial_number_winner_token');

@@ -60,6 +60,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('oauth/{provider}/register/{service}','Web\SnsController@register')->middleware(['checkIfPlayableService','checkIfPlayableProvider']);
 
     Route::get('serial/start','Web\SerialNumberController@start');
+    Route::post('serial/register','Web\SerialNumberController@register');
 
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['scopes:instant-win']);
