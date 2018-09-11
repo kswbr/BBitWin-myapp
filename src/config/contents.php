@@ -58,6 +58,12 @@ return [
     "number" => [
       "min" => 11111111,
       "max" => 99999999,
+    ],
+    "state" => [
+      "inactive" => ["type" => 4, "label" => "非公開","css_style" => "danger"],
+      "active" => ["type" => 1, "label" => "公開中" ,"css_style" => "success"],
+      "stand_by" => ["type" => 2, "label" => "公開待機中","css_style" => "warning"],
+      "finish" => ["type" => 3, "label" => "公開終了","css_style" => "danger"],
     ]
   ]
 ];

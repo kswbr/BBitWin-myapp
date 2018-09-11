@@ -39,9 +39,12 @@ export default {
   data () {
     return {
       form: {
+        active: false,
         code: '',
         name: '',
         total: '',
+        start_date: '',
+        end_date: '',
         winner_total: ''
       },
       loading: true

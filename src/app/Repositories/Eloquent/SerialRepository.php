@@ -48,13 +48,13 @@ class SerialRepository implements SerialRepositoryInterface, BaseRepositoryInter
 
     public function getFirstInProject($project)
     {
-        $query = $this->getProjectQuery($project);
+        $query = $this->getProjectQuery($project)->active()->inSession();
         return $query->first();
     }
 
     public function getByProjectAndCode($project,$code)
     {
-        return $this->model->project($project)->code($code)->firstOrFail();
+        return $this->model->inSession()->active()->project($project)->code($code)->firstOrFail();
     }
 
     public function store(array $inputs)

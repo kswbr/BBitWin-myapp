@@ -90,7 +90,7 @@ class LotteryService
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
-    public function create($name, $rate, $total, $limit, $code, $start_date, $end_date, $daily_increment, $daily_increment_time, $order, $campaign)
+    public function create($name, $rate, $total, $limit, $active,$code, $start_date, $end_date, $daily_increment, $daily_increment_time, $order, $campaign)
     {
         return $this->repository->store([
             "name" => $name,
@@ -103,7 +103,7 @@ class LotteryService
             "campaign_code" => $campaign->code,
             "daily_increment" => $daily_increment,
             "daily_increment_time" => $daily_increment_time,
-            "active" => true,
+            "active" => $active,
             "order" => $order
         ]);
     }

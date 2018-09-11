@@ -52,6 +52,7 @@ class VoteController extends Controller
             'name' => 'required|max:255',
             'code' => 'required|string|unique:votes',
             'choice' => 'required|string|check_vote_choice',
+            'active' => 'required|boolean',
             'start_date' => 'required|string',
             'end_date' => 'required|string'
         ]);
@@ -94,6 +95,7 @@ class VoteController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'choice' => 'required|string|check_vote_choice',
+            'active' => 'required|boolean',
             'start_date' => 'required|string',
             'end_date' => 'required|string'
         ]);

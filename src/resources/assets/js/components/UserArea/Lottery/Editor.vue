@@ -39,6 +39,9 @@
         <template slot="append">個</template>
       </el-input>
     </el-form-item>
+    <el-form-item label="公開状態">
+      <el-checkbox v-model="form.active">公開状態にする</el-checkbox>
+    </el-form-item>
     <el-form-item label="応募開始日時">
       <el-date-picker
         v-model="form.start_date"
@@ -83,6 +86,7 @@ export default {
     return {
       dailyIncrementTimeOptions: [],
       form: {
+        active: false,
         code: '',
         name: '',
         total: 0,
@@ -99,7 +103,9 @@ export default {
   },
   watch: {
     input: function (input) {
-      this.form = Object.assign({}, this.input)
+      this.form = Object.assign({}, this.input,{
+        active: Boolean(this.input.active)
+      })
     }
   },
   mounted () {

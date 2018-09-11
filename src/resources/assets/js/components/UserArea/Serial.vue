@@ -26,6 +26,7 @@
             <el-table-column prop="name" label="抽選名称" width="500"/>
             <el-table-column prop="total" label="総数" width="100"/>
             <el-table-column prop="winner_total" label="当選数" width="100"/>
+            <el-table-column prop="state.label" label="状態" width="100"/>
             <el-table-column
               fixed="right"
               label="操作"
@@ -70,6 +71,7 @@ export default {
       const page = this.$route.query.page
       this.loading = true
       Axios.get('/api/serials', { params:{page}}).then((res) => {
+        console.log(res)
         this.pagination = Object.assign({},this.pagination,res.data)
         this.tableData = res.data.data
         this.loading = false

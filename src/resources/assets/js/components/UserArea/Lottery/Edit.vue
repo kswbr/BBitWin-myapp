@@ -44,6 +44,7 @@ export default {
   data () {
     return {
       form: {
+        active: false,
         code: '',
         name: '',
         total: 0,

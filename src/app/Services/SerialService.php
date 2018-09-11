@@ -68,21 +68,28 @@ class SerialService
 
     public function update($id, array $inputs)
     {
+
         return $this->repository->update($id,[
             "name" => $inputs["name"],
             "total" => $inputs["total"],
+            "active" => $inputs["active"],
             "winner_total" => $inputs["winner_total"],
+            "start_date" => new Carbon($inputs["start_date"]),
+            "end_date" => new Carbon($inputs["end_date"]),
         ]);
     }
 
 
-    public function create($name, $total, $winner_total, $code, $project)
+    public function create($name, $total, $winner_total, $active, $code, $start_date, $end_date,$project)
     {
         return $this->repository->store([
             "name" => $name,
             "total" => $total,
             "winner_total" => $winner_total,
+            "active" => $active,
             "code" => $code,
+            "start_date" => new Carbon($start_date),
+            "end_date" => new Carbon($end_date),
             "project" => $project,
         ]);
     }

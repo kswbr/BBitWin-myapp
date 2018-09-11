@@ -50,6 +50,9 @@ class SerialController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'code' => 'required|unique:serials|max:100',
+            'active' => 'required|boolean',
+            'start_date' => 'required|string',
+            'end_date' => 'required|string',
             'total' => 'required|numeric|min:'.$min.'|max:'.$max,
         ]);
 
@@ -57,7 +60,10 @@ class SerialController extends Controller
             $request->input("name"),
             $request->input("total"),
             0,
+            $request->input("active"),
             $request->input("code"),
+            $request->input("start_date"),
+            $request->input("end_date"),
             $project
         );
         return response(['created_id' => $serial->id], 201);
@@ -144,6 +150,9 @@ class SerialController extends Controller
             'name' => 'required|max:255',
             'total' => 'required|numeric|min:'.$serial->total.'|max:'.$max,
             'winner_total' => 'required|numeric|min:'.$serial->winner_total.'|max:'.$serial->total,
+            'active' => 'required|boolean',
+            'start_date' => 'required|string',
+            'end_date' => 'required|string',
         ]);
 
         $this->serialService->update($id,$request->all());

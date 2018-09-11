@@ -66,6 +66,7 @@ class LotteryServiceTest extends TestCase
             99.0,
             100,
             20,
+            true,
             "TestCode",
             Carbon::yesterday(),
             Carbon::tomorrow(),

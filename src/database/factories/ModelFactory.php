@@ -41,7 +41,10 @@ $factory->define(App\Repositories\Eloquent\Models\Serial::class, function (Faker
         'name' => $faker->name,
         'project' => $faker->word,
         'code' => uniqid(rand()),
+        'active' => true,
         'total' => 100,
+        "start_date" => (string)Carbon::yesterday(),
+        "end_date" => (string)Carbon::tomorrow(),
         'winner_total' => 10
     ];
 });

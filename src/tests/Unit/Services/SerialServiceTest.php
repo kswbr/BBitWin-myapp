@@ -44,11 +44,14 @@ class SerialServiceTest extends TestCase
                 "total" => 1000,
                 "winner_total" => 100,
                 "code" => "TESTCODE",
+                "active" => false,
+                "start_date" => new Carbon("2018-09-10 00:00:00"),
+                "end_date" => new Carbon("2018-09-11 00:00:00"),
                 "project" => "TESTPROJECT",
             ])
             ->andReturn(true);
 
-        $data = $this->service->create("testserial", 1000, 100, "TESTCODE", "TESTPROJECT");
+        $data = $this->service->create("testserial", 1000, 100, false,"TESTCODE","2018-09-10 00:00:00","2018-09-11 00:00:00", "TESTPROJECT");
         $this->assertTrue($data);
 
         $this->mockRepository->shouldReceive('destroy')
@@ -63,10 +66,10 @@ class SerialServiceTest extends TestCase
     public function testUpdate()
     {
         $this->mockRepository->shouldReceive('update')
-             ->with(999,[ "name" => "TESTNAME", "total" => 1000, "winner_total" => 100])
+             ->with(999,[ "name" => "TESTNAME", "total" => 1000, "winner_total" => 100,"active" => false,"start_date" => new Carbon("2018-09-10 00:00:00"), "end_date" => new Carbon("2018-09-11 00:00:00")])
              ->andReturn(true);
 
-        $ret = $this->service->update(999, ["name" => "TESTNAME","total" => 1000,"winner_total" => 100, "test" => 9999]);
+        $ret = $this->service->update(999, ["name" => "TESTNAME","total" => 1000,"winner_total" => 100,"active" => false, "start_date" =>  "2018-09-10 00:00:00","end_date" => "2018-09-11 00:00:00","test" => 9999]);
         $this->assertTrue($ret);
 
 

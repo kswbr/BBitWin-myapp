@@ -103,7 +103,10 @@ class SerialControllerTest extends TestCase
         $input["name"] =  "CREATED_NAME" ;
         $input["code"] =  "TEST_CODE";
         $input["total"] =  100;
+        $input["active"] =  true;
         $input["winner_total"] =  10;
+        $input["start_date"] =  "2018-09-10 00:00:00";
+        $input["end_date"] =  "2018-09-11 00:00:00";
 
         Passport::actingAs( $user, ['check-admin']);
         $response = $this->actingAs($user,"api");
