@@ -121,24 +121,4 @@ class VoteRepository implements VoteRepositoryInterface, BaseRepositoryInterface
         return $vote->counts()->create(["choice" => $choice]);
     }
 
-
-    public function getState($project, $code)
-    {
-        $vote = $this->getByProjectAndCode($project, $code);
-
-        if ($vote->active === false){
-            return config("contents.vote.state.inactive");
-        }
-
-        if (Carbon::now() < $vote->start_date){
-            return config("contents.vote.state.stand_by");
-        }
-
-        if (Carbon::now() > $vote->end_date){
-            return config("contents.vote.state.finish");
-        }
-
-        return config("contents.vote.state.active");
-    }
-
 }

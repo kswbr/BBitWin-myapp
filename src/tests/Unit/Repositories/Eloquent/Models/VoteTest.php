@@ -73,5 +73,16 @@ class VoteTest extends TestCase
 
         $this->assertEquals($vote->counts->count(), 1);
     }
+    public function testState() {
+        $lottery = factory(Vote::class)->create();
+        $this->assertEquals($lottery->state,config("contents.lottery.state.active"));
+
+        $lottery = factory(Vote::class)->create( ["start_date" => Carbon::tomorrow()]);
+        $this->assertEquals($lottery->state,config("contents.lottery.state.stand_by"));
+
+        $lottery = factory(Vote::class)->create( ["end_date" => Carbon::yesterday()]);
+        $this->assertEquals($lottery->state,config("contents.lottery.state.finish"));
+    }
+
 
 }

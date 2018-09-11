@@ -8,6 +8,7 @@ use Carbon\Carbon;
 class Vote extends Model
 {
     protected $fillable = ['name','active','code','choice', 'project', 'start_date', 'end_date'];
+    protected $appends = ['state'];
 
     public function scopeCode($query,string $code)
     {
@@ -39,6 +40,24 @@ class Vote extends Model
             $query->where("choice",$choice);
         }]);
     }
+
+    public function getStateAttribute()
+    {
+        if ($this->attributes['active'] === false){
+            return config("contents.vote.state.inactive");
+        }
+
+        if (Carbon::now() < $this->attributes['start_date']){
+            return config("contents.vote.state.stand_by");
+        }
+
+        if (Carbon::now() > $this->attributes['end_date']){
+            return config("contents.vote.state.finish");
+        }
+
+        return config("contents.vote.state.active");
+    }
+
 
 
 }

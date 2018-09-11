@@ -94,26 +94,5 @@ class VoteRepositoryTest extends TestCase
     }
 
 
-    public function testGetState() {
-        $vote = factory(Vote::class)->create();
-
-        $mock = \Mockery::mock(VoteRepository::class,[$this->model]);
-        $this->app->instance(VoteRepository::class,$mock);
-
-        $mock->shouldReceive('getByProjectAndCode')->passthru();
-        $mock->shouldReceive('getState')->passthru();
-
-        $state = $mock->getState($vote->project, $vote->code);
-        $this->assertEquals($state,config("contents.vote.state.active"));
-
-        $vote = factory(Vote::class)->create( ["start_date" => Carbon::tomorrow()]);
-        $state = $mock->getState($vote->project, $vote->code);
-        $this->assertEquals($state,config("contents.vote.state.stand_by"));
-
-        $vote = factory(Vote::class)->create( ["end_date" => Carbon::yesterday()]);
-        $state = $mock->getState($vote->project, $vote->code);
-        $this->assertEquals($state,config("contents.vote.state.finish"));
-
-    }
 
 }
