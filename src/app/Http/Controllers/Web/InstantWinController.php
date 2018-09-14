@@ -185,4 +185,23 @@ class InstantWinController extends Controller
         );
     }
 
+    public function lotteries(Request $request, $campaign_code = null)
+    {
+        $project = $this->projectService->getCode();
+        if (!$campaign_code) {
+            $campaign = $this->campaignService->getFirstInProject($project);
+        } else {
+            $campaign = $this->campaignService->getByProjectAndCode($project,$campaign_code);
+        }
+
+        $lotteries = $this->lotteryService->getInCampaign($campaign);
+        $response = [];
+        foreach ($lotteries->toArray() as $lottery) {
+          $response[$lottery["code"]] = $lottery;
+        }
+
+        return response(["lotteries" => $response]);
+    }
+
+
 }

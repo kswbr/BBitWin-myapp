@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading.fullscreen.lock="inRequest">
+  <div class="container" >
     <router-view />
   </div>
 </template>

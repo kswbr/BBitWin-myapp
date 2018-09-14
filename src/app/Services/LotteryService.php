@@ -21,6 +21,11 @@ class LotteryService
         return $this->repository->getPaginate($page,$query);
     }
 
+    public function getInCampaign($campaign)
+    {
+        return $this->repository->getCampaignQuery($campaign->code)->get();
+    }
+
      /**
      * FindOrFail Model and return the instance.
      *

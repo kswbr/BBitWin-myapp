@@ -1,5 +1,5 @@
 <template>
-  <div id="login">
+  <div id="login" v-loading.fullscreen.lock="inRequest">
     <el-row >
       <h1>BbmInstantWin</h1>
       <p>インスタントウィンサンプルプロジェクト</p >
@@ -53,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['loggedIn','user'])
+    ...mapState(['inRequest','loggedIn','user'])
   },
   mounted: function () {
     if (this.loggedIn) {

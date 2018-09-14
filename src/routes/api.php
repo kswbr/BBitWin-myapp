@@ -62,6 +62,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('serial/start','Web\SerialNumberController@start');
     Route::post('serial/register','Web\SerialNumberController@register');
 
+    Route::get('instantwin/lotteries','Web\InstantWinController@lotteries');
+
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('instantwin/run','Web\InstantWinController@run')->middleware(['scopes:instant-win']);
         Route::get('instantwin/run/retry','Web\InstantWinController@run')->middleware(['scopes:instant-win,retry']);

@@ -72,9 +72,13 @@ class FirstSiteSeeder extends Seeder
             "project" => env("PROJECT_NAME", config('app.name'))
         ]);
 
+        $dt = new Carbon();
+        $dt->addYears(5);
         factory(Lottery::class)->create([
             "name" => '金賞 とても素晴らしい架空の賞品',
             'campaign_code' => $campaign->code,
+            'end_date' => (string)$dt,
+            'code' => "gold",
             'rate' => 5,
             'run_time' => null,
         ]);
@@ -82,6 +86,8 @@ class FirstSiteSeeder extends Seeder
         factory(Lottery::class)->create([
             "name" => '銀賞 本当に素敵な架空の賞品',
             'campaign_code' => $campaign->code,
+            'end_date' => (string)$dt,
+            'code' => "silver",
             'rate' => 20,
             'run_time' => null,
         ]);
@@ -89,6 +95,8 @@ class FirstSiteSeeder extends Seeder
         factory(Lottery::class)->create([
             "name" => '銅賞 とても役に立つ架空の賞品',
             'campaign_code' => $campaign->code,
+            'code' => "bronze",
+            'end_date' => (string)$dt,
             'rate' => 50,
             'run_time' => null,
         ]);
@@ -96,6 +104,7 @@ class FirstSiteSeeder extends Seeder
         $vote = factory(Vote::class)->create([
           "code" => "samples",
           "project" => env("PROJECT_NAME", config('app.name')),
+          'end_date' => (string)$dt,
           "choice" => "twitter,ツイッター\nline,LINE\n",
         ]);
     }
