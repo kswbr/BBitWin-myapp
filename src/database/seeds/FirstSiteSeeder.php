@@ -67,92 +67,28 @@ class FirstSiteSeeder extends Seeder
 
 
         $campaign = factory(Campaign::class)->create([
-            "name" => 'インスタントウィンキャンペーン 単一商品',
-            'code' => uniqid(rand()),
+            "name" => 'インスタントウィンキャンペーン',
+            'code' => 'sample_campaign',
             "project" => env("PROJECT_NAME", config('app.name'))
         ]);
 
-        $lottery = factory(Lottery::class)->create([
-            "name" => 'インスタントウィンサンプル賞品',
+        factory(Lottery::class)->create([
+            "name" => 'インスタントウィン 金賞',
             'campaign_code' => $campaign->code,
-            'code' => 'campaign_solo',
-            'rate' => 50,
+            'rate' => 5,
             'run_time' => null,
         ]);
 
-        $entry = factory(Entry::class,1000)->create([
-            'lottery_code' => $lottery->code,
-            "state" => 1,
-        ]);
-
-        $entry = factory(Entry::class,20)->create([
-            'lottery_code' => $lottery->code,
-            "state" => 2,
-        ]);
-
-        $campaign = factory(Campaign::class)->create([
-            "name" => 'インスタントウィンキャンペーン 複数商品選択',
-            'code' => 'samples',
-            "project" => env("PROJECT_NAME", config('app.name'))
-        ]);
-
-        $lottery = factory(Lottery::class)->create([
-            "name" => 'インスタントウィンサンプル賞品 Aコース',
+        factory(Lottery::class)->create([
+            "name" => 'インスタントウィン 銀賞',
             'campaign_code' => $campaign->code,
-            'code' => 'sample_a',
-            'rate' => 99,
-            'total' => 10000,
-            'limit' => 1000,
+            'rate' => 20,
             'run_time' => null,
         ]);
 
-        $lottery = factory(Lottery::class)->create([
-            "name" => 'インスタントウィンサンプル賞品 Bコース',
+        factory(Lottery::class)->create([
+            "name" => 'インスタントウィン 銅賞',
             'campaign_code' => $campaign->code,
-            'code' => 'sample_b',
-            'rate' => 50,
-            'total' => 10000,
-            'limit' => 1000,
-            'run_time' => null,
-        ]);
-
-        $lottery = factory(Lottery::class)->create([
-            "name" => 'インスタントウィンサンプル賞品 Cコース',
-            'campaign_code' => $campaign->code,
-            'code' => 'sample_c',
-            'rate' => 10.5,
-            'total' => 10000,
-            'limit' => 1000,
-            'run_time' => null,
-        ]);
-
-
-        $campaign = factory(Campaign::class)->create([
-            "name" => 'インスタントウィンキャンペーン 複数商品同時抽選',
-            'code' => 'campaign_multi_course',
-            "project" => env("PROJECT_NAME", config('app.name'))
-        ]);
-
-        $lottery = factory(Lottery::class)->create([
-            "name" => 'インスタントウィンサンプル賞品 金賞',
-            'campaign_code' => $campaign->code,
-            'code' => 'lottery_multi_a',
-            'rate' => 50,
-            'run_time' => null,
-        ]);
-
-        $lottery = factory(Lottery::class)->create([
-            "name" => 'インスタントウィンサンプル賞品 銀賞',
-            'campaign_code' => $campaign->code,
-            'code' => 'lottery_multi_b',
-            'rate' => 50,
-            'run_time' => null,
-        ]);
-
-        $lottery = factory(Lottery::class)->create([
-            "name" => 'インスタントウィンサンプル賞品 銅賞',
-            'campaign_code' => $campaign->code,
-            'code' => 'lottery_multi_c',
             'rate' => 50,
             'run_time' => null,
         ]);
@@ -160,24 +96,7 @@ class FirstSiteSeeder extends Seeder
         $vote = factory(Vote::class)->create([
           "code" => "samples",
           "project" => env("PROJECT_NAME", config('app.name')),
-          "choice" => "sample_a,Aコース\nsample_b,Bコース\nsample_c,Cコース\n\n",
+          "choice" => "twitter,ツイッター\nline,LINE\n",
         ]);
-        factory(Count::class,100)->create(["choice" => "sample_a", "vote_code" => $vote->code]);
-        factory(Count::class,90)->create(["choice" => "sample_b", "vote_code" => $vote->code]);
-        factory(Count::class,80)->create(["choice" => "sample_c", "vote_code" => $vote->code]);
-
-        $serial = factory(Serial::class)->create([
-          "code" => "samples",
-          "name" => "サンプルシリアルナンバー抽選",
-          "project" => env("PROJECT_NAME", config('app.name')),
-          "total" => 1000,
-          "winner_total" => 500,
-        ]);
-
-        $service = \App::make(SerialService::class);
-        for($i = 0; $i < $serial->total; $i++) {
-            $service->createUniqueNumber($serial);
-        }
-
     }
 }
