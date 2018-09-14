@@ -107,7 +107,12 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
 
     public function getPrevDataOfPlayerInCampaign($player_id, $player_type, $campaign_code, $campaign_limited_days)
     {
-        $winner_types = implode(",", [config("contents.entry.state.win"),config("contents.entry.state.win_special")]);
+      $types = implode(",", [
+        config("contents.entry.state.win_special"),
+        config("contents.entry.state.win"),
+        config("contents.entry.state.win_posting_completed"),
+        config("contents.entry.state.win_posting_expired"),
+        config("contents.entry.state.lose")]);
 
         return $this->model->playerId($player_id)
           ->where("player_type",$player_type)
@@ -118,7 +123,7 @@ class EntryRepository implements EntryRepositoryInterface, BaseRepositoryInterfa
               $query->where("start_date","<" ,Carbon::now());
               $query->where("end_date",">", $dt->subDays((int)$campaign_limited_days));
           }])
-          ->orderByRaw(DB::raw("FIELD(state, ".$winner_types." ) DESC"))
+          ->orderByRaw(DB::raw("FIELD(state, ".$types." ) ASC"))
           ->orderBy("created_at","DESC")
           ->first();
     }

@@ -311,7 +311,7 @@ class InstantWinMultiControllerTest extends TestCase
         $mock->player = $player;
 
         $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
-        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
         Passport::actingAs( $user, ['instant-win']);
@@ -325,7 +325,7 @@ class InstantWinMultiControllerTest extends TestCase
         $response->assertJson([
           "result" => false,
           "finish" => false,
-          "token" => "LOSE",
+          "token" => "RETRY",
           "winning_lottery" => null,
           "winning_entry_code" => null,
         ]);

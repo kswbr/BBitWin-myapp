@@ -73,21 +73,21 @@ class FirstSiteSeeder extends Seeder
         ]);
 
         factory(Lottery::class)->create([
-            "name" => 'インスタントウィン 金賞',
+            "name" => '金賞 とても素晴らしい架空の賞品',
             'campaign_code' => $campaign->code,
             'rate' => 5,
             'run_time' => null,
         ]);
 
         factory(Lottery::class)->create([
-            "name" => 'インスタントウィン 銀賞',
+            "name" => '銀賞 本当に素敵な架空の賞品',
             'campaign_code' => $campaign->code,
             'rate' => 20,
             'run_time' => null,
         ]);
 
         factory(Lottery::class)->create([
-            "name" => 'インスタントウィン 銅賞',
+            "name" => '銅賞 とても役に立つ架空の賞品',
             'campaign_code' => $campaign->code,
             'rate' => 50,
             'run_time' => null,

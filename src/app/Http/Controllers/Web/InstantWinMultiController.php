@@ -73,8 +73,7 @@ class InstantWinMultiController extends Controller
 
         if ($prev_entry_state_code === "win_posting_completed") {
 
-            //本日初挑戦の場合
-            if (!$challenged_today && !$is_retry_challenge) {
+            if (!$is_retry_challenge) {
                 $user->append('retry_token');
                 $token = $user->retry_token;
             }
