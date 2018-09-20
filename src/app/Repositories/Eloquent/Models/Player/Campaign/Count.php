@@ -5,10 +5,10 @@ namespace App\Repositories\Eloquent\Models\Player\Campaign;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Log extends Model
+class Count extends Model
 {
     //
-    protected $table = 'player_campaign_logs';
+    protected $table = 'player_campaign_counts';
 
     public function scopeCheckToday($query){
         $query->where("check_date",">=",Carbon::today());

@@ -13,7 +13,7 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('player_campaign_logs', function (Blueprint $table) {
+        Schema::create('player_campaign_counts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('player_id')->unsigned()->nullable();
             $table->char('campaign_code',100)->nullable();
@@ -32,6 +32,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('player_campaign_logs');
+        Schema::dropIfExists('player_campaign_counts');
     }
 }
