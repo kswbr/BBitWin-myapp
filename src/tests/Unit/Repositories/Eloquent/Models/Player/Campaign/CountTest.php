@@ -19,7 +19,6 @@ class CountTest extends TestCase
      * A basic test example.
      *
      * @return void
-     * @group tmp
      */
     public function testExample()
     {
@@ -30,7 +29,6 @@ class CountTest extends TestCase
      * A basic test example.
      *
      * @return void
-     * @group tmp
      */
     public function testSave()
     {
@@ -44,7 +42,6 @@ class CountTest extends TestCase
      * A basic test example.
      *
      * @return void
-     * @group tmp
      */
     public function testSearch()
     {

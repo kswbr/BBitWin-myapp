@@ -15,6 +15,11 @@ class Player extends Model
        return $this->belongsTo(User::class);
     }
 
+    public function campaignCounts()
+    {
+       return $this->hasMany(Player\Campaign\Count::class);
+    }
+
     public function scopeProject($query,string $project_code){
         return $query->where("project",$project_code);
     }

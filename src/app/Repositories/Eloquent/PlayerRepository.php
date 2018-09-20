@@ -84,5 +84,36 @@ class PlayerRepository implements PlayerRepositoryInterface, BaseRepositoryInter
 
         return $query->first();
     }
+    public function checkInCampaignCount(int $player_id, string $campaign_code, string $check_date)
+    {
+        $player = $this->model->find($player_id);
+        $count = $player->campaignCounts()->campaign($campaign_code)->first();
+
+        if (!$count) {
+            $count = $player->campaignCounts()->create([
+              "campaign_code" => $campaign_code,
+              "days_count" => 1,
+              "continuous_days_count" => 1,
+              "check_date" => $check_date
+            ]);
+            return $count;
+        }
+
+        if ($count->is_checked_today) {
+            return $count;
+        }
+
+        $count->days_count++;
+
+        if ($count->is_checked_yesterday) {
+            $count->continuous_days_count++;
+        } else {
+            $count->continuous_days_count = 1;
+        }
+
+        $count->check_date = $check_date;
+
+        return $count;
+    }
 
 }

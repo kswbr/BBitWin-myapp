@@ -135,6 +135,17 @@ $factory->define(App\Repositories\Eloquent\Models\Vote::class, function (Faker\G
     ];
 });
 
+$factory->define(App\Repositories\Eloquent\Models\Vote\Count::class, function (Faker\Generator $faker) {
+    return [
+        "choice" => "sample_1",
+        // 'player_id' => function () {
+        //     return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
+        // },
+        'vote_code' => function () {
+            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->code;
+        }
+    ];
+});
 $factory->define(App\Repositories\Eloquent\Models\Player\Campaign\Count::class, function (Faker\Generator $faker) {
     return [
         'player_id' => function () {
