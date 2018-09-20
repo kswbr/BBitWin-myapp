@@ -109,6 +109,20 @@ $factory->define(App\Repositories\Eloquent\Models\Entry::class, function (Faker\
     ];
 });
 
+$factory->define(App\Repositories\Eloquent\Models\Entry::class, function (Faker\Generator $faker) {
+    return [
+        "player_type" => 1,
+        "state" => 1,
+        'player_id' => function () {
+            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
+        },
+        'lottery_code' => function () {
+            return factory(App\Repositories\Eloquent\Models\Lottery::class)->create()->code;
+        }
+    ];
+});
+
+
 $factory->define(App\Repositories\Eloquent\Models\Vote::class, function (Faker\Generator $faker) {
     return [
         "name" => "テストキャンペーン",
@@ -121,14 +135,14 @@ $factory->define(App\Repositories\Eloquent\Models\Vote::class, function (Faker\G
     ];
 });
 
-$factory->define(App\Repositories\Eloquent\Models\Vote\Count::class, function (Faker\Generator $faker) {
+$factory->define(App\Repositories\Eloquent\Models\Player\Campaign\Log::class, function (Faker\Generator $faker) {
     return [
-        "choice" => "sample_1",
-        // 'player_id' => function () {
-        //     return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
-        // },
-        'vote_code' => function () {
-            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->code;
-        }
+        'player_id' => function () {
+            return factory(App\Repositories\Eloquent\Models\Player::class)->create()->id;
+        },
+        'campaign_code' => function () {
+            return factory(App\Repositories\Eloquent\Models\Campaign::class)->create()->code;
+        },
+        "check_date" => (string)Carbon::today()
     ];
 });
