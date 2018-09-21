@@ -83,6 +83,8 @@ class InstantWinController extends Controller
         $token = $user->playable_token;
         $wrong_lottery_choice = false;
 
+        $this->playerService->checkInCampaignCount($player,$campaign);
+
         if ($is_winner) {
 
             // 前回当選して未応募の場合必ず当選
@@ -108,7 +110,7 @@ class InstantWinController extends Controller
         if ($prev_entry_state_code === "win_posting_completed" || $lottery->remaining <= 0 || $wrong_lottery_choice === true) {
 
             //本日初挑戦の場合
-            if ( (!$challenged_today || $wrong_lottery_choice) && !$is_retry_challenge) {
+            if (!$is_retry_challenge) {
                 $user->append('retry_token');
                 $token = $user->retry_token;
             }

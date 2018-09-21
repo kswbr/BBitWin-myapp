@@ -297,7 +297,7 @@ class InstantWinMultiControllerTest extends TestCase
     }
 
 
-    // 前回当選して応募完了した人は必ず落選
+    // 前回当選して応募完了した人は必ず落選 (リトライ判定あり)
     public function testRunPtnWinPostingCompleted()
     {
         $user = factory(User::class)->create();

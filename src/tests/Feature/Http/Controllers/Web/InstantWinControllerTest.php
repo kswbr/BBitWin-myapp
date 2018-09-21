@@ -84,6 +84,9 @@ class InstantWinControllerTest extends TestCase
           "winning_lottery" => $this->lotteryService->getByCodeForWinner($lottery->code),
           "winning_entry_code" => "WINNERCODE"
         ]);
+
+        $count = $this->playerService->checkInCampaignCount($player,$campaign);
+        $this->assertEquals($count->days_count,1);
     }
 
     // 初回で落選してリトライの権利を得た場合
@@ -297,7 +300,7 @@ class InstantWinControllerTest extends TestCase
     }
 
 
-    // 前回当選して応募完了した人は必ず落選
+    // 前回当選して応募完了した人は必ず落選 (リトライ判定あり)
     public function testRunPtnWinPostingCompleted()
     {
         $user = factory(User::class)->create();
@@ -311,7 +314,7 @@ class InstantWinControllerTest extends TestCase
         $mock->player = $player;
 
         $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
-        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
         Passport::actingAs( $user, ['instant-win']);
@@ -326,7 +329,7 @@ class InstantWinControllerTest extends TestCase
         $response->assertJson([
           "result" => false,
           "finish" => false,
-          "token" => "LOSE",
+          "token" => "RETRY",
           "winning_lottery" => null,
           "winning_entry_code" => null
         ]);

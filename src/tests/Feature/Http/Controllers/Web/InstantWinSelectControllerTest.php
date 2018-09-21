@@ -251,7 +251,7 @@ class InstantWinSelectControllerTest extends TestCase
         $mock->player = $player;
 
         $mock->shouldReceive("getPlayableTokenAttribute")->andReturn("LOSE");
-        // $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
+        $mock->shouldReceive("getRetryTokenAttribute")->andReturn("RETRY");
         // $mock->shouldReceive("getWinnerTokenAttribute")->andReturn("WINNER");
 
         Passport::actingAs( $user, ['instant-win']);
@@ -265,7 +265,7 @@ class InstantWinSelectControllerTest extends TestCase
         $response->assertJson([
           "result" => false,
           "finish" => false,
-          "token" => "LOSE",
+          "token" => "RETRY",
         ]);
     }
 

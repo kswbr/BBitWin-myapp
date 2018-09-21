@@ -70,6 +70,7 @@ class InstantWinMultiController extends Controller
         $user->append('playable_token');
         $token = $user->playable_token;
 
+        $this->playerService->checkInCampaignCount($player,$campaign);
 
         if ($prev_entry_state_code === "win_posting_completed") {
 

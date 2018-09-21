@@ -84,6 +84,12 @@ class PlayerRepository implements PlayerRepositoryInterface, BaseRepositoryInter
 
         return $query->first();
     }
+    public function getCampaignCount(int $player_id, string $campaign_code)
+    {
+        $player = $this->model->find($player_id);
+        return $player->campaignCounts()->campaign($campaign_code)->first();
+    }
+
     public function checkInCampaignCount(int $player_id, string $campaign_code, string $check_date)
     {
         $player = $this->model->find($player_id);
@@ -112,6 +118,7 @@ class PlayerRepository implements PlayerRepositoryInterface, BaseRepositoryInter
         }
 
         $count->check_date = $check_date;
+        $count->save();
 
         return $count;
     }

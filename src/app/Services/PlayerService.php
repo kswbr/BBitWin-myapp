@@ -59,6 +59,18 @@ class PlayerService
         return $this->repository->findByPlayerInfo($project, $provider,  $provider_id, $player_type);
     }
 
+    public function getCampaignCount($player, $campaign)
+    {
+        return $this->repository->getCampaignCount($player->id, $campaign->code);
+    }
+
+    public function checkInCampaignCount($player, $campaign)
+    {
+        $check_date = (string) new Carbon();
+        return $this->repository->checkInCampaignCount($player->id, $campaign->code, $check_date);
+    }
+
+
     /**
      * Delete the model from the database.
      *
