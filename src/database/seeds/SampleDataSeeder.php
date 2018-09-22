@@ -15,7 +15,7 @@ use App\Services\SerialService;
 use Carbon\Carbon;
 
 
-class FirstSiteSeeder extends Seeder
+class SampleDataSeeder extends Seeder
 {
     /**
      * Run the database seeds.

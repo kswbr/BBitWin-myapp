@@ -56,8 +56,11 @@ class Lottery extends Model
     }
 
     public function scopeCheckIfRunTimeOlder($query){
-        $update_check = Carbon::now();
-        $query->where("run_time","<",$update_check);
+        $query->where(function($query) {
+            $update_check = Carbon::now();
+            $query->orWhere("run_time","<",(string)$update_check);
+            $query->orWhereNull("run_time");
+        });
         return $query;
     }
 

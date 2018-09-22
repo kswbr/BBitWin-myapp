@@ -31,6 +31,11 @@ class CampaignRepository implements CampaignRepositoryInterface, BaseRepositoryI
         return gettype($this->model);
     }
 
+    public function getAll()
+    {
+        return $this->model->get();
+    }
+
     public function getPaginate($n, $search_query = null)
     {
         if ($search_query) {

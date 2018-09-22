@@ -14,6 +14,11 @@ class CampaignService
         $this->repository = $repository;
     }
 
+    public function getAll()
+    {
+        return $this->repository->getAll();
+    }
+
     public function getPageInProject($page,$project)
     {
         $query = $this->repository->getProjectQuery($project);

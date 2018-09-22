@@ -141,5 +141,10 @@ class LotteryService
         return $this->repository->getStateCount($lottery->code,$state_label);
     }
 
+    public function limitUpDaily($campaign)
+    {
+        return $this->repository->limitUpDaily($campaign->code);
+    }
+
 
 }
