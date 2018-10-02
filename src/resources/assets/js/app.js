@@ -22,6 +22,10 @@ const bootstrap = require('./bootstrap')
  * */
 const store = getStore()
 
+if (window.location.pathname.slice(-1) == '/') {
+  window.location = window.location.pathname.slice(0, -1)
+}
+
 // ログイン済みのセッションがあるか判定
 if (bootstrap.fetchToken()) {
   store.commit(types.ALREADY_LOGGED_IN)
