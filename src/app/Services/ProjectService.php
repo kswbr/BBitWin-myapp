@@ -18,7 +18,7 @@ class ProjectService
      */
     public function getCode()
     {
-        return env("PROJECT_NAME", config('app.name'));
+        return \Cookie::get("PROJECT_NAME",env("PROJECT_NAME", null));
     }
 
 }

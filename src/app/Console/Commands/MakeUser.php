@@ -12,7 +12,7 @@ class MakeUser extends Command
      *
      * @var string
      */
-    protected $signature = 'make:user {name} {email} {password}';
+    protected $signature = 'make:user {name} {email} {password} {project}';
 
     /**
      * The console command description.
@@ -45,7 +45,7 @@ class MakeUser extends Command
             'password' => bcrypt($this->argument("password")),
             'allow_user' => true,
             'allow_over_project' => true,
-            'project' => $projectService->getCode()
+            'project' => $this->argument("project")
         ]);
 
         $this->info("User Created!! ID:{$user->id}");

@@ -16,7 +16,10 @@ use Carbon\Carbon;
 $factory->define(App\Repositories\Eloquent\Models\Player::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function () {
-            return factory(App\User::class)->create()->id;
+            return factory(App\User::class)->create([
+                "email" => null,
+                "password" => null,
+            ])->id;
         },
         'provider_id' => uniqid(rand()),
         'etc_data' => ["test" => 1],

@@ -22,7 +22,7 @@ case ${1} in
 
 
     php)
-        ./node_modules/@lassehaslev/executor/dist/app.js "vendor/bin/phpunit && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
+        ./node_modules/@lassehaslev/executor/dist/app.js "vendor/bin/phpunit -d memory_limit=512M && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes --memory-limit=512M " --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
     ;;
     php_tmp)
         ./node_modules/@lassehaslev/executor/dist/app.js "vendor/bin/phpunit --group='tmp' && vendor/bin/phpstan analyze -c phpstan.neon -l ${phpstanLevel} --no-progress app routes" --watch='**/*.php' --ignore='node_modules/' --ignore='vendor/'
