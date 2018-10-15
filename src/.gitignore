@@ -13,5 +13,3 @@ public/js/app.js
 public/css/app.css
 public/mix-manifest.json
 .DS_Store
-.env
-.env.*
