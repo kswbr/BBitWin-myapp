@@ -88,6 +88,6 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::post('vote/run','Web\VoteController@run');
     Route::post('vote/run/{vote_code}','Web\VoteController@run');
-    Route::get('vote/pie/{vote_code}','Web\VoteController@pie');
+    // Route::get('vote/pie/{vote_code}','Web\VoteController@pie');
 
 });
