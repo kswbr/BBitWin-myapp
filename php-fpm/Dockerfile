@@ -1,5 +1,9 @@
 FROM php:7.2-fpm-alpine
 
+RUN apk update
+RUN apk add --update --no-cache bash
+
+RUN docker-php-ext-install pdo pdo_mysql
 USER root
 
 COPY php-fpm/laravel.ini /usr/local/etc/php/conf.d
