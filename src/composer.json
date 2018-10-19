@@ -19,7 +19,6 @@
         "symfony/process": "^4.0"
     },
     "require-dev": {
-        "laravel/dusk": "^3.0",
         "filp/whoops": "~2.0",
         "phpstan/phpstan": "^0.9",
         "weebly/phpstan-laravel": "^1.1",

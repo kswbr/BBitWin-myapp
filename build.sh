@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 if [ $# -ne 1 ]; then
 GCP_PROJECT=`gcloud config get-value project`
 else
