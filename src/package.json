@@ -16,17 +16,17 @@
     "axios": "^0.17",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.2.0",
-    "element-ui": "^2.4.5",
+    "element-ui": "^2.4.9",
     "http-server": "^0.11.1",
     "jquery": "^3.2",
     "laravel-mix": "^1.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "vue": "^2.5.17",
     "vue-template-compiler": "^2.5.17"
   },
   "dependencies": {
-    "chart.js": "^2.7.2",
-    "js-file-download": "^0.4.1",
+    "chart.js": "^2.7.3",
+    "js-file-download": "^0.4.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   }
